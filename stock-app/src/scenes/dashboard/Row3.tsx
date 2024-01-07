@@ -193,7 +193,7 @@ const Row3 = ({ searchQuery } : Props) => {
         </ResponsiveContainer>
       </div>
     </DashboardBox>
-    <DashboardBox  gridArea="i"></DashboardBox>
+
     <DashboardBox  gridArea="f">
       <BoxHeader
               title="Financials: Revenue & Earnings"
