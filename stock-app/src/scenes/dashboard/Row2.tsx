@@ -3,15 +3,18 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useTheme } from '@mui/material/styles';
 import BoxHeader from "../../components/BoxHeader" // Replace with actual path to BoxHeader component
 import DashboardBox from "../../components/DashboardBox"; // Replace with actual path to DashboardBox component
-import { useGetHoldersQuery } from "@/state/api";
+import { useGetHoldersQuery } from "@/state/yahooAPI";
 import "../../index.css"
 
+type Props = {
+  searchQuery: string;
+}
 
-const Row2 = () => {
+const Row2 = ({ searchQuery } : Props) => {
 
   const {palette} = useTheme();
  
-  const { data, isLoading, error } = useGetHoldersQuery("googl");
+  const { data, isLoading, error } = useGetHoldersQuery(searchQuery);
       
   while (isLoading) {
     return <div>Loading...</div>;

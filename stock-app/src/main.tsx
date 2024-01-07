@@ -4,7 +4,7 @@ import '@/index.css';
 import {Provider} from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import {stockApi} from "@/state/api";
+import {stockApi} from "@/state/yahooAPI";
 
 export const store = configureStore({
   reducer: { [stockApi.reducerPath]: stockApi.reducer },

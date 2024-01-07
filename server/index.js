@@ -30,16 +30,18 @@ app.use(cors());
 
 const PORT = process.env.PORT || 9000;
 
+
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => {
-  console.log("Connected to MongoDB");
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  console.log("Connected to MongoDB");
+  
 })
 .catch((error) => {
-  console.error("Database connection failed:", error);
+  console.error("Connection failed:", error);
 });
 
 // API endpoint to fetch statistics for a given ticker
@@ -105,4 +107,7 @@ app.get('/api/holders/:ticker', async (req, res) => {
       res.status(500).json({ message: `Error fetching statistics for ticker ${ticker}: ${error.message}` });
   }
 });
+
+
+
 

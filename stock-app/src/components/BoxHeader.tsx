@@ -20,7 +20,7 @@ const BoxHeader = ({icon, title, subtitle, sideText}: Props) => {
                 <Typography variant="h3" mb="-0.1rem">
                     {title}
                 </Typography>
-                <Typography variant="h6">
+                <Typography variant="h4">
                     {subtitle}
                 </Typography>
             </Box>
@@ -30,4 +30,4 @@ const BoxHeader = ({icon, title, subtitle, sideText}: Props) => {
   )
 }
 
-export default BoxHeader
+export default BoxHeader;

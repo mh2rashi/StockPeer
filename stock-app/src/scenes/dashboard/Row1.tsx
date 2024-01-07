@@ -1,82 +1,141 @@
-// import BoxHeader from "@/components/BoxHeader";
-import DashboardBox from "@/components/DashboardBox"
-import { useGetProfileQuery } from "@/state/api"
+import { useEffect, useState } from "react";
+import DashboardBox from "@/components/DashboardBox";
+import { useGetProfileQuery } from "@/state/yahooAPI";
+import { connectToWebSocket } from "@/state/priceStreamAPI";
 import { Typography } from "@mui/material";
-// import { ResponsiveContainer, BarChart, Bar, LineChart, Legend, AreaChart, XAxis, YAxis, Tooltip, Area, Line, CartesianGrid } from "recharts";
-import googleLogo from "../../assets/google.webp"
-import "../../index.css"
+import BoxHeader from "../../components/BoxHeader" // Replace with actual path to BoxHeader component
 
-const Row1 = () => {
+import "../../index.css";
 
-  const { data, isLoading, error } = useGetProfileQuery("googl");
-   // If data is loading, show a loading indicator
-  while (isLoading) {
+type WebSocketData = {
+  p: number;
+  dd: number;
+  dc: number;
+};
+
+type WebSocketDataCallback = (data: WebSocketData) => void;
+
+// Function to extract domain from URL
+const extractDomain = (url: string) => {
+  const parsedUrl = new URL(url);
+  let domain = parsedUrl.hostname.replace("www.", "");
+  return domain;
+};
+
+type Props = {
+  searchQuery: string;
+};
+
+const Row1 = ({ searchQuery }: Props) => {
+  const [key, setKey] = useState(0); // Key for forcing component re-render
+  const { data, isLoading, error } = useGetProfileQuery(searchQuery);
+
+  const [streamedData, setStreamedData] = useState<WebSocketData>({
+    p: 0,
+    dd: 0,
+    dc: 0,
+  });
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const onDataReceived: WebSocketDataCallback = (data) => {
+      const formattedData = {
+        p: Number(data['p']).toFixed(2),
+        dc: Number(data['dc']).toFixed(2),
+        dd: Number(data['dd']).toFixed(2),
+      };
+      setStreamedData(formattedData);
+    };
+
+    const newSocket = connectToWebSocket('ETH-USD', onDataReceived);
+    setSocket(newSocket);
+
+    return () => {
+      if (newSocket) {
+        newSocket.close();
+      }
+    };
+  }, []);
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  // If there is an error, show an error message
   if (error) {
     return <div>Error: {error.toString()}</div>;
   }
 
-  // If data is not available, show nothing or a placeholder
   if (!data) {
     return null;
   }
 
+  const domain = extractDomain(data['Website']);
+
+
    return (
      
-     <>
+    <>
 
-     <DashboardBox  gridArea="a" padding="1rem 1rem 1.25rem 1rem">
+     <DashboardBox  gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key}>
 
-        <div style={{height: "55%", display:"flex" }}>
+        <div style={{height: "50%", display:"flex" }}>
 
-          <div id='logo' style={{width: "40%", backgroundColor:"transparent", padding:"0.5rem"}}>
-            <img src={googleLogo} style={{ width:"100%", height:"100%", borderRadius: "50%"}}/>
+          <div id='logo' style={{ width: "30%", backgroundColor: "transparent", padding: "0.5rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src={`https://api.companyurlfinder.com/logo/${domain}`} alt="Company Logo" style={{ width: "100%", height: "100%", borderRadius: "20%", objectFit: "cover" }} />
           </div>
 
-          <div id='namePrice' style={{width: "60%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+          <div id='namePrice' style={{width: "70%", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
             
-            <Typography variant="h1" style={{fontSize: "2.5rem"}}>{data['Closing Price'].split(" At")[0]}</Typography>
-            <Typography variant="h1" style={{marginTop:"1rem"}}>{data['Name']}</Typography>
+            <Typography variant="h1" style={{ fontSize: "2.5rem", display: "flex", alignItems: "center" }}>
+              $<span>{streamedData['p']}</span>&nbsp;
+              <span style={{ color: streamedData['dd'] < 0 ? 'red' : 'green', fontSize: "2.0rem" }}>{streamedData['dd']}</span>&nbsp;
+              <span style={{ color: streamedData['dc'] < 0 ? 'red' : 'green', fontSize: "2.0rem" }}>({streamedData['dc']})</span>
+            </Typography>
 
+            <Typography variant="h1" style={{marginTop:"1rem", marginBottom:"1rem"}}>{data['Name']}</Typography>
 
-            <div style={{width: "100%", display:"flex", justifyContent:"space-between", alignItems:"center", padding:"2rem 0rem 1rem 0rem"}}>
+            <Typography variant="h1" style={{fontSize: "1rem", marginBottom:"0.5rem"}}>
+              <span style={{ fontWeight: "bold" }}>Website: </span>
+              <a href={data['Website']} target="_blank" rel="noopener noreferrer">
+                {data['Website']}
+              </a>
+            </Typography>
 
-                <Typography variant="h1" style={{fontSize: "1rem"}}>
-                  <span style={{fontWeight: "bold"}}>Telephone: </span>{data['Telephone']}
-                </Typography>
+            <Typography variant="h1" style={{fontSize: "1rem"}}>
+              <span style={{fontWeight: "bold"}}>Telephone: </span>{data['Telephone']}
+            </Typography>
 
-                <Typography variant="h1" style={{ fontSize: "1rem" }}>
-                  <span style={{ fontWeight: "bold" }}>Website: </span>
-                  <a href={data['Website']} target="_blank" rel="noopener noreferrer">
-                    {data['Website']}
-                  </a>
-                </Typography>
-        
-            </div>
 
           </div>
-          
-          
+             
         </div>
-
-
 
         <hr style={{marginTop: "0rem"}}/>
 
-
-        <div className="custom-scrollbar" style={{height: "45%", display:"flex", overflow:"auto"}}>
+        <div className="custom-scrollbar" style={{height: "50%", display:"flex", overflow:"auto"}}>
           <p style={{ fontSize:"1rem", display: "inline", fontWeight: "normal", paddingBottom: "1rem", marginTop:"0rem"}}><span style={{fontSize: "1rem",fontWeight: "bold"}}>Summary: </span>{data['Summary']}</p>
-
         </div>
 
      </DashboardBox>
      
-     <DashboardBox gridArea="d"></DashboardBox>
+     
      <DashboardBox  gridArea="e"></DashboardBox>
-     <DashboardBox  gridArea="f"></DashboardBox>
+
+
+     <DashboardBox  gridArea="g">
+
+     <BoxHeader
+        title="Financials: Revenue & Earnings"
+        subtitle="Visual representation of revenue and earnings over time"
+        sideText=""
+      />
+
+
+     </DashboardBox>
 
      </>
    );
