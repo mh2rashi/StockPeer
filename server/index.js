@@ -18,6 +18,10 @@ import profileData from "./data/profileData.js";
 import HoldersModel from "./models/holdersModel.js";
 import holdersData from "./data/holdersData.js";
 
+import sustainabilityData from "./data/sustainabilityData.js"
+import incomeStatementData from "./data/incomeStatementData.js"
+import balanceSheetData from "./data/balanceSheetData.js"
+
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -108,6 +112,39 @@ app.get('/api/holders/:ticker', async (req, res) => {
   }
 });
 
+// API endpoint to fetch sustainability data for a given ticker
+app.get('/api/sustainability/:ticker', async (req, res) => {
+  const ticker = req.params.ticker.toUpperCase();
+
+  try {
+      const sustainabilityDataForTicker = await sustainabilityData(ticker);
+      res.status(200).json(sustainabilityDataForTicker);
+  } catch (error) {
+      res.status(500).json({ message: `Error fetching sustainability data for ticker ${ticker}: ${error.message}` });
+  }
+});
 
 
+// API endpoint to fetch Balance Sheet data for a given ticker
+app.get('/api/balanceSheet/:ticker', async (req, res) => {
+  const ticker = req.params.ticker.toUpperCase();
 
+  try {
+    const balanceSheetDataForTicker = await balanceSheetData(ticker);
+    res.status(200).json(balanceSheetDataForTicker);
+} catch (error) {
+    res.status(500).json({ message: `Error fetching balance Sheet data for ticker ${ticker}: ${error.message}` });
+}
+});
+
+// API endpoint to fetch Income statement data for a given ticker
+app.get('/api/incomeStatement/:ticker', async (req, res) => {
+  const ticker = req.params.ticker.toUpperCase();
+
+  try {
+    const incomeStatementDataForTicker = await incomeStatementData(ticker);
+    res.status(200).json(incomeStatementDataForTicker);
+} catch (error) {
+    res.status(500).json({ message: `Error fetching balance Sheet data for ticker ${ticker}: ${error.message}` });
+}
+});

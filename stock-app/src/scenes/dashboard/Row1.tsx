@@ -1,6 +1,7 @@
-import { useEffect, useState, PureComponent } from "react";
+import { useEffect, useState } from "react";
 import DashboardBox from "@/components/DashboardBox";
 import { useGetProfileQuery } from "@/state/yahooAPI";
+import { useGetSustainabilityQuery } from "@/state/yahooAPI";
 import { connectToWebSocket } from "@/state/priceStreamAPI";
 import { Typography } from "@mui/material";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
@@ -31,11 +32,14 @@ const Row1 = ({ searchQuery }: Props) => {
   const [key, setKey] = useState(0); // Key for forcing component re-render
   const { data, isLoading, error } = useGetProfileQuery(searchQuery);
 
+  const data7 = useGetSustainabilityQuery(searchQuery);
+
   const [streamedData, setStreamedData] = useState<WebSocketData>({
     p: 0,
     dd: 0,
     dc: 0,
   });
+
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   useEffect(() => {
