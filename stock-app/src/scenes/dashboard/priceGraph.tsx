@@ -10,18 +10,10 @@ import {
   Legend,
   ResponsiveContainer,
   Text,
-  BarChart,
-  Bar,
-  Rectangle,
 } from 'recharts';
 import { useTheme } from '@mui/material/styles';
 import {scaleLinear} from 'd3-scale';
 import BoxHeader from "@/components/BoxHeader";
-     
-
-
-
-
 
 
 const CustomYAxisTick = ({ x, y, payload }) => {
@@ -49,45 +41,16 @@ const CustomYAxisTick = ({ x, y, payload }) => {
   return <g>{originalTick}{rightTick}</g>
 };
 
-/*const CustomXAxisTick = ({ x, y, payload, data }) => {
-  const value = payload.value;
-  const index = payload.index;
-
-  const monthMap = {}; // Store dates for each month
-
-  // Loop through the data to populate the monthMap
-  data.forEach((item) => {
-    const [month, day] = item.split(' ');
-    if (!monthMap[month]) {
-      monthMap[month] = [];
-    }
-    monthMap[month].push(day);
-  });
-
-  let displayedValue = '';
-  const month = value.split(' ')[0];
-  const datesForMonth = monthMap[month];
-
-  if (index === 0 || datesForMonth.includes(value.split(' ')[1])) {
-    displayedValue = value.split(' ')[1]; // Extracting the day from the value
-  }
-
-  return (
-    <Text x={x} y={y} dy={16} textAnchor="middle" fontSize={10}>
-      {displayedValue}
-    </Text>
-  );
-};*/
 
 
 type Props = {
   searchQuery: string;
 }
 
-const Row3 = ({ searchQuery } : Props) => {
+const PriceGraph = ({ searchQuery } : Props) => {
   const {palette} = useTheme();
   
-  const { data, isLoading, error } = useGetHistoricalQuery("MSFT");
+  const { data, isLoading, error } = useGetHistoricalQuery(searchQuery);
   // If data is loading, show a loading indicator
   while (isLoading) {
     return <div>Loading...</div>;
@@ -134,38 +97,7 @@ const Row3 = ({ searchQuery } : Props) => {
    return null;
  }
 
-
-
- /// Bar chart stuff:
- const hardCodedData = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-];
-
  
-
   return (
     <>
     <DashboardBox  gridArea="h">
@@ -194,39 +126,8 @@ const Row3 = ({ searchQuery } : Props) => {
       </div>
     </DashboardBox>
 
-    <DashboardBox  gridArea="f">
-      <BoxHeader
-              title="Financials: Revenue & Earnings"
-              subtitle="Visual representation of revenue and earnings over time"
-              sideText=""
-            />
-          <div style={{width: "100%", height: "100%"}}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                width={500}
-                height={300}
-                data={hardCodedData}
-                margin={{
-                  top: 20,
-                  right: 20,
-                  left: -10,
-                  bottom: 55,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend height={20} wrapperStyle={{margin: "0 0 10px 0"}} />
-                <Bar dataKey="pv" name="Revenue" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
-                <Bar dataKey="uv" name="Earnings" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-    </DashboardBox>
     </>
   )
 }
 
-export default Row3;
+export default PriceGraph;

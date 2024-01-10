@@ -10,7 +10,7 @@ type Props = {
   searchQuery: string;
 }
 
-const Row2 = ({ searchQuery } : Props) => {
+const Holders = ({ searchQuery } : Props) => {
 
   const {palette} = useTheme();
  
@@ -66,7 +66,7 @@ const Row2 = ({ searchQuery } : Props) => {
     <>
     
       <DashboardBox gridArea="b" >
-          <BoxHeader title="Top Institutional Holders"/>
+          <BoxHeader title="Top Institutional Holders" sideText=""/>
           <Box
             mt="0.5rem"
             p="0 0.5rem"
@@ -97,7 +97,7 @@ const Row2 = ({ searchQuery } : Props) => {
         </DashboardBox>
         
         <DashboardBox gridArea="c" >
-          <BoxHeader title="Top Mutual Fund Holders" />
+          <BoxHeader title="Top Mutual Fund Holders" sideText="" />
           <Box
             mt="0.5rem"
             p="0 0.5rem"
@@ -147,4 +147,4 @@ const Row2 = ({ searchQuery } : Props) => {
   );
 };
 
-export default Row2;
+export default Holders;

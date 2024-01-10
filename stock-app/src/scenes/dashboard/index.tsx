@@ -1,15 +1,18 @@
 import { Box, useMediaQuery } from "@mui/material";
 
-import Row1 from "./Row1";
-import Row2 from "./Row2";
-import Row3 from "./Row3";
+import Profile from "./profile"
+import BalanceSheet from "./balanceSheet";
+import Ratings from "./ratings";
+import Holders from "./holders";
+import PriceGraph from "./priceGraph"
+import IncomeStatement from "./incomeStatement";
 
 
 const gridTemplateLargeScreens = `
     "a a a a e e e g g g g g"
     "a a a a e e e g g g g g"
     "a a a a e e e g g g g g"
-    "a a a a e e e g g g g g"
+    "a a a a e e e h h h h h"
     "a a a a e e e h h h h h"
     "a a a a e e e h h h h h"
     "b b b b f f f h h h h h"
@@ -85,11 +88,14 @@ const Dashboard = ({ searchQuery } : Props) => {
               }
         }
       >
-
-        {/* Add other components/sections based on the searchQuery if needed */}
-        <Row1 searchQuery={searchQuery}></Row1>
-        <Row2 searchQuery={searchQuery}></Row2>
-        <Row3 searchQuery={searchQuery}></Row3>
+       
+        <Profile searchQuery={searchQuery}></Profile>
+        <BalanceSheet searchQuery={searchQuery}></BalanceSheet>
+        <Ratings searchQuery={searchQuery}></Ratings>
+        <Holders searchQuery={searchQuery}></Holders>
+        <PriceGraph searchQuery={searchQuery}></PriceGraph>
+        <IncomeStatement searchQuery={searchQuery}></IncomeStatement>
+        
       </Box>
     );
   };

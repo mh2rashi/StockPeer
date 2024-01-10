@@ -3,11 +3,11 @@ import FlexBetween from "@/components/FlexBetween";
 import {Typography, useTheme, Box, TableHead, TableRow, TableCell, Table, FormControl, TableBody, InputLabel,
     OutlinedInput, TextField, Select, MenuItem, Button, CardHeader, CardContent  } from "@mui/material";
 import React, { useState } from 'react';
-
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const Options = () => {
+
 
     //const isAboveMediumScreens = useMediaQuery("(min-width: 1200px)");
     const { palette } = useTheme();
@@ -18,7 +18,12 @@ const Options = () => {
     const handleChange = (event: SelectChangeEvent<string>) => {
         setDirection(event.target.value as string);
     };
+    const [kind, setKind] = useState('Call');
 
+    const handleChangeKind = (event: React.ChangeEvent<HTMLInputElement>) =>{
+        setKind(event.target.value);
+    }
+;
 
     const [amount, setAmount] = useState<number>(1);
     const [strike, setStrike] = useState<number>(100);
@@ -47,10 +52,36 @@ const Options = () => {
 
     const values = [-41.43, 1.30, -1.32, 38.93, -52.16];
 
+    const [orders, setOrders] = useState([
+        {
+            direction: 'Buy',
+            amount: 1,
+            kind: 'Call',
+            strike: 100,
+            expiryDate: '2024-12-26',
+            volatility: 30,
+            debitCredit: -10.83,
+        },
+    ]);
+
+    const addOrder = () => {
+        const initialOrder = {
+            direction: 'Buy',
+            amount: 1,
+            kind: 'Call',
+            strike: 100,
+            expiryDate: '2024-12-26',
+            volatility: 30,
+            debitCredit: -10.83,
+        };
+
+        setOrders([...orders, initialOrder]);
+    }
 
   return (
     <>
-        <DashboardBox height="325px" p="1.25rem 1.25rem 0rem 1.25rem" >
+        <DashboardBox height="325px" p="1.25rem 1.25rem 0rem 1.25rem" overflow="auto">
+            
             <FlexBetween mb="0.25rem" p="0.5rem 0rem" color={palette.grey[300]}>
             
                 <Table aria-label="simple table">
@@ -98,7 +129,7 @@ const Options = () => {
                                     variant="contained"
                                     type="submit"
                                     style={{height: '50px', width: '125px', backgroundColor: '#006400'}}
-
+                                    onClick={addOrder}
                                 >
                                     Add Position
                                 </Button>
@@ -112,9 +143,11 @@ const Options = () => {
 
                             <TableCell>
                                 <FormControl variant="outlined" fullWidth sx={{
-                                '& .MuiInputLabel-root': { fontSize: '1rem' }, // Larger font for InputLabel
-                                '& .MuiSelect-select': { fontSize: '1rem' },   // Larger font for Select
-                                }}>
+                                '& .MuiInputLabel-root': { fontSize: '1rem', color: palette.grey[300] }, // Larger font for InputLabel
+                                '& .MuiSelect-select': { fontSize: '1rem', color: palette.grey[300] },   // Larger font for Select
+                                '& fieldSet': {borderColor: palette.grey[300]}  // Custom font size for Input
+                                }}
+                                >
                                     <InputLabel htmlFor="demo-simple-select-outlined">Direction</InputLabel>
                                     <Select
                                         value={direction}
@@ -134,8 +167,10 @@ const Options = () => {
 
                             <TableCell>
                                 <FormControl fullWidth variant="outlined" sx={{
-                                '& .MuiInputLabel-root': { fontSize: '1rem' }, // Larger font for InputLabel
-                                '& .MuiOutlinedInput-input': { fontSize: '1rem' },   // Larger font for Select
+                                '& .MuiInputLabel-root': { fontSize: '1rem', color: palette.grey[300] }, // Larger font for InputLabel
+                                '& .MuiOutlinedInput-input': { fontSize: '1rem', color: palette.grey[300] },
+                                '& fieldSet': {borderColor: palette.grey[300]}  // Custom font size for Input
+                                // Larger font for Select
                                 }}>
                                     <InputLabel htmlFor="outlined-amount">Amount</InputLabel>
                                     <OutlinedInput
@@ -150,24 +185,34 @@ const Options = () => {
                             </TableCell>
 
                             <TableCell>
-                                {/* Assuming "Kind" is a static field */}
-                                <TextField
-                                    id="outlined-kind"
-                                    label="Kind"
-                                    defaultValue="Put"
-                                    variant="outlined"
-                                    fullWidth
-                                    sx={{
-                                        '& .MuiInputLabel-root': { fontSize: '1rem' },       // Larger font for Label
-                                        '& .MuiOutlinedInput-input': { fontSize: '1rem' },   // Larger font for Input
-                                      }}
-                                />
+                                <FormControl variant="outlined" fullWidth sx={{
+                                    '& .MuiInputLabel-root': { fontSize: '1rem', color: palette.grey[300] }, // Larger font for InputLabel
+                                    '& .MuiSelect-select': { fontSize: '1rem', color: palette.grey[300] },   // Larger font for Select
+                                    '& fieldSet': {borderColor: palette.grey[300]}  // Custom font size for Input
+                                    }}>
+                                    <InputLabel htmlFor="demo-simple-select-outlined">Kind</InputLabel>
+                                        <Select 
+                                            value={kind}
+                                            onChange={handleChangeKind}
+                                            label="Kind"
+                                            inputProps={{
+                                                name: 'kind',
+                                                id: 'demo-simple-select-outlined',
+                                            }}
+                                        >
+                                            <MenuItem value="Call">Call</MenuItem>
+                                            <MenuItem value="Put">Put</MenuItem>
+                                            <MenuItem value="Cash">Cash</MenuItem>
+                                        </Select>
+                                </FormControl>
                             </TableCell>
 
                             <TableCell>
                                 <FormControl fullWidth variant="outlined" sx={{
-                                    '& .MuiInputLabel-root': { fontSize: '1rem' },       // Custom font size for Label
-                                    '& .MuiOutlinedInput-input': { fontSize: '1rem' },   // Custom font size for Input
+                                    '& .MuiInputLabel-root': { fontSize: '1rem', color: palette.grey[300] },       // Custom font size for Label
+                                    '& .MuiOutlinedInput-input': { fontSize: '1rem', color: palette.grey[300] },   // Custom font size for Input
+                                    '& fieldSet': {borderColor: palette.grey[300]}  // Custom font size for Input
+
                                 }}>
                                     <InputLabel htmlFor="outlined-strike">Strike</InputLabel>
                                     <OutlinedInput
@@ -193,8 +238,10 @@ const Options = () => {
                                     fullWidth
                                     onChange={handleExpiryChange}
                                     sx={{
-                                        '& .MuiInputLabel-root': { fontSize: '1rem' },       // Custom font size for Label
-                                        '& .MuiOutlinedInput-input': { fontSize: '1rem' },   // Custom font size for Input
+                                        '& .MuiInputLabel-root': { fontSize: '1rem', color: palette.grey[300] },       // Custom font size for Label
+                                        '& .MuiOutlinedInput-input': { fontSize: '1rem', color: palette.grey[300] },   // Custom font size for Input
+                                        '& fieldSet': {borderColor: palette.grey[300]}  // Custom font size for Input
+
                                     }}
                                 />
                             </TableCell>
@@ -209,8 +256,9 @@ const Options = () => {
                                     fullWidth
                                     onChange={handleVolatilityChange}
                                     sx={{
-                                    '& .MuiInputLabel-root': { fontSize: '1rem' },       // Custom font size for Label
-                                    '& .MuiOutlinedInput-input': { fontSize: '1rem' },   // Custom font size for Input
+                                    '& .MuiInputLabel-root': { fontSize: '1rem', color: palette.grey[300] },       // Custom font size for Label
+                                    '& .MuiOutlinedInput-input': { fontSize: '1rem', color: palette.grey[300] },
+                                    '& fieldSet': {borderColor: palette.grey[300]}  // Custom font size for Input
                                     }}
                                 />
                             </TableCell>
@@ -238,6 +286,7 @@ const Options = () => {
                                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
                                     </DeleteIcon>
                                     }
+                                    onClick={removeOrder}
                                 >
                                     Remove
                                 </Button>
@@ -280,12 +329,13 @@ const Options = () => {
                                 <Button
                                 variant="contained"
                                 color="error"
-                                style={{height: '50px', width: '150px'}}
+                                style={{height: '50px', width: '125px'}}
                                 startIcon={
                                     <DeleteIcon>
                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
                                     </DeleteIcon>
                                 }
+                                onClick={removeAllOrders}
                                 >
                                 Remove All
                                 </Button>
@@ -301,7 +351,7 @@ const Options = () => {
         </DashboardBox>
 
 
-        <Box sx={{ display: 'flex', width: '100%', gap:"1rem"}}>
+        <Box sx={{ display: 'flex', width: '100%', gap:"1rem", padding:"0rem 0rem 1rem 0rem", color: palette.grey[300]}}>
 
             <Box sx={{ display: 'flex', width: '25%', height:"800px", gap:"1rem", flexDirection: 'column'}}>
                 <DashboardBox 
@@ -323,10 +373,10 @@ const Options = () => {
                             justifyContent: 'center'
                         }}
                         >
-                        <Typography variant="h2" component="div" sx={{ fontWeight: 'bold', color:'#FFFFFF'}}>
+                        <Typography variant="h2" component="div" sx={{ fontWeight: 'bold'}}>
                             Stock Data
                         </Typography>
-                        <Typography variant="body1" color="textSecondary" component="div">
+                        <Typography variant="body1" component="div">
                             12-27-2023
                         </Typography>
                         </Box>
@@ -345,6 +395,9 @@ const Options = () => {
                         label="Current Price"
                         type="number"
                         variant="filled"
+                        InputLabelProps={{
+                            style: { color: palette.grey[300]}, // Change label color and font size
+                          }}
                         fullWidth
                     />
                     <label for="interest-rate">Interest Rate (%)</label>                       
@@ -353,8 +406,10 @@ const Options = () => {
                         label="Interest"
                         type="number"
                         variant="filled"
+                        InputLabelProps={{
+                            style: { color: palette.grey[300]}, // Change label color and font size
+                          }}
                         fullWidth
-                        sx={{ marginTop: '1rem' }}
                     />
                     </CardContent>
 
