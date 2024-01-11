@@ -2,6 +2,8 @@ import DashboardBox from "@/components/DashboardBox";
 import { useGetSustainabilityQuery } from "@/state/yahooAPI";
 import BoxHeader from "../../components/BoxHeader"; // Replace with actual path to BoxHeader component
 import "../../index.css";
+import Lottie from 'lottie-react';
+import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
 
 type Props = {
   searchQuery: string;
@@ -11,7 +13,11 @@ const Ratings = ({ searchQuery }: Props) => {
   const { data, isLoading, error } = useGetSustainabilityQuery(searchQuery);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem">
+        <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
+      </DashboardBox>
+    );
   }
 
   if (error) {

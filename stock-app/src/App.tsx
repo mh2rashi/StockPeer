@@ -25,10 +25,8 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Box width="100%" height="100%" padding="1rem 2rem 4rem 2rem">
-            {/* Pass the searchQuery state and handler as props */}
             <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
             <Routes>
-              {/* Pass searchQuery as a prop to Dashboard */}
               <Route path="/dashboard" element={<Dashboard searchQuery={searchQuery} />} />
               <Route path="/options" element={<Options />} />
             </Routes>
