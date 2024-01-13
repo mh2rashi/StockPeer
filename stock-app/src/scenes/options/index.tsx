@@ -10,6 +10,7 @@ import SampleOptionStrategies from "./sampleOptionStrategies";
 import { useGetHistoricalQuery, useGetProfileQuery } from "@/state/yahooAPI";
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import SaveIcon from '@mui/icons-material/Save';
+import OptionPayoffGraph from "./optionPayoffGraph";
 
 
 
@@ -424,7 +425,9 @@ const Options = ({ searchQuery } : Props) => {
                     height: '788px', 
                     width: '75%', // Adjusted to 70% of the parent container
                     marginTop: '1rem',
-                    minWidth: '300px'
+                    minWidth: '300px',
+                    overflow: 'hidden', // Ensure content doesn't overflow
+
                 }}
             >
                 <CardHeader
@@ -457,8 +460,6 @@ const Options = ({ searchQuery } : Props) => {
                                 My Strategies
                             </Button>
 
-                            
-
                             <Button
                                 className="MuiButtonBase-root MuiButton-root MuiButton-outlined jss2"
                                 tabIndex={0}
@@ -487,6 +488,9 @@ const Options = ({ searchQuery } : Props) => {
                     }}
                     />
                     <hr style={{ fontSize: "1rem", fontWeight: "normal", width: "98%"}} />
+
+                    <OptionPayoffGraph options={positions}></OptionPayoffGraph>
+
             </DashboardBox>
 
 
