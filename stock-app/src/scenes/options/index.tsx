@@ -1,23 +1,40 @@
 import DashboardBox from "@/components/DashboardBox";
 import FlexBetween from "@/components/FlexBetween";
-import {Typography, useTheme, Box, TableHead, TableRow, TableCell, Table, FormControl, TableBody, InputLabel, TextField, Select, MenuItem, Button, CardHeader, CardContent  } from "@mui/material";
-import React, { useState } from 'react';
+import {Switch, Typography, useTheme, Box, TableHead, TableRow, TableCell, Table, FormControl, TableBody, InputLabel, TextField, Select, MenuItem, Button, CardHeader, CardContent, CardActions  } from "@mui/material";
+import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import "../../index.css";
-import OptionStrategiesText from "./optionStrategiesText"
-import OptionPosition from "./optionPosition";
+import OptionPosition from "./optionPosition"
+import SampleOptionStrategiesText from "./sampleOptionStrategiesText"
+import SampleOptionStrategies from "./sampleOptionStrategies";
+import { useGetHistoricalQuery, useGetProfileQuery } from "@/state/yahooAPI";
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import SaveIcon from '@mui/icons-material/Save';
 
 
 
-const Options = () => {
+type Props = {
+    searchQuery: string;
+}
 
+const Options = ({ searchQuery } : Props) => {
+
+    const { data: historicalData} = useGetHistoricalQuery(searchQuery);
+    
+    const { data: profileData} = useGetProfileQuery(searchQuery);
+
+    const stockName = profileData?.Name
+    const closingPrice = historicalData?.closingPrices[0];
+    const closingPriceDate = historicalData?.dates[0];
+    
     const { palette } = useTheme();
+    const [liveData, setLiveData] = useState(false);
+    const [sampleOptionText, setSampleOptionText] = useState('');
+    const [currentPrice, setCurrentPrice] = useState('100');
+    const [interestRate, setInterestRate] = useState('5');
+    const [positions, setPositions] = useState([{direction: 'Buy', amount: 1, kind: 'Call', strike: 100, expiryDate: '2024-12-31', volatility: 30, greeks: [0,0,0,0,0,], debitCredit: 0,},]);
+    const [hoveredButton, setHoveredButton] = useState(null);
 
-    const [positions, setPositions] = useState([
-
-        {direction: 'Buy', amount: 1, kind: 'Call', strike: 100, expiryDate: '2024-12-26', volatility: 30, debitCredit: -10.83,},
-      
-    ]);
 
     const addPosition = () => {
 
@@ -26,9 +43,10 @@ const Options = () => {
             amount: 1,
             kind: 'Call',
             strike: 100,
-            expiryDate: '2024-12-26',
+            expiryDate: '2024-12-31',
             volatility: 30,
-            debitCredit: -10.83,
+            greeks: [0,0,0,0,0,],
+            debitCredit: 0,
         };
 
         setPositions([...positions, initialPosition]);
@@ -39,11 +57,43 @@ const Options = () => {
         setPositions([]);
     }
 
-    const [sampleOption, setSampleOption] = useState('');
+    const removePosition = (index) => {
+        const updatedPositions = [...positions];
+        updatedPositions.splice(index, 1);
+        setPositions(updatedPositions);
+    };
+
 
     const handleChangeSampleOption = (event) => {
-        setSampleOption(event.target.value);
-    }
+
+        setSampleOptionText(event.target.value);
+        setPositions(SampleOptionStrategies[event.target.value]);
+        
+    };
+
+    const onPositionChange = (updatedPosition, index) => {
+
+        const updatedPositions = [...positions];
+        updatedPositions[index] = updatedPosition;
+        setPositions(updatedPositions);
+    };
+
+    const handleCurrentPriceChange = (event) => {
+        setCurrentPrice(event.target.value);
+    };
+    
+      const handleInterestRateChange = (event) => {
+        setInterestRate(event.target.value);
+    };
+
+    const liveDataToggle = () => {
+        setLiveData(!liveData);
+      };
+
+    useEffect(() => {
+
+        console.log(positions);
+        }, [positions, sampleOptionText]);
     
   return (
     <>
@@ -53,8 +103,8 @@ const Options = () => {
             
                 <Table aria-label="simple table" className="custom-scrollbar">
 
-                    <TableHead style={{ position: 'sticky',top: 1, zIndex: 2, backgroundColor: "solid" }}>
-                        <TableRow>
+                    <TableHead style={{ position: 'sticky', top: 0, zIndex: 2 }}>
+                        <TableRow style={{ position: 'sticky', top: 0, zIndex: 1 }}>
                             <TableCell>
                                 <Typography variant="h3">Direction</Typography>
                             </TableCell>
@@ -104,10 +154,10 @@ const Options = () => {
                         </TableRow>
                     </TableHead>
 
-                    <TableBody className="custom-scrollbar">
+                    <TableBody  style={{ position: 'relative', zIndex: 0 }}>
 
                         {positions.map((position, index) => (
-                            <OptionPosition key={index} />
+                        <OptionPosition key={index}  onRemove={() => removePosition(index)} onPositionChange={(updatedPosition) => onPositionChange(updatedPosition, index)} position={position} currentPrice={liveData? closingPrice: currentPrice} interestRate={interestRate}> </OptionPosition>
                         ))}
 
                         <TableRow>
@@ -115,8 +165,8 @@ const Options = () => {
                                 <Typography variant="h4">Total</Typography>
                             </TableCell>
 
-                            <TableCell align="center">
-                                <Typography variant="h4">3</Typography>
+                            <TableCell align="left">
+                                <Typography variant="h4">{positions.length}</Typography>
                             </TableCell>
 
                             {/* Empty cells */}
@@ -124,25 +174,44 @@ const Options = () => {
                             <TableCell />
                             <TableCell />
                             <TableCell />
-                            <TableCell>
 
-                                <Typography variant="h4">-36.40</Typography>
-                            </TableCell>
                             <TableCell>
-                                <Typography variant="h4">75.67</Typography>
+                                <Typography variant="h4">
+                                    {positions.reduce((accumulator, position) => accumulator + position.debitCredit, 0).toFixed(2)}
+                                </Typography>
                             </TableCell>
+
+
                             <TableCell>
-                                <Typography variant="h4">3.91</Typography>
+                                <Typography variant="h4">
+                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[0], 0).toFixed(2)}
+                                </Typography>
                             </TableCell>
+
                             <TableCell>
-                                <Typography variant="h4">-5.03</Typography>
+                                <Typography variant="h4">
+                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[1], 0).toFixed(2)}
+                                </Typography>
                             </TableCell>
+
                             <TableCell>
-                                <Typography variant="h4">116.66</Typography>
+                                <Typography variant="h4">
+                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[2], 0).toFixed(2)}
+                                </Typography>
                             </TableCell>
+
                             <TableCell>
-                                <Typography variant="h4">39.10</Typography>
+                                <Typography variant="h4">
+                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[3], 0).toFixed(2)}
+                                </Typography>
                             </TableCell>
+
+                            <TableCell>
+                                <Typography variant="h4">
+                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[4], 0).toFixed(2)}
+                                </Typography>
+                            </TableCell>
+
                             <TableCell>
                                 <Button
                                 variant="contained"
@@ -168,35 +237,36 @@ const Options = () => {
 
         </DashboardBox>
 
-
         {/* Stock Data, Sample Options & Graph */}
         <Box sx={{ display: 'flex', width: '100%', gap:"1rem", padding:"0rem 0rem 1rem 0rem", color: palette.grey[300]}}>
 
             {/* Stock Data  */}
             <Box sx={{ display: 'flex', width: '25%', height:"800px", gap:"1rem", flexDirection: 'column'}}>
-                <DashboardBox 
-                    sx={{
-                        display: 'flex', 
-                        flexDirection: 'column', 
-                        height: '50%', 
-                        marginTop: '1rem',
-                        minWidth: '300px'
-                    }}
-                >
+                
+                <DashboardBox sx={{ display: 'flex', flexDirection: 'column', height: '50%', marginTop: '1rem',minWidth: '300px'}}>
+                    
                     <CardHeader
                     title={
-                        <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start',
-                            justifyContent: 'center'
-                        }}
-                        >
-                        <Typography variant="h2" component="div" sx={{ fontWeight: 'bold'}}>
-                            Stock Data
-                        </Typography>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',}}>
+
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', marginLeft: "0.5rem"}}>
+                            <Typography variant="h2" sx={{ fontWeight: 'bold' }}>
+                                Stock Data
+                            </Typography>
+                            <Typography variant="h4" sx={{ alignItems: 'center', }}>
+                                {liveData && closingPriceDate}
+                            </Typography>
                         </Box>
+                        
+                        <Box sx={{ display: 'flex', alignItems: 'center'}} >
+                            <Typography variant="body1" sx={{ marginRight: '0.1rem' }}>
+                            Live Data
+                            </Typography>
+                            <Switch checked={liveData} onChange={liveDataToggle} />
+                        </Box>
+
+                    </Box>
                     }
                     sx={{
                         textAlign: 'center',
@@ -205,32 +275,69 @@ const Options = () => {
                         justifyContent: 'center'
                     }}
                     />
-                    <CardContent>
-                    <label for="current-price">Current Stock Price ($)</label>                       
-                    <TextField
-                        id="current-price"
-                        label="Current Price"
-                        type="number"
-                        variant="filled"
-                        InputLabelProps={{
-                            style: { color: palette.grey[300]}, // Change label color and font size
-                          }}
-                        fullWidth
-                    />
-                    <label for="interest-rate">Interest Rate (%)</label>                       
-                    <TextField
-                        id="interest-rate"
-                        label="Interest"
-                        type="number"
-                        variant="filled"
-                        InputLabelProps={{
-                            style: { color: palette.grey[300]}, // Change label color and font size
-                          }}
-                        fullWidth
-                    />
-                    </CardContent>
+                    <hr style={{ fontSize: "1rem", fontWeight: "normal", width: "95%"}} />
+                    {liveData?  
+                                <CardContent>
+                                    <label htmlFor="current-price">{searchQuery? stockName: ""} Stock Price ($)</label>
+                                    <TextField
+                                        id="current-price"
+                                        label = {searchQuery? "Current Price" : "Enter stock ticker."}
+                                        // type="number"
+                                        variant="filled"
+                                        InputLabelProps={{
+                                        style: { color: 'grey' } // Change label color and font size
+                                        }}
+                                        fullWidth
+                                        value={searchQuery && closingPrice}
+                                        onChange={handleCurrentPriceChange}
+                                    />
 
+                                    <label htmlFor="interest-rate">Interest Rate (%)</label>
+                                    <TextField
+                                        id="interest-rate"
+                                        label="Interest"
+                                        type="number"
+                                        variant="filled"
+                                        InputLabelProps={{
+                                        style: { color: 'grey' } // Change label color and font size
+                                        }}
+                                        fullWidth
+                                        value={interestRate}
+                                        onChange={handleInterestRateChange}
+                                    />
+                                </CardContent>
+                                 : 
+                                <CardContent>
+                                    <label htmlFor="current-price">Current Stock Price ($)</label>
+                                    <TextField
+                                        id="current-price"
+                                        label="Current Price"
+                                        type="number"
+                                        variant="filled"
+                                        InputLabelProps={{
+                                        style: { color: 'grey' } // Change label color and font size
+                                        }}
+                                        fullWidth
+                                        value={currentPrice}
+                                        onChange={handleCurrentPriceChange}
+                                    />
+
+                                    <label htmlFor="interest-rate">Interest Rate (%)</label>
+                                    <TextField
+                                        id="interest-rate"
+                                        label="Interest"
+                                        type="number"
+                                        variant="filled"
+                                        InputLabelProps={{
+                                        style: { color: 'grey' } // Change label color and font size
+                                        }}
+                                        fullWidth
+                                        value={interestRate}
+                                        onChange={handleInterestRateChange}
+                                    />
+                                </CardContent>}
                 </DashboardBox>
+                
                 
                 {/* Sample Options */}
                 <DashboardBox sx={{ display: 'flex', flexDirection: 'column', height: '50%', minWidth: '300px' }}>
@@ -252,7 +359,7 @@ const Options = () => {
                             }}>
                             <InputLabel htmlFor="demo-simple-select-outlined">Strategy</InputLabel>
                             <Select
-                                value={sampleOption}
+                                value={sampleOptionText}
                                 onChange={handleChangeSampleOption}
                                 className="custom-scrollbar"
                                 label="Strategy"
@@ -305,7 +412,7 @@ const Options = () => {
                     <hr style={{ fontSize: "1rem", fontWeight: "normal", width: "95%"}} />
 
                     {/* Option Strategy Text */}
-                    {sampleOption && OptionStrategiesText[sampleOption]}
+                    {sampleOptionText && SampleOptionStrategiesText[sampleOptionText]}
 
                 </DashboardBox>
             </Box>
@@ -320,7 +427,66 @@ const Options = () => {
                     minWidth: '300px'
                 }}
             >
-                <h1>Graph</h1>
+                <CardHeader
+                    title={
+                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',}}>
+
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', marginLeft: "0.5rem"}}>
+                            <Typography variant="h2" sx={{ fontWeight: 'bold' }}>
+                                Payoff Graph
+                            </Typography>
+                        
+                        </Box>
+                        
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            
+                        <Button
+                                className="MuiButtonBase-root MuiButton-root MuiButton-outlined jss2"
+                                tabIndex={0}
+                                type="button"
+                                variant="outlined"
+                                //onClick={handleClick}
+                                startIcon={<AutoGraphIcon fontSize="large" />}
+                                onMouseEnter={() => setHoveredButton('my-strategies')}
+                                onMouseLeave={() => setHoveredButton(null)}
+                                style={{
+                                    backgroundColor: hoveredButton === 'white',
+                                    color: hoveredButton === 'my-strategies' ? 'white' : 'currentColor'
+                                    }}
+                                >
+                                My Strategies
+                            </Button>
+
+                            
+
+                            <Button
+                                className="MuiButtonBase-root MuiButton-root MuiButton-outlined jss2"
+                                tabIndex={0}
+                                type="button"
+                                variant="outlined"
+                                //onClick={handleClick}
+                                startIcon={<SaveIcon fontSize="large" />}
+                                onMouseEnter={() => setHoveredButton('save-strategy')}
+                                onMouseLeave={() => setHoveredButton(null)}
+                                style={{
+                                    backgroundColor: hoveredButton === 'white',
+                                    color: hoveredButton === 'save-strategy' ? 'white' : 'currentColor'
+                                    }}
+                                >
+                                Save Strategy
+                            </Button>
+                        </Box>
+
+                    </Box>
+                    }
+                    sx={{
+                        textAlign: 'center',
+                        alignItems: 'center',
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                    />
+                    <hr style={{ fontSize: "1rem", fontWeight: "normal", width: "98%"}} />
             </DashboardBox>
 
 

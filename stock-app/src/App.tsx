@@ -28,7 +28,7 @@ function App() {
             <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
             <Routes>
               <Route path="/dashboard" element={<Dashboard searchQuery={searchQuery} />} />
-              <Route path="/options" element={<Options />} />
+              <Route path="/options" element={<Options searchQuery={searchQuery} />} />
             </Routes>
           </Box>
         </ThemeProvider>
