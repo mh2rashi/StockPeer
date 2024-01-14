@@ -1,12 +1,111 @@
+// import { Box, useMediaQuery } from "@mui/material";
+
+// import Profile from "./profile"
+// import BalanceSheet from "./balanceSheet";
+// import Ratings from "./ratings";
+// import Holders from "./holders";
+// import PriceGraph from "./priceGraph"
+// import IncomeStatement from "./incomeStatement";
+
+
+// const gridTemplateLargeScreens = `
+//     "a a a a e e e g g g g g"
+//     "a a a a e e e g g g g g"
+//     "a a a a e e e g g g g g"
+//     "a a a a e e e h h h h h"
+//     "a a a a e e e h h h h h"
+//     "a a a a e e e h h h h h"
+//     "b b b b f f f h h h h h"
+//     "b b b b f f f h h h h h"
+//     "b b b b f f f h h h h h"
+//     "c c c c f f f h h h h h"
+//     "c c c c f f f h h h h h"
+//     "c c c c f f f h h h h h"
+    
+// `
+
+// const gridTemplateSmallScreens = `
+//     "a"
+//     "a"
+//     "a"
+//     "a"
+//     "b"
+//     "b"
+//     "b"
+//     "b"
+//     "c"
+//     "c"
+//     "c"
+//     "c"
+//     "d"
+//     "d"
+//     "d"
+//     "e"
+//     "e"
+//     "f"
+//     "f"
+//     "f"
+//     "g"
+//     "g"
+//     "g"
+//     "h"
+//     "h"
+//     "h"
+//     "h"
+//     "i"
+//     "i"
+//     "i"
+//     "i"
+//     "j"
+//     "j"
+// `
+
+// type Props = {
+//     searchQuery: string;
+// }
+
+// const Dashboard = ({ searchQuery } : Props) => {
+//     const isAboveMediumScreens = useMediaQuery("(min-width: 1200px)");
+  
+//     return (
+//       <Box width="100%" height="100%" display="grid" gap="1rem" padding="0rem 0rem 1rem 0rem"
+//         sx={ isAboveMediumScreens? 
+//             {
+//               gridTemplateColumns: "repeat(12, minmax(185px, 1fr))",
+//               gridTemplateRows: "repeat(12, minmax(60px, 1fr))",
+//               gridTemplateAreas: gridTemplateLargeScreens,
+//             }
+//           : {
+//               gridAutoColumns: "1fr",
+//               gridAutoRows: "80px",
+//               gridTemplateAreas: gridTemplateSmallScreens,
+//             }
+//         }
+//       >
+       
+//         <Profile searchQuery={searchQuery}></Profile>
+//         <BalanceSheet searchQuery={searchQuery}></BalanceSheet>
+//         <Ratings searchQuery={searchQuery}></Ratings>
+//         <Holders searchQuery={searchQuery}></Holders>
+//         <PriceGraph searchQuery={searchQuery}></PriceGraph>
+//         <IncomeStatement searchQuery={searchQuery}></IncomeStatement>
+        
+//       </Box>
+//     );
+//   };
+  
+//   export default Dashboard;
+
+
 import { Box, useMediaQuery } from "@mui/material";
 
-import Profile from "./profile"
+import Profile from "./profile";
+import Holders from "./holders";
 import BalanceSheet from "./balanceSheet";
 import Ratings from "./ratings";
-import Holders from "./holders";
-import PriceGraph from "./priceGraph"
-import IncomeStatement from "./incomeStatement";
-
+ 
+// import PriceGraph from "./priceGraph";
+// import IncomeStatement from "./incomeStatement";
 
 const gridTemplateLargeScreens = `
     "a a a a e e e g g g g g"
@@ -21,8 +120,7 @@ const gridTemplateLargeScreens = `
     "c c c c f f f h h h h h"
     "c c c c f f f h h h h h"
     "c c c c f f f h h h h h"
-    
-`
+`;
 
 const gridTemplateSmallScreens = `
     "a"
@@ -58,46 +156,51 @@ const gridTemplateSmallScreens = `
     "i"
     "j"
     "j"
-`
+`;
 
 type Props = {
-    searchQuery: string;
-}
+  searchQuery: string;
+};
 
-const Dashboard = ({ searchQuery } : Props) => {
-    const isAboveMediumScreens = useMediaQuery("(min-width: 1200px)");
-  
-    return (
-      <Box
-        width="100%"
-        height="100%"
-        display="grid"
-        gap="1rem"
-        padding="0rem 0rem 1rem 0rem"
-        sx={
-          isAboveMediumScreens
-            ? {
-                gridTemplateColumns: "repeat(12, minmax(185px, 1fr))",
-                gridTemplateRows: "repeat(12, minmax(60px, 1fr))",
-                gridTemplateAreas: gridTemplateLargeScreens,
-              }
-            : {
-                gridAutoColumns: "1fr",
-                gridAutoRows: "80px",
-                gridTemplateAreas: gridTemplateSmallScreens,
-              }
-        }
-      >
-       
-        <Profile searchQuery={searchQuery}></Profile>
-        <BalanceSheet searchQuery={searchQuery}></BalanceSheet>
-        <Ratings searchQuery={searchQuery}></Ratings>
-        <Holders searchQuery={searchQuery}></Holders>
-        <PriceGraph searchQuery={searchQuery}></PriceGraph>
-        <IncomeStatement searchQuery={searchQuery}></IncomeStatement>
-        
+const Dashboard = ({ searchQuery }: Props) => {
+  // const isAboveMediumScreens = useMediaQuery("(min-width: 1200px)");
+
+  return (
+    <Box
+      display="flex"
+      width="100%"
+      height="100%"
+      flex="column"
+      // display="grid"
+      gap="1rem"
+      padding="0rem 0rem 1rem 0rem"
+      // sx={
+      //   isAboveMediumScreens
+      //     ? {
+      //         gridTemplateColumns: "repeat(12, calc(100% / 12))", // Each column takes 8.3333% of the container width
+      //         gridTemplateRows: "repeat(12, calc(100% / 12))", // Each row takes 8.3333% of the container height
+      //         gridTemplateAreas: gridTemplateLargeScreens,
+      //       }
+      //     : {
+      //         gridAutoColumns: "1fr",
+      //         gridAutoRows: "calc(100% / 8)", // Each row takes 1/8th of the container height
+      //         gridTemplateAreas: gridTemplateSmallScreens,
+      //       }
+      // }
+    >
+
+      <Box display="flex" width="33.3%" height="100%" flexDirection="column" gap="1rem">
+          <Profile searchQuery={searchQuery}></Profile>
+          <Holders searchQuery={searchQuery}></Holders>
       </Box>
-    );
-  };
-  
-  export default Dashboard;
+
+
+      {/* <BalanceSheet searchQuery={searchQuery}></BalanceSheet>
+      <Ratings searchQuery={searchQuery}></Ratings>
+      <PriceGraph searchQuery={searchQuery}></PriceGraph>
+      <IncomeStatement searchQuery={searchQuery}></IncomeStatement> */}
+    </Box>
+  );
+};
+
+export default Dashboard;

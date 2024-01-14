@@ -31,7 +31,7 @@ const OptionPayoffGraph: React.FC<{ options: Option[] }> = ({ options }) => {
       return stockPrices;
     };
 
-    const stockPrices = generateStockPrices(80, 120, 1);
+    const stockPrices = generateStockPrices(80, 160, 1);
 
     const payoffData = options.map(option => ({
       label: `${option.direction} ${option.amount} ${option.kind}`,

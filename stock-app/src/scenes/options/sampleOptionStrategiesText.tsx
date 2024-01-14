@@ -1,7 +1,7 @@
 const SampleOptionStrategiesText = {
 
     "Long Call" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Long Call</span> is simply the purchase of a Call Option.</p>
             <p>
@@ -18,7 +18,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Short Call" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Short Call</span> is a strategy that involves selling a Call Option and receiving a premium for it.</p>
             
@@ -33,7 +33,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Long Put" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Long Put</span> is simply the purchase of a Put Option.</p>
             
@@ -44,7 +44,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Short Put" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Short Put</span> is a strategy that involves selling a Put Option and receiving a premium.</p>
             
@@ -55,7 +55,7 @@ const SampleOptionStrategiesText = {
         </div>
     ),
     "Bull Call Spread" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Bull Call Spread</span> is an options strategy involving the purchase of a <span style={{ fontWeight: "bold"}}>Call</span> with a lower strike and the selling of a <span style={{ fontWeight: "bold"}}>Call</span> with a higher strike.</p>
             
@@ -67,7 +67,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Bear Put Spread" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Bear Put Spread</span> is an options strategy that involves the purchase of a <span style={{ fontWeight: "bold"}}>Put Option</span> with a higher strike and the selling of another <span style={{ fontWeight: "bold"}}>Put Option</span> with a lower strike.</p>
             
@@ -79,7 +79,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Long Straddle" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Long Straddle</span> is an options strategy involving the purchase of a <span style={{ fontWeight: "bold"}}>Call</span> and a <span style={{ fontWeight: "bold"}}>Put</span> option with the same strike.</p>
             
@@ -89,7 +89,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Short Straddle" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Short Straddle</span> is an options strategy involving the simultaneous selling of a <span style={{ fontWeight: "bold"}}>Call</span> and a <span style={{ fontWeight: "bold"}}>Put</span> with the same strike.</p>
             
@@ -101,7 +101,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Long Strangle" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Long Strangle</span> is an options strategy resembling the <span style={{ fontWeight: "bold"}}>Long Straddle</span>, the only difference being that the strike of the options are different: an investor is buying a <span style={{ fontWeight: "bold"}}>Call</span> with a higher strike and a <span style={{ fontWeight: "bold"}}>Put</span> with a lower strike.</p>
             
@@ -113,7 +113,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Short Strangle" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Short Strangle</span> is an options strategy similar to the <span style={{ fontWeight: "bold"}}>Short Straddle</span>, with one difference: the strikes of the sold options are different (you sell a <span style={{ fontWeight: "bold"}}>Call</span> with a higher strike and a <span style={{ fontWeight: "bold"}}>Put</span> with a lower strike)</p>
             
@@ -125,7 +125,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Long Butterfly" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Long Butterfly</span> is an options strategy that consists of options with 3 different strikes being sold and purchased at the same time.</p>
             
@@ -139,7 +139,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Short Butterfly" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Short Butterfly</span> is an options strategy that can be considered as an improved version of a <span style={{ fontWeight: "bold"}}>Long Straddle</span>, the improvement being that the maximum loss becomes lower – unfortunately, at the expense of limiting the profit of the strategy.</p>
             
@@ -149,7 +149,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Long Condor" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Long Condor</span> can be viewed as a variation of the <span style={{ fontWeight: "bold"}}>Long Butterfly</span> options strategy, the difference being that the strikes of the "wings" of the strategy are different.</p>
             
@@ -159,7 +159,7 @@ const SampleOptionStrategiesText = {
     ),
 
     "Short Condor" : (
-        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", padding: "1rem", marginTop: "0rem" }}>
+        <div className="custom-scrollbar" style={{ overflow: "auto", fontSize: "1rem", display: "inline", fontWeight: "normal", marginTop: "0rem" }}>
                         
             <p>The <span style={{ fontWeight: "bold"}}>Short Condor</span> can be viewed as a variation of the <span style={{ fontWeight: "bold"}}>Short Butterfly</span> options strategy, with the legs of the strategy using different strikes instead of a single one.</p>
             
