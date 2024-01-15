@@ -6,6 +6,7 @@ import DashboardBox from "../../components/DashboardBox"; // Replace with actual
 import { useGetHoldersQuery } from "@/state/yahooAPI";
 import "../../index.css"
 
+
 type Props = {
   searchQuery: string;
 }
@@ -13,7 +14,6 @@ type Props = {
 const Holders = ({ searchQuery } : Props) => {
 
   const {palette} = useTheme();
- 
   const { data, isLoading, error } = useGetHoldersQuery(searchQuery);
       
   while (isLoading) {
@@ -64,9 +64,9 @@ const Holders = ({ searchQuery } : Props) => {
 
   return (
     <>
-    
-      <DashboardBox gridArea="b" >
-          <BoxHeader title="Top Institutional Holders" sideText=""/>
+
+    <DashboardBox gridArea="b" width="100%" height="100%">
+    <BoxHeader title="Top Mutual Fund Holders" sideText="" /> 
           <Box
             mt="0.5rem"
             p="0 0.5rem"
@@ -85,6 +85,7 @@ const Holders = ({ searchQuery } : Props) => {
               "& .MuiDataGrid-columnSeparator": {
                 visibility: "hidden",
               },
+              
             }}
           >
               <DataGrid
@@ -96,7 +97,7 @@ const Holders = ({ searchQuery } : Props) => {
           </Box>
         </DashboardBox>
         
-        <DashboardBox gridArea="c" >
+        <DashboardBox gridArea="c" width="100%" height="100%">
           <BoxHeader title="Top Mutual Fund Holders" sideText="" />
           <Box
             mt="0.5rem"

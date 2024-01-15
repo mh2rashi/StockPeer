@@ -14,9 +14,6 @@ import {
 import { useTheme } from '@mui/material/styles';
 import {scaleLinear} from 'd3-scale';
 import BoxHeader from "@/components/BoxHeader";
-import Lottie from 'lottie-react';
-import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
-
 
 
 const CustomYAxisTick = ({ x, y, payload }) => {
@@ -55,12 +52,8 @@ const PriceGraph = ({ searchQuery } : Props) => {
   
   const { data, isLoading, error } = useGetHistoricalQuery(searchQuery);
   // If data is loading, show a loading indicator
-  if (isLoading) {
-    return (
-      <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem">
-        <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
-      </DashboardBox>
-    );
+  while (isLoading) {
+    return <div>Loading...</div>;
   }
 
   // If there is an error, show an error message

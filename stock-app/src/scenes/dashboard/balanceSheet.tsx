@@ -1,8 +1,7 @@
 import DashboardBox from "@/components/DashboardBox";
 import { useGetBalanceSheetQuery } from "@/state/yahooAPI";
-import { PieChart, Pie, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Tooltip, ResponsiveContainer } from 'recharts';
 import BoxHeader from "../../components/BoxHeader" // Replace with actual path to BoxHeader component
-
 import "../../index.css";
 
 type Props = {
@@ -30,6 +29,7 @@ const BalanceSheet = ({ searchQuery }: Props) => {
         { name: data["currentLst6"][0], value: parseInt(data["currentLst6"][1].replace(/,/g, ''),10) },
         { name: data["currentLst8"][0], value: parseInt(data["currentLst8"][1].replace(/,/g, ''),10) },
     ];
+    console.log(innerData);
 
     const outerData = [
         { name: data["currentLst1"][0], value: parseInt(data["currentLst1"][1].replace(/,/g, ''),10) },
@@ -38,7 +38,7 @@ const BalanceSheet = ({ searchQuery }: Props) => {
         { name: data["currentLst5"][0], value: parseInt(data["currentLst5"][1].replace(/,/g, ''),10) },
         { name: data["currentLst7"][0], value: parseInt(data["currentLst7"][1].replace(/,/g, ''),10) },
     ];
-
+    console.log(outerData);
    return (
      
     <>
@@ -50,11 +50,20 @@ const BalanceSheet = ({ searchQuery }: Props) => {
           />
           <div style={{ width: "100%", height: "calc(100% - 50px)"}}>
             <ResponsiveContainer width="100%" height="100%">
-                <PieChart width={400} height={400}>
-                <Pie data={innerData} dataKey="value" cx="50%" cy="50%" outerRadius={120} fill="#8884d8" />
-                <Pie data={outerData} dataKey="value" cx="50%" cy="50%" innerRadius={130} outerRadius={150} fill="#82ca9d" label={'hello'} />
+                <PieChart width={400} height={400} data={innerData} active={true}>
+                <Pie
+                  dataKey="value"
+                  data={innerData}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  label={({ name, value }) => `${name}: ${(value / 1000).toLocaleString()}`}
+                  nameKey="name"
+                />
+                <Pie dataKey="value" data={outerData} cx="50%" cy="50%" innerRadius={130} outerRadius={150} fill="#82ca9d" label={({ name, value }) => `${name}: ${(value / 1000).toLocaleString()}`} nameKey="name" />
                 </PieChart>
-                <Tooltip />
+                <Tooltip formatter={(value, name) => [Number(value).toLocaleString(), name]} />
             </ResponsiveContainer>   
           </div>
         </DashboardBox>

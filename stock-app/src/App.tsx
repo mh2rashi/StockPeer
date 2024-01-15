@@ -24,7 +24,7 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Box width="100%" height="100%" padding="1rem 2rem 4rem 2rem">
+          <Box width="100%" height="100%" padding="1rem 2rem 4rem 2rem" flex="1">
             <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
             <Routes>
               <Route path="/dashboard" element={<Dashboard searchQuery={searchQuery} />} />

@@ -19,7 +19,7 @@ const Navbar = ({ searchQuery, onSearchChange }) => {
   };
 
   return (
-    <Box  mb="0.25rem" p="0.5rem 0rem" gap="2rem" display="flex" flex="1" color={theme.palette.grey[300]} width="100%">
+    <Box  mb="0.25rem" p="0.5rem 0rem" gap="2rem" display="flex" flex="1" color={theme.palette.grey[300]} width="100vw">
         
         {/* LEFT SIDE */}
         <Box gap="0.75rem"  display="flex">

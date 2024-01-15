@@ -12,6 +12,7 @@ import {
   Rectangle,
 } from 'recharts';
 import BoxHeader from "@/components/BoxHeader";
+import "../../index.css";
      
 
 
@@ -50,15 +51,12 @@ const IncomeStatement = ({ searchQuery } : Props) => {
         }
 
         dataObj.push(dataPoint)
-    }
-
-    console.log(dataObj);
-    
-
+    }    
+    dataObj.reverse();
   return (
     <>
 
-    <DashboardBox  gridArea="f">
+    <DashboardBox  gridArea="f" className="dashboard-box">
       <BoxHeader
               title="Financials: Revenue & Earnings"
               subtitle="Visual representation of revenue and earnings over time"
@@ -73,14 +71,18 @@ const IncomeStatement = ({ searchQuery } : Props) => {
                 margin={{
                   top: 20,
                   right: 20,
-                  left: -10,
+                  left: 15,
                   bottom: 55,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
+                <XAxis dataKey="name" allowDataOverflow={true} style={{fontSize:"10px"}}/>
+                <YAxis tickFormatter={(value) => value.toLocaleString()} style={{fontSize: "10px"}} />
+                <Tooltip
+                  formatter={(value, name) =>{
+                    return [value.toLocaleString(), name];
+                  }}
+                />
                 <Legend height={20} wrapperStyle={{margin: "0 0 10px 0"}} />
                 <Bar dataKey="pv" name="Revenue" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
                 <Bar dataKey="uv" name="Earnings" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />

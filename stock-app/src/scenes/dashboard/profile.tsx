@@ -3,10 +3,10 @@ import DashboardBox from "@/components/DashboardBox";
 import { useGetProfileQuery } from "@/state/yahooAPI";
 import { connectToWebSocket } from "@/state/priceStreamAPI";
 import { Typography } from "@mui/material";
+import "../../index.css";
 import Lottie from 'lottie-react';
 import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
 
-import "../../index.css";
 
 type WebSocketData = {
   p: number;
