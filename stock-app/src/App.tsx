@@ -8,6 +8,7 @@ import Navbar from "@/scenes/navbar";
 import Dashboard from "@/scenes/dashboard";
 import Options from "@/scenes/options";
 
+
 function App() {
   
   const theme = useMemo(() => createTheme(themeSettings), []);

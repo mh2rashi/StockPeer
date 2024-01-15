@@ -5,6 +5,10 @@ import BoxHeader from "../../components/BoxHeader" // Replace with actual path t
 import DashboardBox from "../../components/DashboardBox"; // Replace with actual path to DashboardBox component
 import { useGetHoldersQuery } from "@/state/yahooAPI";
 import "../../index.css"
+import {useState, useEffect} from 'react';
+import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
+import Lottie from 'lottie-react';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 
 type Props = {
@@ -15,17 +19,53 @@ const Holders = ({ searchQuery } : Props) => {
 
   const {palette} = useTheme();
   const { data, isLoading, error } = useGetHoldersQuery(searchQuery);
-      
-  while (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const [key1, setKey1] = useState(0);
+  const [key2, setKey2] = useState(1);
 
-  // If there is an error, show an error message
-  if (error) {
-    return <div>Error: {error.toString()}</div>;
-  }
+    useEffect(() => {
+      setKey1((prevKey) => prevKey + 1);
+      setKey2((prevKey) => prevKey + 1);
+    }, [searchQuery]);
 
-  // If data is not available, show nothing or a placeholder
+    // ...
+
+    if (isLoading) {
+      return (
+        <>
+          <DashboardBox gridArea="b" padding="1rem 1rem 1.25rem 1rem" key={key1}>
+            <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
+          </DashboardBox>
+
+          <DashboardBox gridArea="c" padding="1rem 1rem 1.25rem 1rem" key={key2}>
+            <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
+          </DashboardBox>
+        </>
+      );
+    }
+
+    // ...
+
+    if (error || !searchQuery || !data) {
+      return (
+        <>
+          <DashboardBox gridArea="b" padding="1rem 1rem 1.25rem 1rem" key={key1} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
+            <SearchRoundedIcon sx={{ fontSize: "144px" }}></SearchRoundedIcon>
+            <span>Please enter or re-enter your stock ticker</span>
+          </DashboardBox>
+
+          <DashboardBox gridArea="c" padding="1rem 1rem 1.25rem 1rem" key={key2} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
+            <SearchRoundedIcon sx={{ fontSize: "144px" }}></SearchRoundedIcon>
+            <span>Please enter or re-enter your stock ticker</span>
+          </DashboardBox>
+        </>
+      );
+    }
+
+// ...
+
+
+
+  
   if (!data) {
     return null;
   }
@@ -65,7 +105,7 @@ const Holders = ({ searchQuery } : Props) => {
   return (
     <>
 
-    <DashboardBox gridArea="b" width="100%" height="100%">
+    <DashboardBox gridArea="b" width="100%" height="100%" key={key1}>
     <BoxHeader title="Top Mutual Fund Holders" sideText="" /> 
           <Box
             mt="0.5rem"
@@ -97,7 +137,7 @@ const Holders = ({ searchQuery } : Props) => {
           </Box>
         </DashboardBox>
         
-        <DashboardBox gridArea="c" width="100%" height="100%">
+        <DashboardBox gridArea="c" width="100%" height="100%" key={key2}>
           <BoxHeader title="Top Mutual Fund Holders" sideText="" />
           <Box
             mt="0.5rem"

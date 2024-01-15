@@ -13,6 +13,11 @@ import {
 } from 'recharts';
 import BoxHeader from "@/components/BoxHeader";
 import "../../index.css";
+import {useState, useEffect} from 'react';
+import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
+import Lottie from 'lottie-react';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+
      
 
 
@@ -23,21 +28,33 @@ type Props = {
 const IncomeStatement = ({ searchQuery } : Props) => {
   
   const { data, isLoading, error } = useGetIncomeStatementQuery(searchQuery);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, [searchQuery]);
   
-  while (isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <DashboardBox gridArea="f" padding="1rem 1rem 1.25rem 1rem" key={key}>
+        <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
+      </DashboardBox>
+    );
   }
 
-  // If there is an error, show an error message
-  if (error) {
-    return <div>Error: {error.toString()}</div>;
-  }
-  
+  if (error || !searchQuery || !data) {
+    return (
+      <DashboardBox gridArea="f" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
+            <SearchRoundedIcon sx={{ fontSize: "244px" }}></SearchRoundedIcon>
+            <span>Please enter or re-enter your stock ticker</span>
+      </DashboardBox>
 
- // If data is not available, show nothing or a placeholder
- if (!data) {
-   return null;
- }
+    );
+  }
+
+  if (!data) {
+    return null;
+  }
 
     const dataObj = [];
 
@@ -56,11 +73,11 @@ const IncomeStatement = ({ searchQuery } : Props) => {
   return (
     <>
 
-    <DashboardBox  gridArea="f" className="dashboard-box">
+    <DashboardBox  gridArea="f" className="dashboard-box" key={key}>
       <BoxHeader
               title="Financials: Revenue & Earnings"
-              subtitle="Visual representation of revenue and earnings over time"
-              sideText=""
+              subtitle="All figures are exact"
+              sideText="Trailing Twelve Months (ttm)"
             />
           <div style={{width: "100%", height: "100%"}}>
             <ResponsiveContainer width="100%" height="100%">
@@ -96,3 +113,5 @@ const IncomeStatement = ({ searchQuery } : Props) => {
 }
 
 export default IncomeStatement;
+
+

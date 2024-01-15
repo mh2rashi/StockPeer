@@ -65,13 +65,12 @@ const Dashboard = ({ searchQuery } : Props) => {
   
     return (
       <>
-      
+
       <Box
         width="100%"
         height="100%"
         display="grid"
         gap="1rem"
-        padding="0rem 0rem 1rem 0rem"
         sx={
           isAboveMediumScreens
             ? {
@@ -100,3 +99,4 @@ const Dashboard = ({ searchQuery } : Props) => {
   };
   
 export default Dashboard;
+

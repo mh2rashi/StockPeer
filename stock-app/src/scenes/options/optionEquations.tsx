@@ -11,9 +11,6 @@ export const calculateValues = (direction, kind, amount, strike, expiryDate, vol
 
     const volatilityFraction = volatility / 100;
     const interestRateFraction = interestRate / 100;
-
-    console.log("stockPrice", stockPrice);
-    console.log("interestRate", interestRate);
     
     // Calculate Black-Scholes Option Pricing Model components
     const d1 = (Math.log(stockPrice / strike) + (interestRateFraction + 0.5 * Math.pow(volatilityFraction, 2)) * expiry) / (volatilityFraction * Math.sqrt(expiry));

@@ -14,6 +14,11 @@ import {
 import { useTheme } from '@mui/material/styles';
 import {scaleLinear} from 'd3-scale';
 import BoxHeader from "@/components/BoxHeader";
+import {useState, useEffect} from 'react';
+import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
+import Lottie from 'lottie-react';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+
 
 
 const CustomYAxisTick = ({ x, y, payload }) => {
@@ -51,34 +56,53 @@ const PriceGraph = ({ searchQuery } : Props) => {
   const {palette} = useTheme();
   
   const { data, isLoading, error } = useGetHistoricalQuery(searchQuery);
-  // If data is loading, show a loading indicator
-  while (isLoading) {
-    return <div>Loading...</div>;
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, [searchQuery]);
+
+  if (isLoading) {
+    return (
+      <DashboardBox gridArea="h" padding="1rem 1rem 1.25rem 1rem" key={key}>
+        <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
+      </DashboardBox>
+    );
   }
 
-  // If there is an error, show an error message
-  if (error) {
-    return <div>Error: {error.toString()}</div>;
+  if (error || !searchQuery || !data) {
+    return (
+      <DashboardBox gridArea="h" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
+            <SearchRoundedIcon sx={{ fontSize: "344px" }}></SearchRoundedIcon>
+            <span>Please enter or re-enter your stock ticker</span>
+      </DashboardBox>
+    );
+  }
+
+  if (!data) {
+    return null;
   }
   
   const parsedData = data?.dates.reduce((result, dateStr, index) => {
-    const date = new Date(dateStr);
-    if(!isNaN(date)){
-      const month = date.toLocaleString('default', {month: 'short'});
+  const date = new Date(dateStr);
+  if (!isNaN(date)) {
+    const month = date.toLocaleString('default', { month: 'short' });
+    const day = date.getDate(); // Get the day from the date
 
-      const closingPrice = parseFloat(data.closingPrices[index]);
-      const highPrice = parseFloat(data.highPrices[index]);
-      const lowPrice = parseFloat(data.lowPrices[index]);
+    const closingPrice = parseFloat(data.closingPrices[index]);
+    const highPrice = parseFloat(data.highPrices[index]);
+    const lowPrice = parseFloat(data.lowPrices[index]);
 
-      result.push({
-        month: month,
-        closingPrice: closingPrice,
-        highPrice: highPrice,
-        lowPrice: lowPrice,
-      });
-    }
-    return result;
-  }, []).reverse();
+    result.push({
+      month: `${month} ${day}`, // Combine month and day
+      closingPrice: closingPrice,
+      highPrice: highPrice,
+      lowPrice: lowPrice,
+    });
+  }
+  return result;
+}, []).reverse();
+
   
   const allValues = [
     ...parsedData.map(p => p.closingPrice),
@@ -92,10 +116,7 @@ const PriceGraph = ({ searchQuery } : Props) => {
   const scale = scaleLinear().domain([minVal, maxVal]).nice();
   const [newMinVal, newMaxVal] = scale.domain();
 
- // If data is not available, show nothing or a placeholder
- if (!data) {
-   return null;
- }
+
 
  
   return (
@@ -103,7 +124,7 @@ const PriceGraph = ({ searchQuery } : Props) => {
     <DashboardBox  gridArea="h">
       <BoxHeader
         title="Market Trends: Analyzing Price Movements"
-        subtitle="Visual representation of high, closing, and low prices over time"
+        subtitle="High, Closing, and Low prices over time"
         sideText=""
       />
       <div style={{ width: '100%', height: '100%' }}>
@@ -113,7 +134,7 @@ const PriceGraph = ({ searchQuery } : Props) => {
             margin={{ top: 20, right: 0, left: -10, bottom: 55 }}
           >
             <CartesianGrid vertical={false} stroke={palette.grey[800]}/>
-            <XAxis dataKey="month" tickLine={false} style={{fontSize: "10px"}} domain={[newMinVal, newMaxVal]} />
+            <XAxis dataKey="month" tickLine={false} style={{fontSize: "10px"}} domain={[newMinVal, newMaxVal]} interval={Math.ceil(parsedData.length / 10)}/>
             <YAxis yAxisId="left" tickLine={false} axisLine={false} style={{fontSize: "10px"}} domain={[newMinVal - 10, newMaxVal + 10]} tick={CustomYAxisTick}/>
             <YAxis yAxisId="right" orientation="right" tickLine={false} axisLine={false} style={{fontSize: "10px"}}  domain={[newMinVal - 10, newMaxVal + 10]} />
             <Tooltip />

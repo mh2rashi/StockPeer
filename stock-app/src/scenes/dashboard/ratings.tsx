@@ -4,6 +4,11 @@ import BoxHeader from "../../components/BoxHeader"; // Replace with actual path 
 import "../../index.css";
 import RectangleCustom from "../dashboard/rectangle";
 import { useMediaQuery, useTheme  } from "@mui/material";
+import Lottie from 'lottie-react';
+import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
+import {useState, useEffect} from 'react'
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+
 
 
 
@@ -15,26 +20,38 @@ const Ratings = ({ searchQuery }: Props) => {
   const palette = useTheme();  // Fix: Change `theme` to `palette`
   const isSmallScreen = useMediaQuery(palette.breakpoints.down('lg'));
   const { data, isLoading, error } = useGetSustainabilityQuery(searchQuery);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, [searchQuery]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <DashboardBox gridArea="g" padding="1rem 1rem 1.25rem 1rem" key={key}>
+        <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
+      </DashboardBox>
+    );
   }
 
-  if (error) {
-    return <div>Error: {error.toString()}</div>;
+  if (error || !searchQuery || !data) {
+    return (
+      <DashboardBox gridArea="g" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
+            <SearchRoundedIcon sx={{ fontSize: "144px" }}></SearchRoundedIcon>
+            <span>Please enter or re-enter your stock ticker</span>
+      </DashboardBox>
+    );
   }
 
-  if (!data) {
-    return null;
-  }
+  
 
   return (
     <>
 
-      <DashboardBox gridArea="g" width="100%" height="100%">
+      <DashboardBox gridArea="g" width="100%" height="100%" key={key}>
         <BoxHeader
-          title="Environment, Social and Governance (ESG) Risk Ratings"
-          subtitle="Risk ratings provided by Sustainalytics"
+          title="Environment, Social and Governance (ESG): Risk Ratings"
+          subtitle="Provided by Sustainalytics"
           sideText=""
         />
 
