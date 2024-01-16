@@ -20,6 +20,7 @@ type Props = {
 
 const Options = ({ searchQuery } : Props) => {
 
+    
     const { data: historicalData} = useGetHistoricalQuery(searchQuery);
     
     const { data: profileData} = useGetProfileQuery(searchQuery);
@@ -110,13 +111,13 @@ return (
     <Box paddingBottom="1rem">
 
         {/* Options Box */}
-        <DashboardBox height="325px" p="1.25rem 1.25rem 0rem 1.25rem" overflow="auto">
+        <DashboardBox height="325px" p="0rem 1.25rem 0rem 1.25rem" overflow="auto" className="custom-scrollbar">
             
-            <FlexBetween mb="0.25rem" p="0.5rem 0rem" color={palette.grey[300]}>
+            <FlexBetween color={palette.grey[300]}>
             
-                <Table aria-label="simple table" className="custom-scrollbar">
+                <Table aria-label="simple table">
 
-                    <TableHead style={{ position: 'sticky', top: 0, zIndex: 2 }}>
+                    <TableHead style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: palette.background.light, borderRadius:"0rem", boxShadow: 'none' }}>
                         <TableRow style={{ position: 'sticky', top: 0, zIndex: 1 }}>
                             <TableCell>
                                 <Typography variant="h3">Direction</Typography>
