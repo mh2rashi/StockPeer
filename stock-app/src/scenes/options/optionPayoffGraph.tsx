@@ -12,7 +12,12 @@ interface Option {
   debitCredit: number;
 }
 
-const OptionPayoffGraph: React.FC<{ options: Option[] }> = ({ options }) => {
+interface OptionPayoffGraphProps {
+  options: Option[];
+  currentPrice: number; // Add currentPrice prop
+}
+
+const OptionPayoffGraph: React.FC<OptionPayoffGraphProps> = ({ options, currentPrice }) => {
   useEffect(() => {
     const calculateOptionPayoff = (option: Option, stockPrice: number) => {
       const payoff =
@@ -31,12 +36,36 @@ const OptionPayoffGraph: React.FC<{ options: Option[] }> = ({ options }) => {
       return stockPrices;
     };
 
-    const stockPrices = generateStockPrices(80, 160, 1);
+    const generateMinMaxPrices = () => {
+      let minPrice = currentPrice;
+      let maxPrice = currentPrice;
+
+      options.forEach(option => {
+        minPrice = Math.min(minPrice, option.strike);
+        maxPrice = Math.max(maxPrice, option.strike);
+      });
+
+      return { minPrice, maxPrice };
+    };
+
+    const { minPrice, maxPrice } = generateMinMaxPrices();
+    const stockPrices = generateStockPrices(minPrice - 20, maxPrice + 20, 1);
+
+    const cumulativePayoffData = stockPrices.map(price =>
+      options.reduce((cumulativePayoff, option) => cumulativePayoff + calculateOptionPayoff(option, price), 0)
+    );
 
     const payoffData = options.map(option => ({
       label: `${option.direction} ${option.amount} ${option.kind}`,
       data: stockPrices.map(price => calculateOptionPayoff(option, price)),
     }));
+
+    payoffData.push({
+      label: 'Cumulative Payoff',
+      data: cumulativePayoffData,
+      borderColor: 'white',
+      fill: false,
+    });
 
     const ctx = document.getElementById('payoffGraph') as HTMLCanvasElement;
     const myChart = new Chart(ctx, {
@@ -46,8 +75,8 @@ const OptionPayoffGraph: React.FC<{ options: Option[] }> = ({ options }) => {
         datasets: payoffData.map(option => ({
           label: option.label,
           data: option.data,
-          borderColor: getRandomColor(),
-          fill: false,
+          borderColor: option.borderColor || getRandomColor(),
+          fill: option.fill || false,
         })),
       },
       options: {
@@ -60,11 +89,11 @@ const OptionPayoffGraph: React.FC<{ options: Option[] }> = ({ options }) => {
               text: 'Stock Price ($)',
             },
             ticks: {
-                color: 'white', // Set x-axis color to white
-              },
-              grid: {
-                color: 'grey', // Set x-axis grid color to white
-              },
+              color: 'white', // Set x-axis color to white
+            },
+            grid: {
+              color: 'grey', // Set x-axis grid color to white
+            },
           },
           y: {
             title: {
@@ -72,11 +101,11 @@ const OptionPayoffGraph: React.FC<{ options: Option[] }> = ({ options }) => {
               text: 'Payoff ($)',
             },
             ticks: {
-                color: 'white', // Set x-axis color to white
-              },
-              grid: {
-                color: 'grey', // Set x-axis grid color to white
-              },
+              color: 'white', // Set x-axis color to white
+            },
+            grid: {
+              color: 'grey', // Set x-axis grid color to white
+            },
           },
         },
       },
@@ -85,7 +114,7 @@ const OptionPayoffGraph: React.FC<{ options: Option[] }> = ({ options }) => {
     return () => {
       myChart.destroy();
     };
-  }, [options]);
+  }, [options, currentPrice]);
 
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
@@ -100,3 +129,4 @@ const OptionPayoffGraph: React.FC<{ options: Option[] }> = ({ options }) => {
 };
 
 export default OptionPayoffGraph;
+

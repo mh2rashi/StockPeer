@@ -519,7 +519,7 @@ return (
                     />
                     <hr style={{ fontSize: "1rem", fontWeight: "normal", width: "98%"}} />
 
-                    <OptionPayoffGraph options={positions}></OptionPayoffGraph>
+                    <OptionPayoffGraph options={positions} currentPrice={liveData ? closingPrice : currentPrice} />
 
         </DashboardBox>
 
