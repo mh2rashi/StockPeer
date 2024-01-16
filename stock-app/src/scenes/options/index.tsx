@@ -56,28 +56,35 @@ const Options = ({ searchQuery } : Props) => {
 
     const removeAllPositions = () => {
         
-        setPositions([]);
-    }
+        setPositions(prevPositions => []);
+    };
 
     const removePosition = (index) => {
-        const updatedPositions = [...positions];
-        updatedPositions.splice(index, 1);
-        setPositions(updatedPositions);
+        setPositions(prevPositions => {
+            const updatedPositions = [...prevPositions];
+            updatedPositions.splice(index, 1);
+            return updatedPositions;
+        });
     };
 
 
     const handleChangeSampleOption = (event) => {
-        setPositions([]);
+        setPositions(prevPositions => {
+            const newPositions = SampleOptionStrategies[event.target.value] || [];
+            return newPositions;
+        });
         setSampleOptionText(event.target.value);
-        setPositions(SampleOptionStrategies[event.target.value]);
-        
     };
+    
 
     const onPositionChange = (updatedPosition, index) => {
-        const updatedPositions = [...positions];
-        updatedPositions[index] = updatedPosition;
-        setPositions(updatedPositions);
+        setPositions(prevPositions => {
+            const updatedPositions = [...prevPositions];
+            updatedPositions[index] = updatedPosition;
+            return updatedPositions;
+        });
     };
+    
 
     const handleCurrentPriceChange = (event) => {
         setCurrentPrice(event.target.value);
@@ -183,38 +190,63 @@ return (
 
                             <TableCell>
                                 <Typography variant="h4">
-                                    {positions.reduce((accumulator, position) => accumulator + position.debitCredit, 0).toFixed(2)}
+                                {positions.reduce((accumulator, position) => {
+                                    // Use the position id to ensure the correct position is considered
+                                    const positionToUpdate = positions.find(pos => pos.id === position.id);
+                                    return accumulator + (positionToUpdate ? positionToUpdate.debitCredit : 0);
+                                }, 0).toFixed(2)}
                                 </Typography>
                             </TableCell>
 
 
                             <TableCell>
                                 <Typography variant="h4">
-                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[0], 0).toFixed(2)}
+                                {positions.reduce((accumulator, position) => {
+                                    // Use the position id to ensure the correct position is considered
+                                    const positionToUpdate = positions.find(pos => pos.id === position.id);
+                                    return accumulator + (positionToUpdate ? positionToUpdate.greeks[0] : 0);
+                                }, 0).toFixed(2)}
+
                                 </Typography>
                             </TableCell>
 
                             <TableCell>
                                 <Typography variant="h4">
-                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[1], 0).toFixed(2)}
+                                {positions.reduce((accumulator, position) => {
+                                    // Use the position id to ensure the correct position is considered
+                                    const positionToUpdate = positions.find(pos => pos.id === position.id);
+                                    return accumulator + (positionToUpdate ? positionToUpdate.greeks[1] : 0);
+                                }, 0).toFixed(2)}
                                 </Typography>
                             </TableCell>
 
                             <TableCell>
                                 <Typography variant="h4">
-                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[2], 0).toFixed(2)}
+                                    {positions.reduce((accumulator, position) => {
+                                        // Use the position id to ensure the correct position is considered
+                                        const positionToUpdate = positions.find(pos => pos.id === position.id);
+                                        return accumulator + (positionToUpdate ? positionToUpdate.greeks[2] : 0);
+                                    }, 0).toFixed(2)}
+                                </Typography>
+                            </TableCell>
+                                
+                            <TableCell>
+                                <Typography variant="h4">
+                                {positions.reduce((accumulator, position) => {
+                                // Use the position id to ensure the correct position is considered
+                                const positionToUpdate = positions.find(pos => pos.id === position.id);
+                                return accumulator + (positionToUpdate ? positionToUpdate.greeks[3] : 0);
+                                }, 0).toFixed(2)}
                                 </Typography>
                             </TableCell>
 
                             <TableCell>
                                 <Typography variant="h4">
-                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[3], 0).toFixed(2)}
-                                </Typography>
-                            </TableCell>
-
-                            <TableCell>
-                                <Typography variant="h4">
-                                    {positions.reduce((accumulator, position) => accumulator + position.greeks[4], 0).toFixed(2)}
+                                {positions.reduce((accumulator, position) => {
+                                // Use the position id to ensure the correct position is considered
+                                const positionToUpdate = positions.find(pos => pos.id === position.id);
+                                return accumulator + (positionToUpdate ? positionToUpdate.greeks[4] : 0);
+                                }, 0).toFixed(2)}
                                 </Typography>
                             </TableCell>
 
