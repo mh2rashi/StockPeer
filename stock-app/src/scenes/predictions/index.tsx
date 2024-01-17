@@ -19,6 +19,8 @@ import { FormatTextdirectionRToL } from "@mui/icons-material";
 import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import Footer from "@/scenes/footer"; // Import the Footer component
+
 
 // Utility function to add months to a date object
 
@@ -43,19 +45,24 @@ const Predictions = ({ searchQuery } : Props) => {
 
   if (isLoading) {
     return (
+      <>
       <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
             <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
       </DashboardBox>
+      <Footer/>
+      </>
     );
   }
 
   if (error || !searchQuery || !data) {
     return (
-
+      <>
     <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden" display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
             <SearchRoundedIcon sx={{ fontSize: "444px" }}></SearchRoundedIcon>
             <span>Please enter or re-enter your stock ticker</span>
       </DashboardBox>
+      <Footer/>
+      </>
     );
   }
 
@@ -95,6 +102,8 @@ const Predictions = ({ searchQuery } : Props) => {
 
  
   return (
+    <>
+
     <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
       <FlexBetween m="1rem 2.5rem" gap="1rem">
         <Box>
@@ -163,6 +172,12 @@ const Predictions = ({ searchQuery } : Props) => {
         </LineChart>
       </ResponsiveContainer>
     </DashboardBox>
+
+    <Footer/>
+    
+  </>
+        
+
   );
  };
 

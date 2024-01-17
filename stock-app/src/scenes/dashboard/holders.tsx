@@ -111,7 +111,7 @@ const Holders = ({ searchQuery } : Props) => {
     <>
 
     <DashboardBox className="custom-scrollbar" gridArea="b" width="100%" height="100%" key={key1}>
-    <BoxHeader title="Top Mutual Fund Holders" sideText= {getCurrentDateFormatted()} /> 
+    <BoxHeader title="Top Institutional Holders" sideText= {getCurrentDateFormatted()} /> 
           <Box
             mt="0.5rem"
             p="0 0.5rem"

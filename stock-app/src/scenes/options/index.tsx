@@ -12,6 +12,8 @@ import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import SaveIcon from '@mui/icons-material/Save';
 import OptionPayoffGraph from "./optionPayoffGraph";
 import { v4 as uuidv4 } from 'uuid';
+import Footer from "@/scenes/footer"; // Import the Footer component
+
 
 
 type Props = {
@@ -525,6 +527,8 @@ return (
         </DashboardBox>
 
     </Box>
+
+    <Footer />
     
     </>     
   );

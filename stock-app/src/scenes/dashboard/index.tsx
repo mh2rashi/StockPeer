@@ -6,6 +6,7 @@ import Ratings from "./ratings";
 import Holders from "./holders";
 import PriceGraph from "./priceGraph"
 import IncomeStatement from "./incomeStatement";
+import Footer from "@/scenes/footer"; // Import the Footer component
 
 
 const gridTemplateLargeScreens = `
@@ -21,6 +22,7 @@ const gridTemplateLargeScreens = `
     "c c c c f f f h h h h h"
     "c c c c f f f h h h h h"
     "c c c c f f f h h h h h"
+    "z z z z z z z z z z z z"
     
 `
 
@@ -54,6 +56,8 @@ const gridTemplateSmallScreens = `
     "h"
     "h"
     "h"
+    "z"
+    "z"
 `
 
 type Props = {
@@ -66,35 +70,38 @@ const Dashboard = ({ searchQuery } : Props) => {
     return (
       <>
 
-      <Box
-        className="custom-scrollbar"
-        width="100%"
-        height="100%"
-        display="grid"
-        gap="1rem"
-        sx={
-          isAboveMediumScreens
-            ? {
-                gridTemplateColumns: "repeat(12, minmax(185px, 1fr))",
-                gridTemplateRows: "repeat(12, minmax(60px, 1fr))",
-                gridTemplateAreas: gridTemplateLargeScreens,
-              }
-            : {
-                gridAutoColumns: "1fr",
-                gridAutoRows: "100px",
-                gridTemplateAreas: gridTemplateSmallScreens,
-              }
-        }
-      >
-        <Profile searchQuery={searchQuery}></Profile>
-        <BalanceSheet searchQuery={searchQuery}></BalanceSheet>
-        <Ratings searchQuery={searchQuery}></Ratings>
-        <Holders  searchQuery={searchQuery}></Holders>
-        <PriceGraph searchQuery={searchQuery}></PriceGraph>
-        <IncomeStatement searchQuery={searchQuery}></IncomeStatement>
+        <Box
+          className="custom-scrollbar"
+          width="100%"
+          height="100%"
+          display="grid"
+          gap="1rem"
+          sx={
+            isAboveMediumScreens
+              ? {
+                  gridTemplateColumns: "repeat(12, minmax(185px, 1fr))",
+                  gridTemplateRows: "repeat(12, minmax(60px, 1fr))",
+                  gridTemplateAreas: gridTemplateLargeScreens,
+                }
+              : {
+                  gridAutoColumns: "1fr",
+                  gridAutoRows: "100px",
+                  gridTemplateAreas: gridTemplateSmallScreens,
+                }
+          }
+        >
+          <Profile searchQuery={searchQuery}></Profile>
+          <BalanceSheet searchQuery={searchQuery}></BalanceSheet>
+          <Ratings searchQuery={searchQuery}></Ratings>
+          <Holders  searchQuery={searchQuery}></Holders>
+          <PriceGraph searchQuery={searchQuery}></PriceGraph>
+          <IncomeStatement searchQuery={searchQuery}></IncomeStatement>
+          <Footer />
+        
+        </Box>
 
-      </Box>
-      
+   
+
       </>
     );
   };

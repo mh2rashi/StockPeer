@@ -10,6 +10,7 @@ import Options from "@/scenes/options";
 import Predictions from "@/scenes/predictions"
 
 
+
 function App() {
   
   const theme = useMemo(() => createTheme(themeSettings), []);
