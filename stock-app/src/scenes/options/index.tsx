@@ -277,7 +277,7 @@ return (
         </DashboardBox>
 
         {/* Stock Data & Sample Options */}
-        <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', gap:"1rem",  overflow: 'auto', p:"0rem 0rem 1rem 0rem"}}>
+        <Box className="custom-scrollbar" sx={{ display: 'flex', flexDirection: 'row', width: '100%', gap:"1rem",  overflow: 'auto', p:"0rem 0rem 1rem 0rem"}}>
             
             {/* Stock Data  */}
             <DashboardBox sx={{ display: 'flex', flexDirection: 'column', width: '30%', marginTop: '1rem',minWidth: '300px'}}>
@@ -459,7 +459,7 @@ return (
         </Box>
 
         {/* Payoff Graph */}
-        <DashboardBox sx={{ display: 'flex', flexDirection: 'column',   minWidth: '300px', overflow: 'auto', flex:"1", p:"0rem 0rem 1rem 0rem"}}>
+        <DashboardBox className="custom-scrollbar" sx={{ display: 'flex', flexDirection: 'column',   minWidth: '300px', overflow: 'auto', flex:"1", p:"0rem 0rem 1rem 0rem"}}>
                 
                 <CardHeader
                     title={

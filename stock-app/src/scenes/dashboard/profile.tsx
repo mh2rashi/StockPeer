@@ -15,7 +15,7 @@ type WebSocketData = {
   dc: number;
 };
 
-type WebSocketDataCallback = (data: WebSocketData) => void;
+ type WebSocketDataCallback = (data: WebSocketData) => void;
 
 const extractDomain = (url: string) => {
   try {
@@ -33,6 +33,7 @@ type Props = {
 };
 
 const Profile = ({ searchQuery }: Props) => {
+
   const { data, isLoading, error } = useGetProfileQuery(searchQuery);
 
   const [key, setKey] = useState(0);
@@ -54,10 +55,11 @@ const Profile = ({ searchQuery }: Props) => {
         dc: Number(data['dc']).toFixed(2),
         dd: Number(data['dd']).toFixed(2),
       };
+
       setStreamedData(formattedData);
     };
 
-    const newSocket = connectToWebSocket('ETH-USD', onDataReceived);
+    const newSocket = connectToWebSocket("ETH-USD", onDataReceived);
     setSocket(newSocket);
 
     return () => {
@@ -83,7 +85,6 @@ const Profile = ({ searchQuery }: Props) => {
       </DashboardBox>
     );
   }
-
 
   const domain = extractDomain(data['Website']);
 

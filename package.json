@@ -2,8 +2,12 @@
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "chart.js": "^4.4.1",
+    "finnhub": "^1.2.18",
     "lodash": "^4.17.21",
     "regression": "^2.0.1",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/regression": "^2.0.6"
   }
 }

@@ -9,7 +9,13 @@ import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace wi
 import {useState, useEffect} from 'react'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
-
+function getCurrentDateFormatted() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, add 1 to get correct month
+  const day = now.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 
 
 type Props = {
@@ -52,7 +58,7 @@ const Ratings = ({ searchQuery }: Props) => {
         <BoxHeader
           title="Environment, Social and Governance (ESG): Risk Ratings"
           subtitle="Provided by Sustainalytics"
-          sideText=""
+          sideText={getCurrentDateFormatted()}
         />
 
         <div style={{ display: "flex", justifyContent: "space-between", padding:"1rem 1rem 0rem 1rem" , color:"#FFF"}}>

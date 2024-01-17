@@ -10,10 +10,15 @@ import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace wi
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
-
-type Props = {
-  searchQuery: string;
+function getCurrentDateFormatted() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, add 1 to get correct month
+  const day = now.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
+
+
 
 const Holders = ({ searchQuery } : Props) => {
 
@@ -105,12 +110,13 @@ const Holders = ({ searchQuery } : Props) => {
   return (
     <>
 
-    <DashboardBox gridArea="b" width="100%" height="100%" key={key1}>
-    <BoxHeader title="Top Mutual Fund Holders" sideText="" /> 
+    <DashboardBox className="custom-scrollbar" gridArea="b" width="100%" height="100%" key={key1}>
+    <BoxHeader title="Top Mutual Fund Holders" sideText= {getCurrentDateFormatted()} /> 
           <Box
             mt="0.5rem"
             p="0 0.5rem"
             height="75%"
+            className="custom-scrollbar"
             sx={{
               "& .MuiDataGrid-root": {
                 color: palette.grey[300],
@@ -129,6 +135,7 @@ const Holders = ({ searchQuery } : Props) => {
             }}
           >
               <DataGrid
+                className="custom-scrollbar"
                 rows={transformData(data, "Top Institutional Holders")} // Assuming `data` is the correct variable
                 columns={HoldersCols}
                 rowHeight={35}
@@ -137,9 +144,10 @@ const Holders = ({ searchQuery } : Props) => {
           </Box>
         </DashboardBox>
         
-        <DashboardBox gridArea="c" width="100%" height="100%" key={key2}>
-          <BoxHeader title="Top Mutual Fund Holders" sideText="" />
+        <DashboardBox gridArea="c" width="100%" height="100%" key={key2} className="custom-scrollbar">
+          <BoxHeader title="Top Mutual Fund Holders" sideText={getCurrentDateFormatted()} className="custom-scrollbar" />
           <Box
+            className="custom-scrollbar"
             mt="0.5rem"
             p="0 0.5rem"
             height="75%"
@@ -177,6 +185,7 @@ const Holders = ({ searchQuery } : Props) => {
             }}
           >
             <DataGrid
+              className="custom-scrollbar"
               rows={transformData(data, "Top Mutual Fund Holders")} // Assuming `data` is the correct variable
               columns={HoldersCols}
               rowHeight={35}

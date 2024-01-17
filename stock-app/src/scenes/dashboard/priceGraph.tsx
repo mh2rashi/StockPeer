@@ -19,6 +19,14 @@ import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace wi
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
+function getCurrentDateFormatted() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, add 1 to get correct month
+  const day = now.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 
 
 const CustomYAxisTick = ({ x, y, payload }) => {
@@ -116,16 +124,13 @@ const PriceGraph = ({ searchQuery } : Props) => {
   const scale = scaleLinear().domain([minVal, maxVal]).nice();
   const [newMinVal, newMaxVal] = scale.domain();
 
-
-
- 
   return (
     <>
     <DashboardBox  gridArea="h">
       <BoxHeader
         title="Market Trends: Analyzing Price Movements"
         subtitle="High, Closing, and Low prices over time"
-        sideText=""
+        sideText={getCurrentDateFormatted()}
       />
       <div style={{ width: '100%', height: '100%' }}>
         <ResponsiveContainer>

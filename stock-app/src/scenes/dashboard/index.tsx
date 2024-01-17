@@ -1,5 +1,5 @@
 import { Box, useMediaQuery } from "@mui/material";
-
+import '@/index.css';
 import Profile from "./profile"
 import BalanceSheet from "./balanceSheet";
 import Ratings from "./ratings";
@@ -67,6 +67,7 @@ const Dashboard = ({ searchQuery } : Props) => {
       <>
 
       <Box
+        className="custom-scrollbar"
         width="100%"
         height="100%"
         display="grid"
@@ -88,7 +89,7 @@ const Dashboard = ({ searchQuery } : Props) => {
         <Profile searchQuery={searchQuery}></Profile>
         <BalanceSheet searchQuery={searchQuery}></BalanceSheet>
         <Ratings searchQuery={searchQuery}></Ratings>
-        <Holders searchQuery={searchQuery}></Holders>
+        <Holders  searchQuery={searchQuery}></Holders>
         <PriceGraph searchQuery={searchQuery}></PriceGraph>
         <IncomeStatement searchQuery={searchQuery}></IncomeStatement>
 
