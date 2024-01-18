@@ -20,17 +20,17 @@ function getCurrentDateFormatted() {
 
 
 
-const Holders = ({ searchQuery } : Props) => {
+const Holders = ({ ticker } : Props) => {
 
   const {palette} = useTheme();
-  const { data, isLoading, error } = useGetHoldersQuery(searchQuery);
+  const { data, isLoading, error } = useGetHoldersQuery(ticker);
   const [key1, setKey1] = useState(0);
   const [key2, setKey2] = useState(1);
 
     useEffect(() => {
       setKey1((prevKey) => prevKey + 1);
       setKey2((prevKey) => prevKey + 1);
-    }, [searchQuery]);
+    }, [ticker]);
 
     // ...
 
@@ -50,7 +50,7 @@ const Holders = ({ searchQuery } : Props) => {
 
     // ...
 
-    if (error || !searchQuery || !data) {
+    if (error || !ticker || !data) {
       return (
         <>
           <DashboardBox gridArea="b" padding="1rem 1rem 1.25rem 1rem" key={key1} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
@@ -65,10 +65,6 @@ const Holders = ({ searchQuery } : Props) => {
         </>
       );
     }
-
-// ...
-
-
 
   
   if (!data) {

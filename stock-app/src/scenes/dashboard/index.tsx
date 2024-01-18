@@ -7,9 +7,12 @@ import Holders from "./holders";
 import PriceGraph from "./priceGraph"
 import IncomeStatement from "./incomeStatement";
 import Footer from "@/scenes/footer"; // Import the Footer component
+import Navbar from "@/scenes/navbar";
+import {useState} from 'react'
 
 
 const gridTemplateLargeScreens = `
+    "i i i i i i i i i i i i"
     "a a a a e e e g g g g g"
     "a a a a e e e g g g g g"
     "a a a a e e e g g g g g"
@@ -23,12 +26,12 @@ const gridTemplateLargeScreens = `
     "c c c c f f f h h h h h"
     "c c c c f f f h h h h h"
     "z z z z z z z z z z z z"
-    
 `
 
 
 
 const gridTemplateSmallScreens = `
+    "i"
     "a"
     "a"
     "a"
@@ -56,20 +59,27 @@ const gridTemplateSmallScreens = `
     "h"
     "h"
     "h"
-    "z"
     "z"
 `
 
-type Props = {
-    searchQuery: string;
-}
+const Dashboard = () => {
 
-const Dashboard = ({ searchQuery } : Props) => {
-    const isAboveMediumScreens = useMediaQuery("(min-width: 1200px)");
+  const isAboveMediumScreens = useMediaQuery("(min-width: 1200px)");
+
+    // Lifted state and handler function
+  const [searchQuery, setSearchQuery] = useState('');
+  const [ticker, setTicker] = useState('');
+
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handleTickerChange = (query) => {
+    setTicker(searchQuery);
+  };
   
     return (
       <>
-
         <Box
           className="custom-scrollbar"
           width="100%"
@@ -80,7 +90,7 @@ const Dashboard = ({ searchQuery } : Props) => {
             isAboveMediumScreens
               ? {
                   gridTemplateColumns: "repeat(12, minmax(185px, 1fr))",
-                  gridTemplateRows: "repeat(12, minmax(60px, 1fr))",
+                  gridTemplateRows: "repeat(14, minmax(60px, 1fr))",
                   gridTemplateAreas: gridTemplateLargeScreens,
                 }
               : {
@@ -90,18 +100,16 @@ const Dashboard = ({ searchQuery } : Props) => {
                 }
           }
         >
-          <Profile searchQuery={searchQuery}></Profile>
-          <BalanceSheet searchQuery={searchQuery}></BalanceSheet>
-          <Ratings searchQuery={searchQuery}></Ratings>
-          <Holders  searchQuery={searchQuery}></Holders>
-          <PriceGraph searchQuery={searchQuery}></PriceGraph>
-          <IncomeStatement searchQuery={searchQuery}></IncomeStatement>
+          <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
+          <Profile ticker={ticker}></Profile>
+          <BalanceSheet ticker={ticker}></BalanceSheet>
+          <Ratings ticker={ticker}></Ratings>
+          <Holders  ticker={ticker}></Holders>
+          <PriceGraph ticker={ticker}></PriceGraph>
+          <IncomeStatement ticker={ticker}></IncomeStatement>
           <Footer />
         
         </Box>
-
-   
-
       </>
     );
   };

@@ -1,32 +1,35 @@
 import "../../index.css";
 import { useGetSustainabilityQuery } from "@/state/yahooAPI";
 import { useMediaQuery, useTheme } from "@mui/material";
+import {useState, useEffect} from 'react';
 
 
 type Props = {
-    searchQuery: string;
+    ticker: string;
   };
   
-const RectangleCustom = ({ searchQuery }: Props) => {
+const RectangleCustom = ({ ticker }: Props) => {
+
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'));
-    const { data, isLoading, error } = useGetSustainabilityQuery(searchQuery);
+  const { data, isLoading, error } = useGetSustainabilityQuery(ticker);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, [ticker]);
+
   
     if (isLoading) {
-      return <div>Loading...</div>;
+      return <div alignItems="center" justifyContent="center" key={key} >Loading...</div>;
     }
   
-    if (error) {
-      return <div>Error: {error.toString()}</div>;
+    if (error || !data) {
+      return <div alignItems="center" justifyContent="center" key={key}>Please enter or re-enter your stock ticker</div>;
     }
   
-    if (!data) {
-      return null;
-    }
-
-  
-
+   
     let controversyScore = parseFloat(data["ControversyLevel"]["Score"]);
     let leftPosition;
 
@@ -37,12 +40,13 @@ const RectangleCustom = ({ searchQuery }: Props) => {
       // For other scores, calculate the position based on the score
       leftPosition = controversyScore ? Math.max(0, controversyScore * 19.55) : 0;
     }
+
+
+
     return(
 
       <>
     <div style={{ display: "flex", justifyContent: "space-between", padding:isSmallScreen ? "1rem 1rem 0rem 1rem" : "1rem 1rem 0rem 1rem" , color:"#FFF"}}>
-    {/*<div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}> */}
-      {/*<div style={{ display: "flex", justifyContent: "space-between", padding: "0.2rem 1rem 0.2rem 1rem", color: "#FFF" }}> */}
         <div style={{ fontSize: "16px", fontWeight: "500", display: "inline-block"}}>
           Controversy Level | {data["ControversyLevel"]["Score"].slice(0, Math.ceil(data["ESGScores"]["Rank"].length / 2))}
         </div>

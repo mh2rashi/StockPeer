@@ -11,8 +11,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 type WebSocketData = {
   p: number;
-  dd: number;
-  dc: number;
+
 };
 
  type WebSocketDataCallback = (data: WebSocketData) => void;
@@ -29,37 +28,35 @@ const extractDomain = (url: string) => {
 };
 
 type Props = {
-  searchQuery: string;
+  ticker: string;
 };
 
-const Profile = ({ searchQuery }: Props) => {
+const Profile = ({ ticker }: Props) => {
 
-  const { data, isLoading, error } = useGetProfileQuery(searchQuery);
+  const { data, isLoading, error } = useGetProfileQuery(ticker);
 
   const [key, setKey] = useState(0);
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [streamedData, setStreamedData] = useState<WebSocketData>({
     p: 0,
-    dd: 0,
-    dc: 0,
   });
 
   useEffect(() => {
-    setKey((prevKey) => prevKey + 1);
-  }, [searchQuery]);
 
-  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+
     const onDataReceived: WebSocketDataCallback = (data) => {
+
+      console.log(data);
+
       const formattedData = {
-        p: Number(data['p']).toFixed(2),
-        dc: Number(data['dc']).toFixed(2),
-        dd: Number(data['dd']).toFixed(2),
+        p: Number(data.data[0].p).toFixed(2),
       };
 
       setStreamedData(formattedData);
     };
 
-    const newSocket = connectToWebSocket("ETH-USD", onDataReceived);
+    const newSocket = connectToWebSocket(ticker, onDataReceived);
     setSocket(newSocket);
 
     return () => {
@@ -67,7 +64,7 @@ const Profile = ({ searchQuery }: Props) => {
         newSocket.close();
       }
     };
-  }, []);
+  }, [ticker]);
 
   if (isLoading) {
     return (
@@ -77,7 +74,7 @@ const Profile = ({ searchQuery }: Props) => {
     );
   }
 
-  if (error || !searchQuery || !data) {
+  if (error || !ticker || !data) {
     return (
       <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
             <SearchRoundedIcon sx={{ fontSize: "244px" }}></SearchRoundedIcon>
@@ -98,8 +95,6 @@ const Profile = ({ searchQuery }: Props) => {
           <div id='namePrice' style={{ width: "70%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
             <Typography variant="h1" style={{ fontSize: "2.5rem", display: "flex", alignItems: "center" }}>
               $<span>{streamedData['p']}</span>&nbsp;
-              <span style={{ color: streamedData['dd'] < 0 ? 'red' : 'green', fontSize: "2.0rem" }}>{streamedData['dd']}</span>&nbsp;
-              <span style={{ color: streamedData['dc'] < 0 ? 'red' : 'green', fontSize: "2.0rem" }}>({streamedData['dc']})</span>
             </Typography>
             <Typography variant="h1" style={{ marginTop: "1rem", marginBottom: "1rem" }}>{data['Name']}</Typography>
             <Typography variant="h1" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>

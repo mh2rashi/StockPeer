@@ -57,18 +57,18 @@ const CustomYAxisTick = ({ x, y, payload }) => {
 
 
 type Props = {
-  searchQuery: string;
+  ticker: string;
 }
 
-const PriceGraph = ({ searchQuery } : Props) => {
+const PriceGraph = ({ ticker } : Props) => {
   const {palette} = useTheme();
   
-  const { data, isLoading, error } = useGetHistoricalQuery(searchQuery);
+  const { data, isLoading, error } = useGetHistoricalQuery(ticker);
   const [key, setKey] = useState(0);
 
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
-  }, [searchQuery]);
+  }, [ticker]);
 
   if (isLoading) {
     return (
@@ -78,7 +78,7 @@ const PriceGraph = ({ searchQuery } : Props) => {
     );
   }
 
-  if (error || !searchQuery || !data) {
+  if (error || !ticker || !data) {
     return (
       <DashboardBox gridArea="h" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
             <SearchRoundedIcon sx={{ fontSize: "344px" }}></SearchRoundedIcon>
@@ -126,7 +126,7 @@ const PriceGraph = ({ searchQuery } : Props) => {
 
   return (
     <>
-    <DashboardBox  gridArea="h">
+    <DashboardBox  gridArea="h" key={key}>
       <BoxHeader
         title="Market Trends: Analyzing Price Movements"
         subtitle="High, Closing, and Low prices over time"

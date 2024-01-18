@@ -18,18 +18,18 @@ function getCurrentDateFormatted() {
 
 
 type Props = {
-  searchQuery: string;
+  ticker: string;
 };
 
-const BalanceSheet = ({ searchQuery }: Props) => {
+const BalanceSheet = ({ ticker }: Props) => {
 
-  const { data, isLoading, error } = useGetBalanceSheetQuery(searchQuery);
+  const { data, isLoading, error } = useGetBalanceSheetQuery(ticker);
 
   const [key, setKey] = useState(0);
 
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
-  }, [searchQuery]);
+  }, [ticker]);
   
   if (isLoading) {
     return (
@@ -39,7 +39,7 @@ const BalanceSheet = ({ searchQuery }: Props) => {
     );
   }
 
-  if (error || !searchQuery || !data) {
+  if (error || !ticker || !data) {
     return (
       <DashboardBox gridArea="e" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
             <SearchRoundedIcon sx={{ fontSize: "244px" }}></SearchRoundedIcon>

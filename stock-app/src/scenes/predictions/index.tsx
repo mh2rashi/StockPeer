@@ -20,7 +20,7 @@ import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace wi
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Footer from "@/scenes/footer"; // Import the Footer component
-
+import Navbar from "@/scenes/navbar";
 
 // Utility function to add months to a date object
 
@@ -34,22 +34,36 @@ function getCurrentDateFormatted(yearsToAdd) {
     return `${month}/${day}/${year + yearsToAdd}`;
 }
 
-type Props = {
-    searchQuery: string;
-}
 
-const Predictions = ({ searchQuery } : Props) => {
-  const { data, isLoading, error } = useGetIncomeStatementQuery("AAPL");
+
+const Predictions = () => {
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [ticker, setTicker] = useState('');
+
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handleTickerChange = (query) => {
+    setTicker(searchQuery);
+  };
+
+
+  const { data, isLoading, error } = useGetIncomeStatementQuery(ticker);
   const { palette } = useTheme();
   const [isPredictions, setIsPredictions] = useState(false);
 
   if (isLoading) {
     return (
       <>
+      
+      <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
       <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
             <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
       </DashboardBox>
       <Footer/>
+
       </>
     );
   }
@@ -57,21 +71,27 @@ const Predictions = ({ searchQuery } : Props) => {
   if (error || !searchQuery || !data) {
     return (
       <>
-    <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden" display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
-            <SearchRoundedIcon sx={{ fontSize: "444px" }}></SearchRoundedIcon>
-            <span>Please enter or re-enter your stock ticker</span>
+
+      <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
+      <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden" display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
+          <SearchRoundedIcon sx={{ fontSize: "444px" }}></SearchRoundedIcon>
+          <span>Please enter or re-enter your stock ticker</span>
       </DashboardBox>
       <Footer/>
+
       </>
     );
   }
 
-  const formattedData = useMemo(() => {
+  
+
+  
+  // let formattedData = useMemo(() => {
     const [, ...rows] = data; // Ignore headers because we know the structure.
     let totalRevenueRow = rows.find(row => row[0] === 'Total Revenue');
     if (!totalRevenueRow) return [];
- 
- 
+
+
     let formatted = totalRevenueRow.map((value, index) => {
       const month = data[0][index];
       return {
@@ -79,15 +99,16 @@ const Predictions = ({ searchQuery } : Props) => {
         TotalRevenue: parseFloat(value.replace(/,/g, "")),
       };
     });
+
     formatted = formatted.filter(item => item.name !== "Breakdown");
     formatted = formatted.reverse();
- 
+
     const regressionData = formatted.map((item, index) => [index, item.TotalRevenue]);
     const regressionResult = regression.linear(regressionData);
     const lastKnownPoint = regressionData.length - 1;
-   
+  
     const predictions = [];
- 
+
     for (let i = 0; i <= 3; i++) { // Predict the next 12 months
       const predictedRevenueValue = regressionResult.predict(lastKnownPoint + i)[1];
       predictions.push({
@@ -95,14 +116,18 @@ const Predictions = ({ searchQuery } : Props) => {
         PredictedRevenue: predictedRevenueValue,
       });
     }
- 
-    return isPredictions ? [...formatted,...predictions] : [...formatted];
-  }, [data, isPredictions]);
+
+    const formattedData =  isPredictions ? [...formatted,...predictions] : [...formatted];
+  // }, [data, isPredictions]);
+  
 
 
  
   return (
     <>
+
+    <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
+
 
     <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
       <FlexBetween m="1rem 2.5rem" gap="1rem">

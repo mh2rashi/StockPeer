@@ -22,17 +22,17 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 
 type Props = {
-  searchQuery: string;
+  ticker: string;
 }
 
-const IncomeStatement = ({ searchQuery } : Props) => {
+const IncomeStatement = ({ ticker } : Props) => {
   
-  const { data, isLoading, error } = useGetIncomeStatementQuery(searchQuery);
+  const { data, isLoading, error } = useGetIncomeStatementQuery(ticker);
   const [key, setKey] = useState(0);
 
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
-  }, [searchQuery]);
+  }, [ticker]);
   
   if (isLoading) {
     return (
@@ -42,7 +42,7 @@ const IncomeStatement = ({ searchQuery } : Props) => {
     );
   }
 
-  if (error || !searchQuery || !data) {
+  if (error || !ticker || !data) {
     return (
       <DashboardBox gridArea="f" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
             <SearchRoundedIcon sx={{ fontSize: "244px" }}></SearchRoundedIcon>

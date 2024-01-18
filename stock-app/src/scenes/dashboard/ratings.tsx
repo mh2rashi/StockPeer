@@ -19,18 +19,18 @@ function getCurrentDateFormatted() {
 
 
 type Props = {
-  searchQuery: string;
+  ticker: string;
 };
 
-const Ratings = ({ searchQuery }: Props) => {
+const Ratings = ({ ticker }: Props) => {
   const palette = useTheme();  // Fix: Change `theme` to `palette`
   const isSmallScreen = useMediaQuery(palette.breakpoints.down('lg'));
-  const { data, isLoading, error } = useGetSustainabilityQuery(searchQuery);
+  const { data, isLoading, error } = useGetSustainabilityQuery(ticker);
   const [key, setKey] = useState(0);
 
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
-  }, [searchQuery]);
+  }, [ticker]);
 
   if (isLoading) {
     return (
@@ -40,7 +40,7 @@ const Ratings = ({ searchQuery }: Props) => {
     );
   }
 
-  if (error || !searchQuery || !data) {
+  if (error || !ticker || !data) {
     return (
       <DashboardBox gridArea="g" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
             <SearchRoundedIcon sx={{ fontSize: "144px" }}></SearchRoundedIcon>
@@ -108,7 +108,7 @@ const Ratings = ({ searchQuery }: Props) => {
               ? "1rem 1rem 0.5rem 10px"
               : "1rem 1rem 0.5rem 10px",
           }} />
-        <RectangleCustom searchQuery={searchQuery} />
+        <RectangleCustom ticker={ticker} />
       </DashboardBox>
     </>
   );

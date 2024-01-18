@@ -12,20 +12,28 @@ import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import SaveIcon from '@mui/icons-material/Save';
 import OptionPayoffGraph from "./optionPayoffGraph";
 import { v4 as uuidv4 } from 'uuid';
+import Navbar from "@/scenes/navbar";
 import Footer from "@/scenes/footer"; // Import the Footer component
 
 
 
-type Props = {
-    searchQuery: string;
-}
+const Options = () => {
 
-const Options = ({ searchQuery } : Props) => {
+     // Lifted state and handler function
+     const [searchQuery, setSearchQuery] = useState('');
+     const [ticker, setTicker] = useState('');
+   
+     const handleSearchChange = (query) => {
+       setSearchQuery(query);
+     };
+   
+     const handleTickerChange = (query) => {
+       setTicker(searchQuery);
+     };
 
+    const { data: historicalData} = useGetHistoricalQuery(ticker);
     
-    const { data: historicalData} = useGetHistoricalQuery(searchQuery);
-    
-    const { data: profileData} = useGetProfileQuery(searchQuery);
+    const { data: profileData} = useGetProfileQuery(ticker);
 
     const stockName = profileData?.Name
     const closingPrice = historicalData?.closingPrices[0];
@@ -104,11 +112,14 @@ const Options = ({ searchQuery } : Props) => {
     useEffect(() => {
 
         console.log(positions);
-        }, [positions, sampleOptionText]);
+        }, [positions, sampleOptionText, ticker]);
 
     
 return (
     <>
+
+    <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
+
 
     <Box paddingBottom="1rem">
 
@@ -317,17 +328,17 @@ return (
                 <hr style={{ fontSize: "1rem", fontWeight: "normal", width: "95%"}} />
                 {liveData?  
                             <CardContent>
-                                <label htmlFor="current-price">{searchQuery? stockName: ""} Stock Price ($)</label>
+                                <label htmlFor="current-price">{ticker? stockName: ""} Stock Price ($)</label>
                                 <TextField
                                     id="current-price"
-                                    label = {searchQuery? "Current Price" : "Enter stock ticker."}
+                                    label = {ticker? "Current Price" : "Enter stock ticker."}
                                     // type="number"
                                     variant="filled"
                                     InputLabelProps={{
                                     style: { color: 'grey' } // Change label color and font size
                                     }}
                                     fullWidth
-                                    value={searchQuery && closingPrice}
+                                    value={ticker && closingPrice}
                                     onChange={handleCurrentPriceChange}
                                 />
 
