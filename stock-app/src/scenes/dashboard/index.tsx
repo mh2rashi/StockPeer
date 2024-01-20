@@ -100,7 +100,7 @@ const Dashboard = () => {
                 }
           }
         >
-          <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
+          <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Dashboard"}  />
           <Profile ticker={ticker}></Profile>
           <BalanceSheet ticker={ticker}></BalanceSheet>
           <Ratings ticker={ticker}></Ratings>

@@ -118,7 +118,7 @@ const Options = () => {
 return (
     <>
 
-    <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
+    <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Options"}  />
 
 
     <Box paddingBottom="1rem">

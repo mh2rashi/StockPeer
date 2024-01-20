@@ -47,8 +47,6 @@ const Profile = ({ ticker }: Props) => {
 
     const onDataReceived: WebSocketDataCallback = (data) => {
 
-      console.log(data);
-
       const formattedData = {
         p: Number(data.data[0].p).toFixed(2),
       };

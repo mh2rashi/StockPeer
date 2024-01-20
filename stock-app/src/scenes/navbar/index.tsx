@@ -1,5 +1,5 @@
 // eslint
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import SearchIcon from '@mui/icons-material/Search';
@@ -8,12 +8,12 @@ import FlexBetween from "@/components/FlexBetween"; // Check this alias
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
-const Navbar = ({ searchQuery, onSearchChange, onSearchTicker }) => {
+
+const Navbar = ({ searchQuery, onSearchChange, onSearchTicker, selectedPage }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(selectedPage);
   const [isMenuToggled, setIsMenuToggled] = useState(false);
-  const [key, setKey] = useState(0);
 
   const handleSearch = (event) => {
     onSearchChange(event.target.value);
@@ -29,13 +29,14 @@ const Navbar = ({ searchQuery, onSearchChange, onSearchTicker }) => {
     }
   };
 
-  useEffect(() => {
-    setKey((prevKey) => prevKey + 1);
+  const handleMenuItemClick = (menuItem) => {
+
+    setSelected(menuItem);
     console.log(selected);
-  }, [selected]);
+  };
 
   return (
-    <Box gridArea="i" mb="0.25rem" p="0.5rem 0rem" gap="2rem" display="flex" flex="1" color={theme.palette.grey[300]} width="100%" alignItems="center" justifyContent="center" key={key}>
+    <Box gridArea="i" mb="0.25rem" p="0.5rem 0rem" gap="2rem" display="flex" flex="1" color={theme.palette.grey[300]} width="100%" alignItems="center" justifyContent="center">
         
         {/* LEFT SIDE */}
         <Box gap="0.75rem"  display="flex">
@@ -83,30 +84,30 @@ const Navbar = ({ searchQuery, onSearchChange, onSearchTicker }) => {
               {/* MENU ITEMS */}
               {/* Consider mapping through an array of menu items if they grow in number */}
               <Box sx={{ display: 'flex', flexDirection: 'column', padding: '1.2em' }}>
-                <Link to="/dashboard" onClick={() => setSelected("Dashboard")} className={selected === "Dashboard" ? "selected" : ""} style={{ textDecoration: "none" }}>
+                <Link to="/dashboard" onClick={() => handleMenuItemClick("Dashboard")} style={{ textDecoration: "none" }}>
                   <Typography variant="h4" sx={{ marginBottom: '1rem', color: selected === "Dashboard" ? theme.palette.primary.main : theme.palette.grey[700], '&:hover': { color: theme.palette.primary.main } }}>Dashboard</Typography>
                 </Link>
-                <Link to="/predictions" onClick={() => setSelected("Predictions")} className={selected === "Predictions" ? "selected" : ""} style={{ textDecoration: "none" }}>
+                <Link to="/predictions" onClick={() => handleMenuItemClick("Predictions")} style={{ textDecoration: "none" }}>
                   <Typography variant="h4" sx={{ marginBottom: '1rem', color: selected === "Predictions" ? theme.palette.primary.main : theme.palette.grey[700], '&:hover': { color: theme.palette.primary.main } }}>Predictions</Typography>
                 </Link>
-                <Link to="/options" onClick={() => setSelected("Options")} className={selected === "Options" ? "selected" : ""} style={{ textDecoration: "none" }}>
-                  <Typography variant="h4" sx={{ marginBottom: '1rem', color: selected === "Options" ? theme.palette.primary.main : theme.palette.grey[700], '&:hover': { color: theme.palette.primary.main } }}>Option Builder</Typography>
+                <Link to="/options" onClick={() => handleMenuItemClick("Options")} style={{ textDecoration: "none" }}>
+                  <Typography variant="h4" sx={{ marginBottom: '1rem', color: selected === "Options" ? theme.palette.primary.main : theme.palette.grey[700], '&:hover': { color: theme.palette.primary.main } }}>Options Builder</Typography>
                 </Link>
               </Box>
             </Box>
           )}
         </>
       ) : (
-        <FlexBetween gap="2rem" sx={{ justifyContent: 'flex-end' }}>
+        <FlexBetween gap="2rem" sx={{ justifyContent: 'flex-end' }} >
           {/* Consider mapping through an array of menu items if they grow in number */}
-          <Link to="/dashboard" onClick={() => setSelected("Dashboard")} className={selected === "Dashboard" ? "selected" : ""} style={{ textDecoration: "none" }}>
+          <Link to="/dashboard" onClick={() => handleMenuItemClick("Dashboard")} style={{ textDecoration: "none" }}>
             <Typography variant="h4" component="span" sx={{ '&:hover': { color: theme.palette.primary.main }, color: selected === "Dashboard" ? theme.palette.primary.main : theme.palette.grey[700] }}>Dashboard</Typography>
           </Link>
-          <Link to="/predictions" onClick={() => setSelected("Predictions")} className={selected === "Predictions" ? "selected" : ""} style={{ textDecoration: "none" }}>
+          <Link to="/predictions" onClick={() => handleMenuItemClick("Predictions")} style={{ textDecoration: "none" }}>
             <Typography variant="h4" component="span" sx={{ '&:hover': { color: theme.palette.primary.main }, color: selected === "Predictions" ? theme.palette.primary.main : theme.palette.grey[700] }}>Predictions</Typography>
           </Link>
-          <Link to="/options" onClick={() => setSelected("Options")} className={selected === "Options" ? "selected" : ""} style={{ textDecoration: "none" }}>
-            <Typography variant="h4" component="span" sx={{ '&:hover': { color: theme.palette.primary.main }, color: selected === "Options" ? theme.palette.primary.main : theme.palette.grey[700] }}>Option Builder</Typography>
+          <Link to="/options" onClick={() => handleMenuItemClick("Options")} style={{ textDecoration: "none" }}>
+            <Typography variant="h4" component="span" sx={{ '&:hover': { color: theme.palette.primary.main }, color: selected === "Options" ? theme.palette.primary.main : theme.palette.grey[700] }}>Options Builder</Typography>
           </Link>
         </FlexBetween>
       )}

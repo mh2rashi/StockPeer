@@ -1,23 +1,14 @@
 import express from "express";
 import bodyParser from "body-parser";
-import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import StatisticsModel from "./models/statisticsModel.js";
 import statisticsData from "./data/statisticsData.js";
-
-import HistoricalModel from "./models/historicalModel.js";
 import historicalData from "./data/historicalData.js";
-
-import ProfileModel from "./models/profileModel.js";
 import profileData from "./data/profileData.js";
-
-import HoldersModel from "./models/holdersModel.js";
 import holdersData from "./data/holdersData.js";
-
 import sustainabilityData from "./data/sustainabilityData.js"
 import incomeStatementData from "./data/incomeStatementData.js"
 import balanceSheetData from "./data/balanceSheetData.js"
@@ -35,17 +26,8 @@ app.use(cors());
 const PORT = process.env.PORT || 9000;
 
 
-mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  console.log("Connected to MongoDB");
-  
-})
-.catch((error) => {
-  console.error("Connection failed:", error);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 // API endpoint to fetch statistics for a given ticker
@@ -53,12 +35,8 @@ app.get('/api/statistics/:ticker', async (req, res) => {
     const ticker = req.params.ticker.toUpperCase();
 
     try {
-        await mongoose.connection.db.dropDatabase();
         const statisticsDataForTicker = await statisticsData(ticker);
-        const statisticsDocument = new StatisticsModel(statisticsDataForTicker);
-        await statisticsDocument.save();
-
-        res.status(200).json(statisticsDocument);
+        res.status(200).json(statisticsDataForTicker);
     } catch (error) {
         res.status(500).json({ message: `Error fetching statistics for ticker ${ticker}: ${error.message}` });
     }
@@ -69,12 +47,8 @@ app.get('/api/profile/:ticker', async (req, res) => {
   const ticker = req.params.ticker.toUpperCase();
 
   try {
-      await mongoose.connection.db.dropDatabase();
       const profileDataForTicker = await profileData(ticker);
-      const profileDocument = new ProfileModel(profileDataForTicker);
-      await profileDocument.save();
-
-      res.status(200).json(profileDocument);
+      res.status(200).json(profileDataForTicker);
   } catch (error) {
       res.status(500).json({ message: `Error fetching statistics for ticker ${ticker}: ${error.message}` });
   }
@@ -85,12 +59,9 @@ app.get('/api/historical/:ticker', async (req, res) => {
   const ticker = req.params.ticker.toUpperCase();
 
   try {
-      await mongoose.connection.db.dropDatabase();
       const historicalDataForTicker = await historicalData(ticker);
-      const historicalDocument = new HistoricalModel(historicalDataForTicker);
-      await historicalDocument.save();
 
-      res.status(200).json(historicalDocument);
+      res.status(200).json(historicalDataForTicker);
   } catch (error) {
       res.status(500).json({ message: `Error fetching statistics for ticker ${ticker}: ${error.message}` });
   }
@@ -101,12 +72,8 @@ app.get('/api/holders/:ticker', async (req, res) => {
   const ticker = req.params.ticker.toUpperCase();
 
   try {
-      await mongoose.connection.db.dropDatabase();
       const holdersDataForTicker = await holdersData(ticker);
-      const holdersDocument = new HoldersModel(holdersDataForTicker);
-      await holdersDocument.save();
-
-      res.status(200).json(holdersDocument);
+      res.status(200).json(holdersDataForTicker);
   } catch (error) {
       res.status(500).json({ message: `Error fetching statistics for ticker ${ticker}: ${error.message}` });
   }

@@ -58,7 +58,7 @@ const Predictions = () => {
     return (
       <>
       
-      <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
+      <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Predictions"}/>
       <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
             <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
       </DashboardBox>
@@ -72,7 +72,7 @@ const Predictions = () => {
     return (
       <>
 
-      <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
+      <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Predictions"}/>
       <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden" display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
           <SearchRoundedIcon sx={{ fontSize: "444px" }}></SearchRoundedIcon>
           <span>Please enter or re-enter your stock ticker</span>
@@ -86,7 +86,6 @@ const Predictions = () => {
   
 
   
-  // let formattedData = useMemo(() => {
     const [, ...rows] = data; // Ignore headers because we know the structure.
     let totalRevenueRow = rows.find(row => row[0] === 'Total Revenue');
     if (!totalRevenueRow) return [];
@@ -118,15 +117,12 @@ const Predictions = () => {
     }
 
     const formattedData =  isPredictions ? [...formatted,...predictions] : [...formatted];
-  // }, [data, isPredictions]);
   
 
-
- 
   return (
     <>
 
-    <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} />
+    <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Predictions"} />
 
 
     <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
@@ -145,7 +141,7 @@ const Predictions = () => {
             boxShadow: "0.1rem 0.1rem 0.1rem 0.1rem rgba(0,0,0,.4)",
           }}
         >
-          {isPredictions? "Hide Predicted Revenue" : "Show Predicted Revenue for the Next 5 Years" }
+          {isPredictions? "Hide Predicted Revenue" : "Show Predicted Revenue for the Next 4 Years" }
         </Button>
       </FlexBetween>
       <ResponsiveContainer width="100%" height="100%">
