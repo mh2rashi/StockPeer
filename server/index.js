@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 9000;
 
 app.get("/*", function (req, res) {
   res.sendFile (
-    path.join(__dirname, "../stock-app/build/index.html"),
+    path.join(__dirname, "../stock-app/dist/index.html"),
     function(err) {
       if (err) {
         res.status(500).send(err);
