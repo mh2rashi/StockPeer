@@ -14,8 +14,7 @@ import OptionPayoffGraph from "./optionPayoffGraph";
 import { v4 as uuidv4 } from 'uuid';
 import Navbar from "@/scenes/navbar";
 import Footer from "@/scenes/footer"; // Import the Footer component
-
-
+  
 
 const Options = () => {
 
@@ -413,7 +412,6 @@ return (
                             onChange={handleChangeSampleOption}
                             className="custom-scrollbar"
                             label="Strategy"
-                            overflow= "auto"
                             inputProps={{ name: 'Strategy', id: 'demo-simple-select-outlined' }}
                             MenuProps={{ PaperProps: { style: { maxHeight: '200px' } } }} // Set the maxHeight here
                         >

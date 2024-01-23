@@ -25,10 +25,21 @@ app.use(cors());
 
 const PORT = process.env.PORT || 9000;
 
+app.get("/*", function (req, res) {
+  res.sendFile (
+    path.join(__dirname, "../stock-app/build/index.html"),
+    function(err) {
+      if (err) {
+        res.status(500).send(err);
+      }
+    }
+  );
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 app.get('/', (req, res) => {
   res.status(200).send('<h1>StockPeer backend</h1>')
@@ -121,10 +132,4 @@ app.get('/api/incomeStatement/:ticker', async (req, res) => {
 });
 
 
-// // Serve static files from the React frontend app
-// app.use(express.static(path.join(__dirname, '../stock-app/build')))
 
-// // AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname + '/../stock-app/build/index.html'))
-// })

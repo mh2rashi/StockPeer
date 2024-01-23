@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { calculateValues } from "./optionEquations";
 
 
-const OptionPosition = ({ onRemove, onPositionChange, position, currentPrice, interestRate, }) => {
+const OptionPosition = ({children, onRemove, onPositionChange, position, currentPrice, interestRate }) => {
     const { palette } = useTheme();
 
     const [direction, setDirection] = useState<string>(position.direction);
