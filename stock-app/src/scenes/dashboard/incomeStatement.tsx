@@ -18,8 +18,6 @@ import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace wi
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
-     
-
 
 type Props = {
   ticker: string;

@@ -75,7 +75,7 @@ const Navbar = ({ searchQuery, onSearchChange, onSearchTicker, selectedPage }) =
           )}
           {isMenuToggled && 
           (
-            <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: theme.palette.background.light, position: 'fixed', top: 0, right: 0, height: '100vh', width: '25%', zIndex: 1300, transform: 'translateX(0)',transition: 'transform 0.3s ease-in-out', }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: "#2d2d34", position: 'fixed', top: 0, right: 0, height: '100vh', width: '25%', zIndex: 1300, transform: 'translateX(0)',transition: 'transform 0.3s ease-in-out', }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '1.2em' }}>
                 <IconButton onClick={() => setIsMenuToggled(false)}>
                   <CloseIcon style={{color: "#FFF"}}/>

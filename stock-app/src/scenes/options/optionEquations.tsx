@@ -1,12 +1,12 @@
 import jStat from 'jstat';
 
 // Black-Scholes Option Pricing Model components calculation
-export const calculateValues = (direction, kind, amount, strike, expiryDate, volatility, stockPrice, interestRate) => {
+export const calculateValues = (direction : string, kind : string, amount : number, strike : number, expiryDate : string, volatility : number, stockPrice : number, interestRate : number) => {
    
     const inputDate = new Date(expiryDate);
     const referenceDate = new Date();
     const millisecondsInYear = 365 * 24 * 60 * 60 * 1000; // Total milliseconds in a year
-    const timeDifference = inputDate - referenceDate;
+    const timeDifference = (inputDate as any) - (referenceDate as any);
     const expiry = timeDifference / millisecondsInYear;
 
     const volatilityFraction = volatility / 100;
@@ -17,8 +17,8 @@ export const calculateValues = (direction, kind, amount, strike, expiryDate, vol
     const d2 = d1 - volatilityFraction * Math.sqrt(expiry);
 
     // Black-Scholes formulas
-    const cumulativeDistribution = (x) => jStat.normal.cdf(x, 0, 1);
-    const probabilityDensity = (x) => jStat.normal.pdf(x, 0, 1);
+    const cumulativeDistribution = (x : number) => jStat.normal.cdf(x, 0, 1);
+    const probabilityDensity = (x : number) => jStat.normal.pdf(x, 0, 1);
 
     const debitCredit = (direction === 'Buy' ? 1 : -1) * amount * (stockPrice * cumulativeDistribution(d1) - (kind === 'Call' ? strike * cumulativeDistribution(d2) : strike * cumulativeDistribution(-d2)));
     

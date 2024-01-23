@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
-
+import path from "path"
 import statisticsData from "./data/statisticsData.js";
 import historicalData from "./data/historicalData.js";
 import profileData from "./data/profileData.js";
@@ -29,6 +29,10 @@ const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.get('/', (req, res) => {
+  res.status(200).send('<h1>StockPeer backend</h1>')
+})
 
 // API endpoint to fetch statistics for a given ticker
 app.get('/api/statistics/:ticker', async (req, res) => {
@@ -115,3 +119,12 @@ app.get('/api/incomeStatement/:ticker', async (req, res) => {
     res.status(500).json({ message: `Error fetching balance Sheet data for ticker ${ticker}: ${error.message}` });
 }
 });
+
+
+// // Serve static files from the React frontend app
+// app.use(express.static(path.join(__dirname, '../stock-app/build')))
+
+// // AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname + '/../stock-app/build/index.html'))
+// })

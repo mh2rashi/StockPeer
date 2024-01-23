@@ -3,7 +3,7 @@ type WebSocketDataCallback = (data: unknown) => void;
 export const connectToWebSocket = (symbol: string, onDataReceived: WebSocketDataCallback): WebSocket => {
   const socket = new WebSocket('wss://ws.finnhub.io?token=cmjgslhr01qo8idm263gcmjgslhr01qo8idm2640');
 
-  socket.addEventListener('open', (event) => {
+  socket.addEventListener('open', (_event) => {
     console.log(`WebSocket connected for ${symbol}`);
     socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': symbol.toUpperCase() }));
   });

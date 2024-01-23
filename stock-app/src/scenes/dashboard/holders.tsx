@@ -9,6 +9,7 @@ import {useState, useEffect} from 'react';
 import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { GetStockHoldersResponse } from "@/state/types/holdersTypes";
 
 function getCurrentDateFormatted() {
   const now = new Date();
@@ -18,9 +19,12 @@ function getCurrentDateFormatted() {
   return `${year}-${month}-${day}`;
 }
 
+type Props = {
+  ticker: string;
+};
 
 
-const Holders = ({ ticker } : Props) => {
+const Holders = ({ ticker }: Props) => {
 
   const {palette} = useTheme();
   const { data, isLoading, error } = useGetHoldersQuery(ticker);
@@ -94,7 +98,7 @@ const Holders = ({ ticker } : Props) => {
   ];
 
 
-  const transformData = (inputData, key) => {
+  const transformData = (inputData: GetStockHoldersResponse, key: string) => {
     return inputData[key].Holders.map((holder, index) => ({
       id: index,
       holder,
@@ -102,6 +106,7 @@ const Holders = ({ ticker } : Props) => {
       value: inputData[key].Value[index],
     }));
   };
+  
 
   return (
     <>
@@ -141,7 +146,7 @@ const Holders = ({ ticker } : Props) => {
         </DashboardBox>
         
         <DashboardBox gridArea="c" width="100%" height="100%" key={key2} className="custom-scrollbar">
-          <BoxHeader title="Top Mutual Fund Holders" sideText={getCurrentDateFormatted()} className="custom-scrollbar" />
+          <BoxHeader title="Top Mutual Fund Holders" sideText={getCurrentDateFormatted()} />
           <Box
             className="custom-scrollbar"
             mt="0.5rem"

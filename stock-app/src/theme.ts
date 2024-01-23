@@ -1,3 +1,5 @@
+import { TypeBackground } from "@mui/material";
+
 export const tokens = {
     grey: {
       100: "#f0f0f3",

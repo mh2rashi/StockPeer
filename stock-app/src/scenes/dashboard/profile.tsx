@@ -10,9 +10,16 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 
 type WebSocketData = {
-  p: number;
-
-};
+  "data": [
+    {
+      "p": number,
+      "s": string,
+      "t": number,
+      "v": number
+    }
+  ],
+  "type": "trade"
+}
 
  type WebSocketDataCallback = (data: WebSocketData) => void;
 
@@ -37,19 +44,15 @@ const Profile = ({ ticker }: Props) => {
 
   const [key, setKey] = useState(0);
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [streamedData, setStreamedData] = useState<WebSocketData>({
-    p: 0,
-  });
+  const [streamedData, setStreamedData] = useState('0');
 
   useEffect(() => {
 
     setKey((prevKey) => prevKey + 1);
 
-    const onDataReceived: WebSocketDataCallback = (data) => {
+    const onDataReceived: WebSocketDataCallback = (inputData) => {
 
-      const formattedData = {
-        p: Number(data.data[0].p).toFixed(2),
-      };
+      const formattedData = Number(inputData.data[0].p).toFixed(2);
 
       setStreamedData(formattedData);
     };
@@ -92,7 +95,7 @@ const Profile = ({ ticker }: Props) => {
           </div>
           <div id='namePrice' style={{ width: "70%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
             <Typography variant="h1" style={{ fontSize: "2.5rem", display: "flex", alignItems: "center" }}>
-              $<span>{streamedData['p']}</span>&nbsp;
+              $<span>{streamedData}</span>&nbsp;
             </Typography>
             <Typography variant="h1" style={{ marginTop: "1rem", marginBottom: "1rem" }}>{data['Name']}</Typography>
             <Typography variant="h1" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>

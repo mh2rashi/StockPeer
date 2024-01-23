@@ -23,11 +23,11 @@ const Options = () => {
      const [searchQuery, setSearchQuery] = useState('');
      const [ticker, setTicker] = useState('');
    
-     const handleSearchChange = (query) => {
+     const handleSearchChange = (query : string) => {
        setSearchQuery(query);
      };
    
-     const handleTickerChange = (query) => {
+     const handleTickerChange = () => {
        setTicker(searchQuery);
      };
 
@@ -66,11 +66,11 @@ const Options = () => {
     }
 
     const removeAllPositions = () => {
-        
-        setPositions(prevPositions => []);
+        setPositions(() => []);
     };
-
-    const removePosition = (index) => {
+      
+      
+    const removePosition = (index : number) => {
         setPositions(prevPositions => {
             const updatedPositions = [...prevPositions];
             updatedPositions.splice(index, 1);
@@ -130,7 +130,7 @@ return (
             
                 <Table aria-label="simple table">
 
-                    <TableHead style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: palette.background.light, borderRadius:"0rem", boxShadow: 'none' }}>
+                    <TableHead style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: "#2d2d34", borderRadius:"0rem", boxShadow: 'none' }}>
                         <TableRow style={{ position: 'sticky', top: 0, zIndex: 1 }}>
                             <TableCell>
                                 <Typography variant="h3">Direction</Typography>
@@ -487,7 +487,7 @@ return (
                         
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                             
-                        <Button
+                            <Button
                                 className="MuiButtonBase-root MuiButton-root MuiButton-outlined jss2"
                                 tabIndex={0}
                                 type="button"
@@ -497,8 +497,8 @@ return (
                                 onMouseEnter={() => setHoveredButton('my-strategies')}
                                 onMouseLeave={() => setHoveredButton(null)}
                                 style={{
-                                    backgroundColor: hoveredButton === 'white',
-                                    color: hoveredButton === 'my-strategies' ? 'white' : 'currentColor'
+                                    backgroundColor: hoveredButton === 'my-strategies' ? 'currentColor' : 'transparent',
+                                    color: hoveredButton === 'my-strategies' ? 'white' : 'currentColor',
                                     }}
                                 >
                                 My Strategies
@@ -514,7 +514,7 @@ return (
                                 onMouseEnter={() => setHoveredButton('save-strategy')}
                                 onMouseLeave={() => setHoveredButton(null)}
                                 style={{
-                                    backgroundColor: hoveredButton === 'white',
+                                    backgroundColor: hoveredButton === 'save-strategy'? 'currentColor' : 'transparent',
                                     color: hoveredButton === 'save-strategy' ? 'white' : 'currentColor'
                                     }}
                                 >

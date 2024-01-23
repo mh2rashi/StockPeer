@@ -3,6 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useState, useEffect } from 'react';
 import { calculateValues } from "./optionEquations";
 
+
 const OptionPosition = ({ onRemove, onPositionChange, position, currentPrice, interestRate, }) => {
     const { palette } = useTheme();
 
@@ -43,7 +44,7 @@ const OptionPosition = ({ onRemove, onPositionChange, position, currentPrice, in
         }
     };
 
-    const handleChange = (event, key) => {
+    const handleChange = (event : any, key : string) => {
         const value = event.target.value;
 
         switch (key) {

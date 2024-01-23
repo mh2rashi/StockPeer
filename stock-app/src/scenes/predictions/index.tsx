@@ -1,7 +1,7 @@
 import DashboardBox from "@/components/DashboardBox";
 import FlexBetween from "@/components/FlexBetween";
 import { Box, Button, Typography, useTheme } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import {
   CartesianGrid,
   Label,
@@ -15,37 +15,32 @@ import {
 } from "recharts";
 import regression from "regression";
 import { useGetIncomeStatementQuery } from "@/state/yahooAPI";
-import { FormatTextdirectionRToL } from "@mui/icons-material";
 import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Footer from "@/scenes/footer"; // Import the Footer component
 import Navbar from "@/scenes/navbar";
 
-// Utility function to add months to a date object
-
 
 // Function to format the date in MM/DD/YYYY format
-function getCurrentDateFormatted(yearsToAdd) {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, add 1 to get correct month
-    const day = now.getDate().toString().padStart(2, '0');
-    return `${month}/${day}/${year + yearsToAdd}`;
+function getCurrentDateFormatted(yearsToAdd: number): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, add 1 to get correct month
+  const day = now.getDate().toString().padStart(2, '0');
+  return `${month}/${day}/${year + yearsToAdd}`;
 }
-
-
 
 const Predictions = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [ticker, setTicker] = useState('');
 
-  const handleSearchChange = (query) => {
+  const handleSearchChange = (query : string) => {
     setSearchQuery(query);
   };
 
-  const handleTickerChange = (query) => {
+  const handleTickerChange = () => {
     setTicker(searchQuery);
   };
 
@@ -83,26 +78,24 @@ const Predictions = () => {
     );
   }
 
-  
-
-  
-    const [, ...rows] = data; // Ignore headers because we know the structure.
-    let totalRevenueRow = rows.find(row => row[0] === 'Total Revenue');
+  const rows = Object.values(data);
+  let totalRevenueRow = rows.find(row => row[0] === 'Total Revenue');
     if (!totalRevenueRow) return [];
 
 
-    let formatted = totalRevenueRow.map((value, index) => {
+    let formatted = totalRevenueRow.map((value: string, index: number) => {
       const month = data[0][index];
       return {
         name: month,
         TotalRevenue: parseFloat(value.replace(/,/g, "")),
       };
     });
+    
 
-    formatted = formatted.filter(item => item.name !== "Breakdown");
+    formatted = formatted.filter((item : any) => item.name !== "Breakdown");
     formatted = formatted.reverse();
 
-    const regressionData = formatted.map((item, index) => [index, item.TotalRevenue]);
+    const regressionData = formatted.map((item : any, index : number) => [index, item.TotalRevenue]);
     const regressionResult = regression.linear(regressionData);
     const lastKnownPoint = regressionData.length - 1;
   

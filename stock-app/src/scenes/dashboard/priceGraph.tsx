@@ -27,9 +27,18 @@ function getCurrentDateFormatted() {
   return `${year}-${month}-${day}`;
 }
 
+interface CustomYAxisTickProps {
+  x: number;
+  y: number;
+  payload: {
+    value: string; // Change this type based on the actual structure of your payload
+    // Add other properties as needed
+  };
+}
 
 
-const CustomYAxisTick = ({ x, y, payload }) => {
+
+const CustomYAxisTick: React.FC<CustomYAxisTickProps> = ({ x, y, payload }) => {
   const value = payload.value;
   const padding = 20; // change this to create more space between the axis and the label
   
@@ -93,7 +102,7 @@ const PriceGraph = ({ ticker } : Props) => {
   
   const parsedData = data?.dates.reduce((result, dateStr, index) => {
   const date = new Date(dateStr);
-  if (!isNaN(date)) {
+  if (!isNaN(date.getTime())) {
     const month = date.toLocaleString('default', { month: 'short' });
     const day = date.getDate(); // Get the day from the date
 
@@ -139,13 +148,13 @@ const PriceGraph = ({ ticker } : Props) => {
             margin={{ top: 20, right: 0, left: -10, bottom: 55 }}
           >
             <CartesianGrid vertical={false} stroke={palette.grey[800]}/>
-            <XAxis dataKey="month" tickLine={false} style={{fontSize: "10px"}} domain={[newMinVal, newMaxVal]} interval={Math.ceil(parsedData.length / 10)}/>
-            <YAxis yAxisId="left" tickLine={false} axisLine={false} style={{fontSize: "10px"}} domain={[newMinVal - 10, newMaxVal + 10]} tick={CustomYAxisTick}/>
+            <XAxis dataKey="month" tickLine={true} style={{fontSize: "10px"}} domain={[newMinVal, newMaxVal]} interval={Math.ceil(parsedData.length / 10)}/>
+            <YAxis yAxisId="left" tickLine={true} axisLine={false} style={{fontSize: "10px"}} domain={[newMinVal - 10, newMaxVal + 10]} />
             <YAxis yAxisId="right" orientation="right" tickLine={false} axisLine={false} style={{fontSize: "10px"}}  domain={[newMinVal - 10, newMaxVal + 10]} />
             <Tooltip />
             <Legend height={20} wrapperStyle={{margin: "0 0 10px 0"}} />
-            <Line yAxisId="left" type="monotone" dataKey="closingPrice" stroke={palette.tertiary[500]} name="Closing Price" />
             <Line yAxisId="left" type="monotone" dataKey="highPrice" stroke={palette.primary.main} name="High Price"/>
+            <Line yAxisId="left" type="monotone" dataKey="closingPrice" stroke="#8884d8" name="Closing Price" />
             <Line yAxisId="left" type="monotone" dataKey="lowPrice" stroke={palette.secondary.main} name="Low Price" />
           </LineChart>
         </ResponsiveContainer>

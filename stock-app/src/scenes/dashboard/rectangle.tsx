@@ -22,11 +22,11 @@ const RectangleCustom = ({ ticker }: Props) => {
 
   
     if (isLoading) {
-      return <div alignItems="center" justifyContent="center" key={key} >Loading...</div>;
+      return <div style={{ alignItems: 'center', justifyContent: 'center' }} key={key} >Loading...</div>;
     }
   
     if (error || !data) {
-      return <div alignItems="center" justifyContent="center" key={key}>Please enter or re-enter your stock ticker</div>;
+      return <div style={{ alignItems: 'center', justifyContent: 'center' }} key={key}>Please enter or re-enter your stock ticker</div>;
     }
   
    

@@ -70,11 +70,11 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [ticker, setTicker] = useState('');
 
-  const handleSearchChange = (query) => {
+  const handleSearchChange = (query : string) => {
     setSearchQuery(query);
   };
 
-  const handleTickerChange = (query) => {
+  const handleTickerChange = () => {
     setTicker(searchQuery);
   };
   
