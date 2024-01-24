@@ -15,6 +15,7 @@ import balanceSheetData from "./data/balanceSheetData.js"
 
 dotenv.config();
 const app = express();
+app.use(express.static("public"));
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
@@ -25,25 +26,9 @@ app.use(cors());
 
 const PORT = process.env.PORT || 9000;
 
-app.get("/*", function (req, res) {
-  res.sendFile (
-    path.join(__dirname, "../stock-app/dist/index.html"),
-    function(err) {
-      if (err) {
-        res.status(500).send(err);
-      }
-    }
-  );
-});
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
-app.get('/', (req, res) => {
-  res.status(200).send('<h1>StockPeer backend</h1>')
-})
 
 // API endpoint to fetch statistics for a given ticker
 app.get('/api/statistics/:ticker', async (req, res) => {
@@ -130,6 +115,4 @@ app.get('/api/incomeStatement/:ticker', async (req, res) => {
     res.status(500).json({ message: `Error fetching balance Sheet data for ticker ${ticker}: ${error.message}` });
 }
 });
-
-
 
