@@ -4,7 +4,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
-import path from "path"
 import statisticsData from "./data/statisticsData.js";
 import historicalData from "./data/historicalData.js";
 import profileData from "./data/profileData.js";
