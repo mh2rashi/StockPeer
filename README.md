@@ -11,8 +11,10 @@
 
   <p align="center">
     A stock web application with display metrics for live data, machine-learning       based predictions and options strategy visualizer.
-    <a href="https://stockpeer-3495602137c6.herokuapp.com/"><strong ><h2>Live Demo »</h4></strong></a>
   </p>
+
+  <a href="https://stockpeer-3495602137c6.herokuapp.com/" target="_blank"><strong><h2>Live Demo »</h2></strong></a>
+  
 </div>
 
 
@@ -104,9 +106,9 @@ Please follow instructions below to install and run the project on your local de
    cd client && npm install
    ```
 
-3. Get a free API Key at [Finnhub Stock API](https://finnhub.io/)
+3. Get a free API Key at [Finnhub Stock API.](https://finnhub.io/)
 
-4. Enter your API in `client/.env.local` file
+4. Enter your API in `client/.env.local` file.
    ```sh
    API_TOKEN = 'ENTER YOUR API'
    ```
