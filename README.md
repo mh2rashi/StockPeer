@@ -13,10 +13,10 @@
     A stock web application with display metrics for live data, machine-learning       based predictions and options strategy visualizer.
   </p>
 
+  <a href="https://stockpeer-3495602137c6.herokuapp.com/" target="_blank"><h2>Live Demo »</h2></a>
 
 </div>
 
-[<h2 align="center">Live Demo<h2>](https://stockpeer-3495602137c6.herokuapp.com/)
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -68,6 +68,7 @@ The goal of this project was to create a full-stack web application where users 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- TECHNOLOGIES -->
 ### Major Technologies Used
 
 ##### Front-End:
