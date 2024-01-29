@@ -11,14 +11,9 @@
 
   <p align="center">
     A stock web application with display metrics for live data, machine-learning       based predictions and options strategy visualizer.
-    <br />
     <a href="https://stockpeer-3495602137c6.herokuapp.com/"><strong ><h2>Live Demo »</h4></strong></a>
-    <a href="https://github.com/mh2rashi/StockPeer/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/mh2rashi/StockPeer/issues">Request Feature</a>
   </p>
 </div>
-
 
 
 <!-- TABLE OF CONTENTS -->
@@ -54,16 +49,9 @@ The goal of this project was to create a full-stack web application where users 
 
 <img src="public/images/dashboard.png" alt="Logo" width="full" height="full">
 
-<br>
-<br>
-
 2. <strong>Revenue Predictions (Predictions page)</strong>: Using a simple linear regression model, we predict the revenue for the next 4 years for a particular stock.
 
 <img src="public/images/predictions.png" alt="Logo" width="full" height="full">
-
-
-<br>
-<br>
 
 3. <strong>Options Strategy Visualizer (Options Builder page):</strong> This page allows you to build a custom options strategy using live stock data and calculates option price and Greeks.
 
@@ -78,11 +66,9 @@ The goal of this project was to create a full-stack web application where users 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ### Major Technologies Used
 
-#####Front-End:
+##### Front-End:
 [![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -91,7 +77,7 @@ The goal of this project was to create a full-stack web application where users 
 [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
 
-#####Back-End:
+##### Back-End:
 [![Express.js](https://img.shields.io/badge/express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![Axios](https://img.shields.io/badge/Axios-007ACC?style=for-the-badge&logo=axios&logoColor=white)](https://axios-http.com/)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
@@ -119,9 +105,9 @@ Please follow instructions below to install and run the project on your local de
    ```
 
 3. Get a free API Key at [Finnhub Stock API](https://finnhub.io/)
-<br>
+
 4. Enter your API in `client/.env.local` file
-   ```js
+   ```sh
    API_TOKEN = 'ENTER YOUR API'
    ```
 
@@ -159,13 +145,13 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Hamza Rashid
 
-Email : hamza022697@gmail.com
-LinkedIn: https://www.linkedin.com/in/mhamza-rashid/
+- Email : hamza022697@gmail.com
+- LinkedIn: https://www.linkedin.com/in/mhamza-rashid/
 
 Bilal Rashid
 
-Email: bilal0197@gmail.com
-LinkedIn: https://www.linkedin.com/in/bilal-rashid-a04625198/
+- Email: bilal0197@gmail.com
+- LinkedIn: https://www.linkedin.com/in/bilal-rashid-a04625198/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
