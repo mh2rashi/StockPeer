@@ -13,10 +13,10 @@
     A stock web application with display metrics for live data, machine-learning       based predictions and options strategy visualizer.
   </p>
 
-  <a href="https://stockpeer-3495602137c6.herokuapp.com/" target="_blank"><strong><h2>Live Demo »</h2></strong></a>
-  
+
 </div>
 
+[<h2 align="center">Live Demo<h2>](https://stockpeer-3495602137c6.herokuapp.com/)
 
 <!-- TABLE OF CONTENTS -->
 <details>
