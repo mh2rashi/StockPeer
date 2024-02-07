@@ -35,6 +35,8 @@ const Predictions = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [ticker, setTicker] = useState('');
+  const theme = useTheme();
+
 
   const handleSearchChange = (query : string) => {
     setSearchQuery(query);
@@ -69,8 +71,8 @@ const Predictions = () => {
 
       <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Predictions"}/>
       <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden" display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
-          <SearchRoundedIcon sx={{ fontSize: "444px" }}></SearchRoundedIcon>
-          <span>Please enter or re-enter your stock ticker</span>
+          <SearchRoundedIcon sx={{ fontSize: "444px", color: theme.palette.grey[300] }}></SearchRoundedIcon>
+          <span style={{ color: theme.palette.grey[300] }}>Please enter or re-enter your stock ticker</span>
       </DashboardBox>
       <Footer/>
 
@@ -147,22 +149,24 @@ const Predictions = () => {
             bottom: 80,
           }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke={palette.grey[800]} />
-          <XAxis dataKey="name" tickLine={true} style={{ fontSize: "10px" }}>
-            <Label value="Year" offset={-5} position="insideBottom" />
+          <CartesianGrid strokeDasharray="3 3" stroke={palette.grey[800]} dx={5} />
+          <XAxis dataKey="name" tickLine={true} style={{ fontSize: "10px",}} stroke={theme.palette.grey[300]}>
+            <Label value="Year" offset={-5} position="insideBottom" fill={theme.palette.grey[300]} />
           </XAxis>
           <YAxis
             axisLine={{ strokeWidth: "0" }}
             style={{ fontSize: "10px" }}
             tickFormatter={(value) => `$${value.toLocaleString()}`}
+            stroke={theme.palette.grey[300]}
           >
             <Label
-              style={{padding: "0rem 2rem 0rem 0rem", textAnchor:"middle"}}
+              style={{padding: "0rem 2rem 0rem 0rem", textAnchor:"middle", gap:"2rem"}}
               dx={-20}
               value="Revenue"
               angle={-90}
               position="insideLeft"
-            />
+              fill={theme.palette.grey[300]}
+              />
           </YAxis>
           <Tooltip />
           <Legend  verticalAlign="top"/>

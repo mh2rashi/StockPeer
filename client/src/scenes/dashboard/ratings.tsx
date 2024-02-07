@@ -24,6 +24,8 @@ type Props = {
 
 const Ratings = ({ ticker }: Props) => {
   const palette = useTheme();  // Fix: Change `theme` to `palette`
+  const theme = useTheme();
+
   const isSmallScreen = useMediaQuery(palette.breakpoints.down('lg'));
   const { data, isLoading, error } = useGetSustainabilityQuery(ticker);
   const [key, setKey] = useState(0);
@@ -43,8 +45,8 @@ const Ratings = ({ ticker }: Props) => {
   if (error || !ticker || !data) {
     return (
       <DashboardBox gridArea="g" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
-            <SearchRoundedIcon sx={{ fontSize: "144px" }}></SearchRoundedIcon>
-            <span>Please enter or re-enter your stock ticker</span>
+            <SearchRoundedIcon sx={{ fontSize: "144px", color: theme.palette.grey[300] }}></SearchRoundedIcon>
+            <span style={{ color: theme.palette.grey[300] }}>Please enter or re-enter your stock ticker</span>
       </DashboardBox>
     );
   }

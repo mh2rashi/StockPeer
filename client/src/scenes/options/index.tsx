@@ -21,6 +21,8 @@ const Options = () => {
      // Lifted state and handler function
      const [searchQuery, setSearchQuery] = useState('');
      const [ticker, setTicker] = useState('');
+     const theme = useTheme();
+
    
      const handleSearchChange = (query : string) => {
        setSearchQuery(query);
@@ -123,55 +125,55 @@ return (
     <Box paddingBottom="1rem">
 
         {/* Options Box */}
-        <DashboardBox height="325px" p="0rem 1.25rem 0rem 1.25rem" overflow="auto" className="custom-scrollbar">
+        <DashboardBox height="325px" p="0rem 1.25rem 0rem 1.25rem" overflow="auto" className="custom-scrollbar" color={palette.grey[300]}>
             
-            <FlexBetween color={palette.grey[300]}>
+            <FlexBetween color={palette.grey[700]}>
             
                 <Table aria-label="simple table">
 
                     <TableHead style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: "#2d2d34", borderRadius:"0rem", boxShadow: 'none' }}>
                         <TableRow style={{ position: 'sticky', top: 0, zIndex: 1 }}>
                             <TableCell>
-                                <Typography variant="h3">Direction</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Direction</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Amount</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Amount</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Kind</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Kind</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Strike</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Strike</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Expiry</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Expiry</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Volatility</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Volatility</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Debit/Credit</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Debit/Credit</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Delta</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Delta</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Gamma</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Gamma</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Theta</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Theta</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Vega</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Vega</Typography>
                             </TableCell>
                             <TableCell>
-                                <Typography variant="h3">Rho</Typography>
+                                <Typography variant="h3" color={theme.palette.grey[300]}>Rho</Typography>
                             </TableCell>
                             <TableCell component="th" scope="col">
                                 <Button
                                     variant="contained"
                                     type="submit"
-                                    style={{height: '50px', width: '125px', backgroundColor: '#006400'}}
+                                    style={{height: '50px', width: '125px', backgroundColor: '#006400', color:theme.palette.grey[300]}}
                                     onClick={addPosition}
                                 >
                                     Add Position
@@ -188,11 +190,11 @@ return (
 
                         <TableRow>
                             <TableCell align="center">
-                                <Typography variant="h4">Total</Typography>
+                                <Typography variant="h4" color={theme.palette.grey[300]}>Total</Typography>
                             </TableCell>
 
                             <TableCell align="left">
-                                <Typography variant="h4">{positions.length}</Typography>
+                                <Typography variant="h4" color={theme.palette.grey[300]}>{positions.length}</Typography>
                             </TableCell>
 
                             {/* Empty cells */}
@@ -202,7 +204,7 @@ return (
                             <TableCell />
 
                             <TableCell>
-                                <Typography variant="h4">
+                                <Typography variant="h4" color={theme.palette.grey[300]}>
                                 {positions.reduce((accumulator, position) => {
                                     // Use the position id to ensure the correct position is considered
                                     const positionToUpdate = positions.find(pos => pos.id === position.id);
@@ -213,7 +215,7 @@ return (
 
 
                             <TableCell>
-                                <Typography variant="h4">
+                                <Typography variant="h4" color={theme.palette.grey[300]}>
                                 {positions.reduce((accumulator, position) => {
                                     // Use the position id to ensure the correct position is considered
                                     const positionToUpdate = positions.find(pos => pos.id === position.id);
@@ -224,7 +226,7 @@ return (
                             </TableCell>
 
                             <TableCell>
-                                <Typography variant="h4">
+                                <Typography variant="h4" color={theme.palette.grey[300]}>
                                 {positions.reduce((accumulator, position) => {
                                     // Use the position id to ensure the correct position is considered
                                     const positionToUpdate = positions.find(pos => pos.id === position.id);
@@ -234,7 +236,7 @@ return (
                             </TableCell>
 
                             <TableCell>
-                                <Typography variant="h4">
+                                <Typography variant="h4" color={theme.palette.grey[300]}>
                                     {positions.reduce((accumulator, position) => {
                                         // Use the position id to ensure the correct position is considered
                                         const positionToUpdate = positions.find(pos => pos.id === position.id);
@@ -244,7 +246,7 @@ return (
                             </TableCell>
                                 
                             <TableCell>
-                                <Typography variant="h4">
+                                <Typography variant="h4" color={theme.palette.grey[300]}>
                                 {positions.reduce((accumulator, position) => {
                                 // Use the position id to ensure the correct position is considered
                                 const positionToUpdate = positions.find(pos => pos.id === position.id);
@@ -267,7 +269,7 @@ return (
                                 <Button
                                 variant="contained"
                                 color="error"
-                                style={{height: '50px', width: '125px'}}
+                                style={{height: '50px', width: '125px', color:theme.palette.grey[300]}}
                                 startIcon={
                                     <DeleteIcon>
                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
@@ -289,7 +291,7 @@ return (
         </DashboardBox>
 
         {/* Stock Data & Sample Options */}
-        <Box className="custom-scrollbar" sx={{ display: 'flex', flexDirection: 'row', width: '100%', gap:"1rem",  overflow: 'auto', p:"0rem 0rem 1rem 0rem"}}>
+        <Box className="custom-scrollbar" sx={{ display: 'flex', flexDirection: 'row', width: '100%', gap:"1rem",  overflow: 'auto', p:"0rem 0rem 1rem 0rem",color:palette.grey[300]}}>
             
             {/* Stock Data  */}
             <DashboardBox sx={{ display: 'flex', flexDirection: 'column', width: '30%', marginTop: '1rem',minWidth: '300px'}}>
@@ -303,7 +305,7 @@ return (
                         <Typography variant="h2" sx={{ fontWeight: 'bold' }}>
                             Stock Data
                         </Typography>
-                        <Typography variant="h4" sx={{ alignItems: 'center', }}>
+                        <Typography variant="h4" sx={{ alignItems: 'center', color:palette.grey[300]}}>
                             {liveData && closingPriceDate}
                         </Typography>
                     </Box>
@@ -334,7 +336,10 @@ return (
                                     // type="number"
                                     variant="filled"
                                     InputLabelProps={{
-                                    style: { color: 'grey' } // Change label color and font size
+                                    style: { color: palette.grey[300] } // Change label color and font size
+                                    }}
+                                    InputProps={{
+                                        style: { color: palette.grey[300] } // Change text color and background color
                                     }}
                                     fullWidth
                                     value={ticker && closingPrice}
@@ -348,7 +353,10 @@ return (
                                     type="number"
                                     variant="filled"
                                     InputLabelProps={{
-                                    style: { color: 'grey' } // Change label color and font size
+                                    style: { color:palette.grey[300] } // Change label color and font size
+                                    }}
+                                    InputProps={{
+                                        style: { color: palette.grey[300] } // Change text color and background color
                                     }}
                                     fullWidth
                                     value={interestRate}
@@ -364,7 +372,10 @@ return (
                                     type="number"
                                     variant="filled"
                                     InputLabelProps={{
-                                    style: { color: 'grey' } // Change label color and font size
+                                    style: { color:palette.grey[300] } // Change label color and font size
+                                    }}
+                                    InputProps={{
+                                        style: { color: palette.grey[300] } // Change text color and background color
                                     }}
                                     fullWidth
                                     value={currentPrice}
@@ -378,7 +389,10 @@ return (
                                     type="number"
                                     variant="filled"
                                     InputLabelProps={{
-                                    style: { color: 'grey' } // Change label color and font size
+                                    style: { color:palette.grey[300] } // Change label color and font size
+                                    }}
+                                    InputProps={{
+                                        style: { color: palette.grey[300] } // Change text color and background color
                                     }}
                                     fullWidth
                                     value={interestRate}
@@ -495,7 +509,6 @@ return (
                                 onMouseEnter={() => setHoveredButton('my-strategies')}
                                 onMouseLeave={() => setHoveredButton(null)}
                                 style={{
-                                    backgroundColor: hoveredButton === 'my-strategies' ? 'currentColor' : 'transparent',
                                     color: hoveredButton === 'my-strategies' ? 'white' : 'currentColor',
                                     }}
                                 >
@@ -512,7 +525,6 @@ return (
                                 onMouseEnter={() => setHoveredButton('save-strategy')}
                                 onMouseLeave={() => setHoveredButton(null)}
                                 style={{
-                                    backgroundColor: hoveredButton === 'save-strategy'? 'currentColor' : 'transparent',
                                     color: hoveredButton === 'save-strategy' ? 'white' : 'currentColor'
                                     }}
                                 >

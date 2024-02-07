@@ -7,6 +7,8 @@ import {useState, useEffect} from 'react';
 import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { useTheme  } from "@mui/material";
+
 
 type Props = {
   ticker: string;
@@ -15,6 +17,7 @@ type Props = {
 const BalanceSheet = ({ ticker }: Props) => {
 
   const { data, isLoading, error } = useGetBalanceSheetQuery(ticker);
+  const theme = useTheme();
 
   const [key, setKey] = useState(0);
 
@@ -33,8 +36,8 @@ const BalanceSheet = ({ ticker }: Props) => {
   if (error || !ticker || !data) {
     return (
       <DashboardBox gridArea="e" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
-            <SearchRoundedIcon sx={{ fontSize: "244px" }}></SearchRoundedIcon>
-            <span>Please enter or re-enter your stock ticker</span>
+            <SearchRoundedIcon sx={{ fontSize: "244px", color: theme.palette.grey[300] }}></SearchRoundedIcon>
+            <span style={{ color: theme.palette.grey[300] }}>Please enter or re-enter your stock ticker</span>
           </DashboardBox>
 
     );

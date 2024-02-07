@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardBox from "@/components/DashboardBox";
 import { useGetProfileQuery } from "@/state/yahooAPI";
 import { connectToWebSocket } from "@/state/priceStreamAPI";
-import { Typography } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 import "../../index.css";
 import Lottie from 'lottie-react';
 import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
@@ -41,6 +41,8 @@ type Props = {
 const Profile = ({ ticker }: Props) => {
 
   const { data, isLoading, error } = useGetProfileQuery(ticker);
+  const theme = useTheme();
+
 
   const [key, setKey] = useState(0);
   const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -69,7 +71,7 @@ const Profile = ({ ticker }: Props) => {
 
   if (isLoading) {
     return (
-      <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key}>
+      <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key} >
         <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
       </DashboardBox>
     );
@@ -77,10 +79,11 @@ const Profile = ({ ticker }: Props) => {
 
   if (error || !ticker || !data) {
     return (
-      <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
-            <SearchRoundedIcon sx={{ fontSize: "244px" }}></SearchRoundedIcon>
-            <span>Please enter or re-enter your stock ticker</span>
+      <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent="center" color="white">
+        <SearchRoundedIcon sx={{ fontSize: "244px", color: theme.palette.grey[300] }} /> {/* Set icon color to white */}
+        <span style={{ color: theme.palette.grey[300] }}>Please enter or re-enter your stock ticker</span> {/* Set text color to white */}
       </DashboardBox>
+
     );
   }
 
@@ -88,7 +91,7 @@ const Profile = ({ ticker }: Props) => {
 
   return (
     <>
-      <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key}>
+      <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key} style={{color: theme.palette.grey[300]}}>
         <div style={{ height: "50%", display: "flex" }}>
           <div id='logo' style={{ width: "30%", backgroundColor: "transparent", padding: "0.5rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
             <img src={`https://api.companyurlfinder.com/logo/${domain}`} alt="Company Logo" style={{ width: "100%", height: "100%", borderRadius: "20%", objectFit: "cover" }} />

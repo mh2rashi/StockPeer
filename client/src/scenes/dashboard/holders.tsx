@@ -27,6 +27,7 @@ type Props = {
 const Holders = ({ ticker }: Props) => {
 
   const {palette} = useTheme();
+  const theme = useTheme();
   const { data, isLoading, error } = useGetHoldersQuery(ticker);
   const [key1, setKey1] = useState(0);
   const [key2, setKey2] = useState(1);
@@ -56,13 +57,13 @@ const Holders = ({ ticker }: Props) => {
       return (
         <>
           <DashboardBox gridArea="b" padding="1rem 1rem 1.25rem 1rem" key={key1} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
-            <SearchRoundedIcon sx={{ fontSize: "144px" }}></SearchRoundedIcon>
-            <span>Please enter or re-enter your stock ticker</span>
+            <SearchRoundedIcon sx={{ fontSize: "144px", color: theme.palette.grey[300] }}></SearchRoundedIcon>
+            <span style={{ color: theme.palette.grey[300] }}>Please enter or re-enter your stock ticker</span>
           </DashboardBox>
 
           <DashboardBox gridArea="c" padding="1rem 1rem 1.25rem 1rem" key={key2} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
-            <SearchRoundedIcon sx={{ fontSize: "144px" }}></SearchRoundedIcon>
-            <span>Please enter or re-enter your stock ticker</span>
+            <SearchRoundedIcon sx={{ fontSize: "144px", color: theme.palette.grey[300] }}></SearchRoundedIcon>
+            <span style={{ color: theme.palette.grey[300] }}>Please enter or re-enter your stock ticker</span>
           </DashboardBox>
         </>
       );
