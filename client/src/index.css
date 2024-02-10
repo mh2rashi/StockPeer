@@ -1,4 +1,11 @@
+/*
+ CSS stylesheet.
+*/
+
+/* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* Include Tailwind CSS styles */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,7 +19,7 @@ body,
   width: 100%;
   font-family: "Inter", sans-serif;
   background-color: #1f2026;
-  overflow: auto; /* Ensure scrollbars are shown when content overflows */
+  overflow: auto;
 }
 
 /* Custom scrollbar styles for WebKit/Blink browsers */
@@ -62,23 +69,23 @@ body,
   color: #fff;
 }
 
-
+/* Define styles for the rectangles */
 .rectangle {
-  width: 740px; /* Change as needed for width */
-  height: 20px; /* Change as needed for height */
+  width: 740px;
+  height: 20px;
   position: relative;
-  background-color: #FF594F;
+  background-color: #ff594f;
 }
 
 .leftHalf {
   position: absolute;
-  width: 20.7%; /* Half the width of the parent rectangle */
+  width: 20.7%;
   height: 100%;
   right: 0;
-  background-color: #FFB0AB
+  background-color: #ffb0ab;
 }
 
-.dot{
+.dot {
   width: 5px;
   height: 5px;
   background-color: #0083e9;

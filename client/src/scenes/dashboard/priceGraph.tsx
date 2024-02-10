@@ -1,5 +1,20 @@
+/*
+  This component displays a LineChart representing the historical price data of a stock within the Dashboard page.
+  The 'ticker' property is a string that represents the stock ticker symbol and is used to fetch data from the API.
+*/
+
+// React
+import React, { useState, useEffect } from 'react';
+import { useTheme } from '@mui/material/styles';
+
+// Components
 import DashboardBox from "@/components/DashboardBox";
+import BoxHeader from "@/components/BoxHeader";
+
+// API
 import { useGetHistoricalQuery } from "@/state/yahooAPI";
+
+// Charting
 import {
   LineChart,
   Line,
@@ -9,16 +24,15 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Text,
 } from 'recharts';
-import { useTheme } from '@mui/material/styles';
-import {scaleLinear} from 'd3-scale';
-import BoxHeader from "@/components/BoxHeader";
-import {useState, useEffect} from 'react';
-import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
+
+// Animations & Icons
+import loadingAnimation from '../../assets/LoadingAnimation.json';
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { scaleLinear } from 'd3-scale';
 
+// Function to format the current date
 function getCurrentDateFormatted() {
   const now = new Date();
   const year = now.getFullYear();
@@ -27,18 +41,18 @@ function getCurrentDateFormatted() {
   return `${year}-${month}-${day}`;
 }
 
+// Custom Y Axis Tick component
 interface CustomYAxisTickProps {
   x: number;
   y: number;
   payload: {
-    value: string; // Change this type based on the actual structure of your payload
-    // Add other properties as needed
+    value: string;
   };
 }
 
 const CustomYAxisTick: React.FC<CustomYAxisTickProps> = ({ x, y, payload }) => {
   const value = payload.value;
-  const padding = 20; // change this to create more space between the axis and the label
+  const padding = 20; // To create more space between the axis and label
   
   // For the left tick, subtract the padding from the x position
   const leftTickX = x - padding;
@@ -49,7 +63,7 @@ const CustomYAxisTick: React.FC<CustomYAxisTickProps> = ({ x, y, payload }) => {
   );
   
   // Calculate tick position for the right side
-  const rightTickX = x + 1140 + padding; // Adjust depending on your layout
+  const rightTickX = x + 1140 + padding;
   
   const rightTick = (
     <Text x={rightTickX} y={y} verticalAnchor="middle" textAnchor="end" fontSize={10}>
@@ -61,23 +75,27 @@ const CustomYAxisTick: React.FC<CustomYAxisTickProps> = ({ x, y, payload }) => {
   return <g>{originalTick}{rightTick}</g>
 };
 
-
-
+// Main component
 type Props = {
   ticker: string;
 }
 
-const PriceGraph = ({ ticker } : Props) => {
-  const {palette} = useTheme();
+const PriceGraph = ({ ticker }: Props) => {
+  //Fetch data from API
+  const { data, isLoading, error } = useGetHistoricalQuery(ticker);
+
+  // Custom theme colors
+  const { palette } = useTheme();
   const theme = useTheme();
 
-  const { data, isLoading, error } = useGetHistoricalQuery(ticker);
+  // Increment key whenever ticker changes to force re-rendering
   const [key, setKey] = useState(0);
 
   useEffect(() => {
     setKey((prevKey) => prevKey + 1);
   }, [ticker]);
 
+  // Loading state
   if (isLoading) {
     return (
       <DashboardBox gridArea="h" padding="1rem 1rem 1.25rem 1rem" key={key}>
@@ -86,11 +104,12 @@ const PriceGraph = ({ ticker } : Props) => {
     );
   }
 
+  // Error or no data state
   if (error || !ticker || !data) {
     return (
       <DashboardBox gridArea="h" padding="1rem 1rem 1.25rem 1rem" key={key} display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
-            <SearchRoundedIcon sx={{ fontSize: "344px", color: theme.palette.grey[300] }}></SearchRoundedIcon>
-            <span style={{ color: theme.palette.grey[300] }}>Please enter or re-enter your stock ticker</span>
+        <SearchRoundedIcon sx={{ fontSize: "344px", color: theme.palette.grey[300] }}></SearchRoundedIcon>
+        <span style={{ color: theme.palette.grey[300] }}>Please enter or re-enter your stock ticker</span>
       </DashboardBox>
     );
   }
@@ -99,69 +118,118 @@ const PriceGraph = ({ ticker } : Props) => {
     return null;
   }
   
+  // Data preparation
   const parsedData = data?.dates.reduce((result, dateStr, index) => {
-  const date = new Date(dateStr);
-  if (!isNaN(date.getTime())) {
-    const month = date.toLocaleString('default', { month: 'short' });
-    const day = date.getDate(); // Get the day from the date
+    // Convert date string to Date object
+    const date = new Date(dateStr);
 
-    const closingPrice = parseFloat(data.closingPrices[index]);
-    const highPrice = parseFloat(data.highPrices[index]);
-    const lowPrice = parseFloat(data.lowPrices[index]);
+    // Check if the date is valid
+    if (!isNaN(date.getTime())) {
+      // Get the abbreviated month name
+      const month = date.toLocaleString('default', { month: 'short' });
 
-    result.push({
-      month: `${month} ${day}`, // Combine month and day
-      closingPrice: closingPrice,
-      highPrice: highPrice,
-      lowPrice: lowPrice,
-    });
-  }
-  return result;
-}, []).reverse();
+      // Get the day from the date
+      const day = date.getDate();
 
-  
+      // Parse closing, high, and low prices
+      const closingPrice = parseFloat(data.closingPrices[index]);
+      const highPrice = parseFloat(data.highPrices[index]);
+      const lowPrice = parseFloat(data.lowPrices[index]);
+
+      // Push formatted data to the result array
+      result.push({
+        month: `${month} ${day}`, // Combine month and day
+        closingPrice: closingPrice,
+        highPrice: highPrice,
+        lowPrice: lowPrice,
+      });
+    }
+    return result;
+  }, []).reverse(); // Reverse the array to display in chronological order
+
+  // Extract all price values for scaling
   const allValues = [
     ...parsedData.map(p => p.closingPrice),
     ...parsedData.map(p => p.highPrice),
     ...parsedData.map(p => p.lowPrice),
   ];
 
+  // Find the minimum and maximum values for scaling
   const minVal = Math.min(...allValues.filter(val => !isNaN(val)));
   const maxVal = Math.max(...allValues.filter(val => !isNaN(val)));
 
+  // Create a linear scale for the y-axis
   const scale = scaleLinear().domain([minVal, maxVal]).nice();
+
+  // Extract the new minimum and maximum values after scaling
   const [newMinVal, newMaxVal] = scale.domain();
 
   return (
     <>
-    <DashboardBox  gridArea="h" key={key}>
-      <BoxHeader
-        title="Market Trends: Analyzing Price Movements"
-        subtitle="High, Closing, and Low prices over time"
-        sideText={getCurrentDateFormatted()}
-      />
-      <div style={{ width: '100%', height: '100%' }}>
-        <ResponsiveContainer>
-          <LineChart
-            data={parsedData}
-            margin={{ top: 20, right: 0, left: -10, bottom: 55 }}
-          >
-            <CartesianGrid vertical={false} stroke={palette.grey[800]}/>
-            <XAxis dataKey="month" tickLine={true} style={{fontSize: "10px"}} domain={[newMinVal, newMaxVal]} interval={Math.ceil(parsedData.length / 10)}/>
-            <YAxis yAxisId="left" tickLine={true} axisLine={false} style={{fontSize: "10px"}} domain={[newMinVal - 10, newMaxVal + 10]} />
-            <YAxis yAxisId="right" orientation="right" tickLine={false} axisLine={false} style={{fontSize: "10px"}}  domain={[newMinVal - 10, newMaxVal + 10]} />
-            <Tooltip />
-            <Legend height={20} wrapperStyle={{margin: "0 0 10px 0"}} />
-            <Line yAxisId="left" type="monotone" dataKey="highPrice" stroke={palette.primary.main} name="High Price"/>
-            <Line yAxisId="left" type="monotone" dataKey="closingPrice" stroke="#8884d8" name="Closing Price" />
-            <Line yAxisId="left" type="monotone" dataKey="lowPrice" stroke={palette.secondary.main} name="Low Price" />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </DashboardBox>
-
+      <DashboardBox gridArea="h" key={key}>
+        <BoxHeader
+          title="Market Trends: Analyzing Price Movements"
+          subtitle="High, Closing, and Low prices over time"
+          sideText={getCurrentDateFormatted()}
+        />
+        <div style={{ width: '100%', height: '100%' }}>
+          <ResponsiveContainer>
+            <LineChart
+              data={parsedData}
+              margin={{ top: 20, right: 0, left: -10, bottom: 55 }}
+            >
+              <CartesianGrid vertical={false} stroke={palette.grey[800]} />
+              <XAxis
+                dataKey="month"
+                tickLine={true}
+                style={{ fontSize: "10px" }}
+                domain={[newMinVal, newMaxVal]}
+                interval={Math.ceil(parsedData.length / 10)}
+              />
+              <YAxis
+                yAxisId="left"
+                tickLine={true}
+                axisLine={false}
+                style={{ fontSize: "10px" }}
+                domain={[newMinVal - 10, newMaxVal + 10]}
+              />
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                tickLine={false}
+                axisLine={false}
+                style={{ fontSize: "10px" }}
+                domain={[newMinVal - 10, newMaxVal + 10]}
+              />
+              <Tooltip />
+              <Legend height={20} wrapperStyle={{ margin: "0 0 10px 0" }} />
+              <Line
+                yAxisId="left"
+                type="monotone"
+                dataKey="highPrice"
+                stroke={palette.primary.main}
+                name="High Price"
+              />
+              <Line
+                yAxisId="left"
+                type="monotone"
+                dataKey="closingPrice"
+                stroke="#8884d8"
+                name="Closing Price"
+              />
+              <Line
+                yAxisId="left"
+                type="monotone"
+                dataKey="lowPrice"
+                stroke={palette.secondary.main}
+                name="Low Price"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </DashboardBox>
     </>
-  )
-}
+  );
+}  
 
 export default PriceGraph;

@@ -1,16 +1,27 @@
+/*
+  This code defines the Dashboard component, which displays various financial information and components related to a stock company.
+*/
+
+// React imports
+import { useState } from 'react';
+
+// Reusable component imports
 import { Box, useMediaQuery } from "@mui/material";
-import '@/index.css';
-import Profile from "./profile"
+import '@/index.css'; // Import custom CSS
+
+// Dashboard components imports
+import Profile from "./profile";
 import BalanceSheet from "./balanceSheet";
 import Ratings from "./ratings";
 import Holders from "./holders";
-import PriceGraph from "./priceGraph"
+import PriceGraph from "./priceGraph";
 import IncomeStatement from "./incomeStatement";
-import Footer from "@/scenes/footer"; // Import the Footer component
-import Navbar from "@/scenes/navbar";
-import {useState} from 'react'
 
+// Navbar and Footer iport
+import Footer from "@/scenes/footer"; // Import Footer component
+import Navbar from "@/scenes/navbar"; // Import Navbar component
 
+// Define grid template for large screens
 const gridTemplateLargeScreens = `
     "i i i i i i i i i i i i"
     "a a a a e e e g g g g g"
@@ -27,9 +38,7 @@ const gridTemplateLargeScreens = `
     "c c c c f f f h h h h h"
     "z z z z z z z z z z z z"
 `
-
-
-
+// Define grid template for small screens
 const gridTemplateSmallScreens = `
     "i"
     "a"
@@ -64,9 +73,10 @@ const gridTemplateSmallScreens = `
 
 const Dashboard = () => {
 
+  // Media query for screen size responsiveness
   const isAboveMediumScreens = useMediaQuery("(min-width: 1200px)");
 
-    // Lifted state and handler function
+  // State and handler functions for search query and ticker symbol
   const [searchQuery, setSearchQuery] = useState('');
   const [ticker, setTicker] = useState('');
 
@@ -115,4 +125,3 @@ const Dashboard = () => {
   };
   
 export default Dashboard;
-
