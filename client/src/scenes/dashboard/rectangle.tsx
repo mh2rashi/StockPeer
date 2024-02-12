@@ -37,7 +37,7 @@ const RectangleCustom = ({ ticker }: Props) => {
 
   // Loading state
   if (isLoading) {
-    return <div style={{ alignItems: 'center', justifyContent: 'center', color: theme.palette.grey[300] }} key={key} >Loading...</div>;
+    return <div style={{ alignItems: 'center', justifyContent: 'center', color: theme.palette.grey[300], padding:'10px' }} key={key} >Loading...</div>;
   }
 
   // Error or no data state
@@ -65,7 +65,7 @@ const RectangleCustom = ({ ticker }: Props) => {
         </div>
         <div className="rectangle" style={{ position: "relative", margin: "0.1rem 0.35rem 1rem 2.5rem", height: "20px"}} >
           <div className="leftHalf"></div>
-          <span className="dot" style={{ width: "15px", height: "15px", backgroundColor: "#0083e9", display: "inline-block", borderRadius: "50%", position: "absolute", left: `${leftPosition}%`, top: "15%", transform: "translate(-50%, -50%)" }}></span>
+          <span className="dot" style={{ width: "15px", height: "15px", backgroundColor: "#0083e9", display: "inline-block", borderRadius: "50%", position: "absolute", left: `${leftPosition}%`, top: "50%", transform: "translate(-50%, -50%)" }}></span>
         </div>
       </div>
     </>

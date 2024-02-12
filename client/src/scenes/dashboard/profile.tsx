@@ -115,7 +115,7 @@ const Profile = ({ ticker }: Props) => {
     <>
       <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key} style={{ color: theme.palette.grey[300] }}>
       <Typography mb="-0.9rem" color={theme.palette.secondary[500]} variant="h5" fontWeight="700" style={{ textAlign: "right" }}>
-        {streamedData === "0" ? "Last Closing Price" : "Live Data"}
+        {streamedData === "0" ? "Last Closing Price" : "Live Price"}
       </Typography>
         <div style={{ height: "50%", display: "flex" }}>
           <div id='logo' style={{ width: "30%", backgroundColor: "transparent", padding: "0.5rem", display: "flex", justifyContent: "center", alignItems: "center" }}>

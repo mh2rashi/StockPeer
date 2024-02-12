@@ -10,6 +10,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* Apply styles to the entire HTML page */
 html,
 body,
@@ -91,4 +92,9 @@ body,
   background-color: #0083e9;
   display: inline-block;
   border-radius: 25%;
+}
+
+/* Hover color */
+.icon-container:hover svg {
+  fill: #12efc8;
 }

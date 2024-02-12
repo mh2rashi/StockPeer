@@ -166,13 +166,13 @@ const formattedData = isPredictions ? [...formatted, ...predictions] : [...forma
         <Box>
           <Typography variant="h3">Revenue and Predictions</Typography>
           <Typography variant="h4">
-            Charted revenue and predicted revenue based on a simple linear regression model.
+            Charted revenue and predicted revenue based on a simple linear regression model
           </Typography>
         </Box>
         <Button
           onClick={() => setIsPredictions(!isPredictions)}
           sx={{
-            color: palette.grey[900],
+            color: palette.grey[300],
             backgroundColor: palette.grey[700],
             boxShadow: "0.1rem 0.1rem 0.1rem 0.1rem rgba(0,0,0,.4)",
           }}
@@ -202,6 +202,7 @@ const formattedData = isPredictions ? [...formatted, ...predictions] : [...forma
             style={{ fontSize: "10px" }}
             tickFormatter={(value) => `$${value.toLocaleString()}`}
             stroke={theme.palette.grey[300]}
+            dx={10}
           >
             <Label
               style={{padding: "0rem 2rem 0rem 0rem", textAnchor:"middle", gap:"2rem"}}

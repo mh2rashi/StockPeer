@@ -67,12 +67,12 @@ const Navbar = ({ searchQuery, onSearchChange, onSearchTicker, selectedPage }) =
         {/* Search Bar */}
         <Box flex={1} sx={{ position: 'relative' }}>
           <InputBase
-            placeholder="Search..."
+            placeholder="Enter a stock ticker (Microsoft: MSFT, Tesla: TSLA etc.)..."
             value={searchQuery}
             onChange={handleSearch}
             onKeyDown={handleKeyDown}
             sx={{
-              color: theme.palette.grey[700],
+              color: theme.palette.grey[500],
               border: `1px solid ${theme.palette.grey[500]}`,
               borderRadius: '8px',
               padding: '12px 36px 12px 12px',
