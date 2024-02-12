@@ -1,126 +1,223 @@
-import DashboardBox from "@/components/DashboardBox";
-import FlexBetween from "@/components/FlexBetween";
-import {Switch, Typography, useTheme, Box, TableHead, TableRow, TableCell, Table, FormControl, TableBody, InputLabel, TextField, Select, MenuItem, Button, CardHeader, CardContent, CardActions  } from "@mui/material";
+/*
+  This code defines the Option Builder component, which displays option and sample strategies with live stock prices and options payoff graph.
+*/
+
+// React imports
 import { useState, useEffect } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
 import "../../index.css";
+import { v4 as uuidv4 } from 'uuid';
+
+// Option and Strategy imports
 import OptionPosition from "./optionPosition"
 import SampleOptionStrategiesText from "./sampleOptionStrategiesText"
 import SampleOptionStrategies from "./sampleOptionStrategies";
-import { useGetHistoricalQuery, useGetProfileQuery } from "@/state/yahooAPI";
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-import SaveIcon from '@mui/icons-material/Save';
 import OptionPayoffGraph from "./optionPayoffGraph";
-import { v4 as uuidv4 } from 'uuid';
+
+// Components imports
+import DashboardBox from "@/components/DashboardBox";
+import FlexBetween from "@/components/FlexBetween";
+import {
+  Switch,
+  Typography,
+  useTheme,
+  Box,
+  TableHead,
+  TableRow,
+  TableCell,
+  Table,
+  FormControl,
+  TableBody,
+  InputLabel,
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+  CardHeader,
+  CardContent,
+  CardActions
+} from "@mui/material";
+
+// Navigation and Footer
 import Navbar from "@/scenes/navbar";
 import Footer from "@/scenes/footer";
-  
+
+// API
+import { useGetHistoricalQuery, useGetProfileQuery } from "@/state/yahooAPI";
+
+// Icon imports
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+
 
 const Options = () => {
 
-     // Lifted state and handler function
-     const [searchQuery, setSearchQuery] = useState('');
-     const [ticker, setTicker] = useState('');
-     const theme = useTheme();
-
-   
-     const handleSearchChange = (query : string) => {
-       setSearchQuery(query);
-     };
-   
-     const handleTickerChange = () => {
-       setTicker(searchQuery);
-     };
-
-    const { data: historicalData} = useGetHistoricalQuery(ticker);
-    
-    const { data: profileData} = useGetProfileQuery(ticker);
-
-    const stockName = profileData?.Name
-    const closingPrice = historicalData?.closingPrices[0];
-    const closingPriceDate = historicalData?.dates[0];
-    
-    const { palette } = useTheme();
-    const [liveData, setLiveData] = useState(false);
-    const [sampleOptionText, setSampleOptionText] = useState('');
-    const [currentPrice, setCurrentPrice] = useState('100');
-    const [interestRate, setInterestRate] = useState('5');
-    const [positions, setPositions] = useState([{id: uuidv4(), direction: 'Buy', amount: 1, kind: 'Call', strike: 100, expiryDate: '2024-12-31', volatility: 30, greeks: [0,0,0,0,0,], debitCredit: 0,},]);
-    const [hoveredButton, setHoveredButton] = useState(null);
+  // Lifted state and handler function
+  const [searchQuery, setSearchQuery] = useState('');
+  const [ticker, setTicker] = useState('');
+  const theme = useTheme();
+  const { palette } = useTheme();
 
 
-    const addPosition = () => {
+  // Handler for search query change
+  const handleSearchChange = (query : string) => {
+    setSearchQuery(query);
+  };
 
-        const initialPosition = {
-            id: uuidv4(),
-            direction: 'Buy',
-            amount: 1,
-            kind: 'Call',
-            strike: 100,
-            expiryDate: '2024-12-31',
-            volatility: 30,
-            greeks: [0,0,0,0,0,],
-            debitCredit: 0,
-        };
+  // Handler for ticker change
+  const handleTickerChange = () => {
+    setTicker(searchQuery);
+  };
 
-        setPositions([...positions, initialPosition]);
-    }
+  // Fetching historical and profile data
+  const { data: historicalData } = useGetHistoricalQuery(ticker);
+  const { data: profileData } = useGetProfileQuery(ticker);
 
-    const removeAllPositions = () => {
-        setPositions(() => []);
+  // Extracting stock name, closing price, and date from fetched data
+  const stockName = profileData?.Name;
+  const closingPrice = historicalData?.closingPrices[0];
+  const closingPriceDate = historicalData?.dates[0];
+
+  const [liveData, setLiveData] = useState(false);
+  const [sampleOptionText, setSampleOptionText] = useState('');
+  const [currentPrice, setCurrentPrice] = useState('100');
+  const [interestRate, setInterestRate] = useState('5');
+  const [positions, setPositions] = useState([
+    {
+      id: uuidv4(),
+      direction: 'Buy',
+      amount: 1,
+      kind: 'Call',
+      strike: 100,
+      expiryDate: '2024-12-31',
+      volatility: 30,
+      greeks: [0, 0, 0, 0, 0],
+      debitCredit: 0,
+    },
+  ]);
+  const [hoveredButton, setHoveredButton] = useState(null);
+
+  // Function to add a new position
+  const addPosition = () => {
+    const initialPosition = {
+      id: uuidv4(),
+      direction: 'Buy',
+      amount: 1,
+      kind: 'Call',
+      strike: 100,
+      expiryDate: '2024-12-31',
+      volatility: 30,
+      greeks: [0, 0, 0, 0, 0],
+      debitCredit: 0,
     };
-      
-      
-    const removePosition = (index : number) => {
-        setPositions(prevPositions => {
-            const updatedPositions = [...prevPositions];
-            updatedPositions.splice(index, 1);
-            return updatedPositions;
-        });
-    };
+    setPositions([...positions, initialPosition]);
+  }
 
+  // Function to remove all positions
+  const removeAllPositions = () => {
+    setPositions(() => []);
+  };
 
-    const handleChangeSampleOption = (event) => {
-        setPositions(prevPositions => {
-            const newPositions = SampleOptionStrategies[event.target.value] || [];
-            return newPositions;
-        });
-        setSampleOptionText(event.target.value);
-    };
-    
+  // Function to remove a specific position
+  const removePosition = (index : number) => {
+    setPositions(prevPositions => {
+      const updatedPositions = [...prevPositions];
+      updatedPositions.splice(index, 1);
+      return updatedPositions;
+    });
+  };
 
-    const onPositionChange = (updatedPosition, index) => {
-        setPositions(prevPositions => {
-            const updatedPositions = [...prevPositions];
-            updatedPositions[index] = updatedPosition;
-            return updatedPositions;
-        });
-    };
-    
+  // Handler for changing the selected sample option strategy
+  const handleChangeSampleOption = (event) => {
+    setPositions(prevPositions => {
+      const newPositions = SampleOptionStrategies[event.target.value] || [];
+      return newPositions;
+    });
+    setSampleOptionText(event.target.value);
+  };
 
-    const handleCurrentPriceChange = (event) => {
-        setCurrentPrice(event.target.value);
-    };
-    
-      const handleInterestRateChange = (event) => {
-        setInterestRate(event.target.value);
-    };
+  // Handler for position change
+  const onPositionChange = (updatedPosition, index) => {
+    setPositions(prevPositions => {
+      const updatedPositions = [...prevPositions];
+      updatedPositions[index] = updatedPosition;
+      return updatedPositions;
+    });
+  };
 
-    const liveDataToggle = () => {
-        setLiveData(!liveData);
-      };
+  // Handler for changing the current price
+  const handleCurrentPriceChange = (event) => {
+    setCurrentPrice(event.target.value);
+  };
 
-    useEffect(() => {
+  // Handler for changing the interest rate
+  const handleInterestRateChange = (event) => {
+    setInterestRate(event.target.value);
+  };
 
-        console.log(positions);
-        }, [positions, sampleOptionText, ticker]);
+  // Function to toggle live data display
+  const liveDataToggle = () => {
+    setLiveData(!liveData);
+  };
 
+  // Effect to log positions, sample option text, and ticker when they change
+  useEffect(() => {
+    console.log(positions);
+  }, [positions, sampleOptionText, ticker]);
+
+  // Labels for table cells
+  const tableCellLabels = [
+    'Direction',
+    'Amount',
+    'Kind',
+    'Strike',
+    'Expiry',
+    'Volatility',
+    'Debit/Credit',
+    'Delta',
+    'Gamma',
+    'Theta',
+    'Vega',
+    'Rho',
+  ];
+
+  // Calculating total greeks for all positions
+  const totalGreeks = positions.reduce((accumulator, position) => {
+    const positionToUpdate = positions.find(pos => pos.id === position.id);
+    return accumulator.map((sum, index) => sum + (positionToUpdate ? positionToUpdate.greeks[index] : 0));
+  }, [0, 0, 0, 0, 0]).map(sum => sum.toFixed(2));
+
+    // Menu items for sample option strategies
+    const menuItems = [
+        { label: 'Call', disabled: true },
+        { label: 'Long Call', value: 'Long Call' },
+        { label: 'Short Call', value: 'Short Call' },
+        { label: 'Put', disabled: true },
+        { label: 'Long Put', value: 'Long Put' },
+        { label: 'Short Put', value: 'Short Put' },
+        { label: 'Spreads', disabled: true },
+        { label: 'Bull Call Spread', value: 'Bull Call Spread' },
+        { label: 'Bear Put Spread', value: 'Bear Put Spread' },
+        { label: 'Straddle', disabled: true },
+        { label: 'Long Straddle', value: 'Long Straddle' },
+        { label: 'Short Straddle', value: 'Short Straddle' },
+        { label: 'Strangle', disabled: true },
+        { label: 'Long Strangle', value: 'Long Strangle' },
+        { label: 'Short Strangle', value: 'Short Strangle' },
+        { label: 'Butterfly', disabled: true },
+        { label: 'Long Butterfly', value: 'Long Butterfly' },
+        { label: 'Short Butterfly', value: 'Short Butterfly' },
+        { label: 'Condor', disabled: true },
+        { label: 'Long Condor', value: 'Long Condor' },
+        { label: 'Short Condor', value: 'Short Condor' }
+    ];
     
 return (
     <>
 
+    {/* Navbar component for search and navigation */}
     <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Options"}  />
-
 
     <Box paddingBottom="1rem">
 
@@ -129,46 +226,21 @@ return (
             
             <FlexBetween color={palette.grey[700]}>
             
+                {/* Table for displaying option positions */}
                 <Table aria-label="simple table">
 
                     <TableHead style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: "#2d2d34", borderRadius:"0rem", boxShadow: 'none' }}>
                         <TableRow style={{ position: 'sticky', top: 0, zIndex: 1 }}>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Direction</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Amount</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Kind</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Strike</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Expiry</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Volatility</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Debit/Credit</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Delta</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Gamma</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Theta</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Vega</Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant="h3" color={theme.palette.grey[300]}>Rho</Typography>
-                            </TableCell>
+                        
+                            {/* Render table cell labels */}
+                            {tableCellLabels.map((label, index) => (
+                                <TableCell key={index}>
+                                    <Typography variant="h3" color={theme.palette.grey[300]}>
+                                        {label}
+                                    </Typography>
+                                </TableCell>
+                            ))}
+
                             <TableCell component="th" scope="col">
                                 <Button
                                     variant="contained"
@@ -184,10 +256,12 @@ return (
 
                     <TableBody  style={{ position: 'relative', zIndex: 0 }}>
 
+                        {/* Map through positions to render OptionPosition components */}
                         {positions.map((position, index) => (
                         <OptionPosition key={position.id}  onRemove={() => removePosition(index)} onPositionChange={(updatedPosition) => onPositionChange(updatedPosition, index)} position={position} currentPrice={liveData? closingPrice: currentPrice} interestRate={interestRate}> </OptionPosition>
                         ))}
 
+                        {/* Table row for displaying totals */}
                         <TableRow>
                             <TableCell align="center">
                                 <Typography variant="h4" color={theme.palette.grey[300]}>Total</Typography>
@@ -203,6 +277,7 @@ return (
                             <TableCell />
                             <TableCell />
 
+                            {/* Display total debit/credit */}
                             <TableCell>
                                 <Typography variant="h4" color={theme.palette.grey[300]}>
                                 {positions.reduce((accumulator, position) => {
@@ -213,57 +288,14 @@ return (
                                 </Typography>
                             </TableCell>
 
-
-                            <TableCell>
-                                <Typography variant="h4" color={theme.palette.grey[300]}>
-                                {positions.reduce((accumulator, position) => {
-                                    // Use the position id to ensure the correct position is considered
-                                    const positionToUpdate = positions.find(pos => pos.id === position.id);
-                                    return accumulator + (positionToUpdate ? positionToUpdate.greeks[0] : 0);
-                                }, 0).toFixed(2)}
-
-                                </Typography>
-                            </TableCell>
-
-                            <TableCell>
-                                <Typography variant="h4" color={theme.palette.grey[300]}>
-                                {positions.reduce((accumulator, position) => {
-                                    // Use the position id to ensure the correct position is considered
-                                    const positionToUpdate = positions.find(pos => pos.id === position.id);
-                                    return accumulator + (positionToUpdate ? positionToUpdate.greeks[1] : 0);
-                                }, 0).toFixed(2)}
-                                </Typography>
-                            </TableCell>
-
-                            <TableCell>
-                                <Typography variant="h4" color={theme.palette.grey[300]}>
-                                    {positions.reduce((accumulator, position) => {
-                                        // Use the position id to ensure the correct position is considered
-                                        const positionToUpdate = positions.find(pos => pos.id === position.id);
-                                        return accumulator + (positionToUpdate ? positionToUpdate.greeks[2] : 0);
-                                    }, 0).toFixed(2)}
-                                </Typography>
-                            </TableCell>
-                                
-                            <TableCell>
-                                <Typography variant="h4" color={theme.palette.grey[300]}>
-                                {positions.reduce((accumulator, position) => {
-                                // Use the position id to ensure the correct position is considered
-                                const positionToUpdate = positions.find(pos => pos.id === position.id);
-                                return accumulator + (positionToUpdate ? positionToUpdate.greeks[3] : 0);
-                                }, 0).toFixed(2)}
-                                </Typography>
-                            </TableCell>
-
-                            <TableCell>
-                                <Typography variant="h4">
-                                {positions.reduce((accumulator, position) => {
-                                // Use the position id to ensure the correct position is considered
-                                const positionToUpdate = positions.find(pos => pos.id === position.id);
-                                return accumulator + (positionToUpdate ? positionToUpdate.greeks[4] : 0);
-                                }, 0).toFixed(2)}
-                                </Typography>
-                            </TableCell>
+                            {/* Display total greeks */}
+                            {totalGreeks.map((sum, index) => (
+                                <TableCell key={index}>
+                                    <Typography variant="h4" color={theme.palette.grey[300]}>
+                                        {sum}
+                                    </Typography>
+                                </TableCell>
+                            ))}
 
                             <TableCell>
                                 <Button
@@ -429,33 +461,13 @@ return (
                             inputProps={{ name: 'Strategy', id: 'demo-simple-select-outlined' }}
                             MenuProps={{ PaperProps: { style: { maxHeight: '200px' } } }} // Set the maxHeight here
                         >
-                            <MenuItem disabled>Call</MenuItem>
-                            <MenuItem value="Long Call">Long Call</MenuItem>
-                            <MenuItem value="Short Call">Short Call</MenuItem>
-
-                            <MenuItem disabled>Put</MenuItem>
-                            <MenuItem value="Long Put">Long Put</MenuItem>
-                            <MenuItem value="Short Put">Short Put</MenuItem>
-
-                            <MenuItem disabled>Spreads</MenuItem>
-                            <MenuItem value="Bull Call Spread">Bull Call Spread</MenuItem>
-                            <MenuItem value="Bear Put Spread">Bear Put Spread</MenuItem>
-
-                            <MenuItem disabled>Straddle</MenuItem>
-                            <MenuItem value="Long Straddle">Long Straddle</MenuItem>
-                            <MenuItem value="Short Straddle">Short Straddle</MenuItem>
-
-                            <MenuItem disabled>Strangle</MenuItem>
-                            <MenuItem value="Long Strangle">Long Strangle</MenuItem>
-                            <MenuItem value="Short Strangle">Short Strangle</MenuItem>
-
-                            <MenuItem disabled>Butterfly</MenuItem>
-                            <MenuItem value="Long Butterfly">Long Butterfly</MenuItem>
-                            <MenuItem value="Short Butterfly">Short Butterfly</MenuItem>
-
-                            <MenuItem disabled>Condor</MenuItem>
-                            <MenuItem value="Long Condor">Long Condor</MenuItem>
-                            <MenuItem value="Short Condor">Short Condor</MenuItem>
+                            {menuItems.map((item, index) => {
+                                if (item.disabled) {
+                                    return <MenuItem key={index} disabled>{item.label}</MenuItem>;
+                                } else {
+                                    return <MenuItem key={index} value={item.value}>{item.label}</MenuItem>;
+                                }
+                            })}
 
                         </Select>
 

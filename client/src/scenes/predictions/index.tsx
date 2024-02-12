@@ -1,7 +1,24 @@
-import DashboardBox from "@/components/DashboardBox";
-import FlexBetween from "@/components/FlexBetween";
-import { Box, Button, Typography, useTheme } from "@mui/material";
+/** 
+ The Predictions component in a TypeScript React application fetches income statement data for a
+ given stock ticker, performs linear regression analysis on the revenue data, and displays a line
+ chart of the actual revenue and predicted revenue for the next 4 years.
+ @param {number} yearsToAdd - The `yearsToAdd` parameter is a number that represents the number of
+ years to add to the current date. It is used in the `getCurrentDateFormatted` function to calculate
+ the future date for the revenue predictions.
+ @returns The code is returning a React component called "Predictions". This component displays a
+ line chart of a company's revenue over time, along with predicted revenue for the next 4 years based
+ on a linear regression model. The component also includes a search bar for entering a stock ticker,
+ and handles fetching the income statement data for the specified ticker using a custom hook. The
+ component handles loading and error states,
+ **/
+
+// React imports
 import { useState } from "react";
+
+// Regression imports
+import regression from "regression";
+
+// Charting imports
 import {
   CartesianGrid,
   Label,
@@ -13,14 +30,23 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import regression from "regression";
+
+// Navbar and Footer
+import Footer from "@/scenes/footer";
+import Navbar from "@/scenes/navbar";
+
+// Component imports
+import DashboardBox from "@/components/DashboardBox";
+import FlexBetween from "@/components/FlexBetween";
+import { Box, Button, Typography, useTheme } from "@mui/material";
+
+// API
 import { useGetIncomeStatementQuery } from "@/state/yahooAPI";
+
+// Animation and Icon imports 
 import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file
 import Lottie from 'lottie-react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import Footer from "@/scenes/footer"; // Import the Footer component
-import Navbar from "@/scenes/navbar";
-
 
 // Function to format the date in MM/DD/YYYY format
 function getCurrentDateFormatted(yearsToAdd: number): string {
@@ -32,13 +58,14 @@ function getCurrentDateFormatted(yearsToAdd: number): string {
 }
 
 const Predictions = () => {
-
+  // State variables
   const [searchQuery, setSearchQuery] = useState('');
   const [ticker, setTicker] = useState('');
   const theme = useTheme();
+  const [isPredictions, setIsPredictions] = useState(false);
 
-
-  const handleSearchChange = (query : string) => {
+  // Event handlers
+  const handleSearchChange = (query: string) => {
     setSearchQuery(query);
   };
 
@@ -46,80 +73,94 @@ const Predictions = () => {
     setTicker(searchQuery);
   };
 
-
+  // Fetch income statement data using custom hook
   const { data, isLoading, error } = useGetIncomeStatementQuery(ticker);
   const { palette } = useTheme();
-  const [isPredictions, setIsPredictions] = useState(false);
 
+  // Loading state
   if (isLoading) {
     return (
       <>
-      
-      <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Predictions"}/>
-      <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
-            <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
-      </DashboardBox>
-      <Footer/>
-
+        <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Predictions"} />
+        {/* Loading animation */}
+        <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
+          <Lottie animationData={loadingAnimation} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }} />
+        </DashboardBox>
+        <Footer />
       </>
     );
   }
 
+  // Error state or missing data
   if (error || !searchQuery || !data) {
     return (
       <>
-
-      <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Predictions"}/>
-      <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden" display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
+        <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Predictions"} />
+        {/* Display error message */}
+        <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden" display="flex" flexDirection="column" alignItems="center" justifyContent='center'>
           <SearchRoundedIcon sx={{ fontSize: "444px", color: theme.palette.grey[300] }}></SearchRoundedIcon>
           <span style={{ color: theme.palette.grey[300] }}>Please enter or re-enter your stock ticker</span>
-      </DashboardBox>
-      <Footer/>
-
+        </DashboardBox>
+        <Footer />
       </>
     );
   }
 
-  const rows = Object.values(data);
-  let totalRevenueRow = rows.find(row => row[0] === 'Total Revenue');
-    if (!totalRevenueRow) return [];
+// Data processing
+// Extract rows of data from the fetched income statement
+const rows = Object.values(data);
 
+// Find the row containing the total revenue, if it exists
+let totalRevenueRow = rows.find(row => row[0] === 'Total Revenue');
 
-    let formatted = totalRevenueRow.map((value: string, index: number) => {
-      const month = data[0][index];
-      return {
-        name: month,
-        TotalRevenue: parseFloat(value.replace(/,/g, "")),
-      };
-    });
-    
+// If total revenue row is not found, return empty array
+if (!totalRevenueRow) return [];
 
-    formatted = formatted.filter((item : any) => item.name !== "Breakdown");
-    formatted = formatted.reverse();
+// Format the revenue data for plotting
+let formatted = totalRevenueRow.map((value: string, index: number) => {
+  // Extract the month label from the first row of data
+  const month = data[0][index];
+  return {
+    name: month, // Month label
+    TotalRevenue: parseFloat(value.replace(/,/g, "")), // Total revenue value
+  };
+});
 
-    const regressionData = formatted.map((item : any, index : number) => [index, item.TotalRevenue]);
-    const regressionResult = regression.linear(regressionData);
-    const lastKnownPoint = regressionData.length - 1;
-  
-    const predictions = [];
+// Filter out any entries labeled as "Breakdown"
+formatted = formatted.filter((item: any) => item.name !== "Breakdown");
 
-    for (let i = 0; i <= 3; i++) { // Predict the next 12 months
-      const predictedRevenueValue = regressionResult.predict(lastKnownPoint + i)[1];
-      predictions.push({
-        name:getCurrentDateFormatted(i) ,
-        PredictedRevenue: predictedRevenueValue,
-      });
-    }
+// Reverse the data to display in chronological order
+formatted = formatted.reverse();
 
-    const formattedData =  isPredictions ? [...formatted,...predictions] : [...formatted];
-  
+// Prepare data for regression analysis
+const regressionData = formatted.map((item: any, index: number) => [index, item.TotalRevenue]);
+
+// Perform linear regression to predict future revenue trends
+const regressionResult = regression.linear(regressionData);
+const lastKnownPoint = regressionData.length - 1;
+
+// Generate revenue predictions for the next 4 years
+const predictions = [];
+for (let i = 0; i <= 3; i++) {
+  // Predict revenue for each future point
+  const predictedRevenueValue = regressionResult.predict(lastKnownPoint + i)[1];
+  predictions.push({
+    name: getCurrentDateFormatted(i), // Date label for predicted revenue
+    PredictedRevenue: predictedRevenueValue, // Predicted revenue value
+  });
+}
+
+// Combine actual data with predictions based on user selection
+const formattedData = isPredictions ? [...formatted, ...predictions] : [...formatted];
+
 
   return (
     <>
 
+    {/* Navigation bar */}
     <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} onSearchTicker={handleTickerChange} selectedPage={"Predictions"} />
 
-
+    {/* Main content */}
     <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
       <FlexBetween m="1rem 2.5rem" gap="1rem">
         <Box>
@@ -149,10 +190,13 @@ const Predictions = () => {
             bottom: 80,
           }}
         >
+          {/* Grid lines */}
           <CartesianGrid strokeDasharray="3 3" stroke={palette.grey[800]} dx={5} />
+          {/* X-axis */}
           <XAxis dataKey="name" tickLine={true} style={{ fontSize: "10px",}} stroke={theme.palette.grey[300]}>
             <Label value="Year" offset={-5} position="insideBottom" fill={theme.palette.grey[300]} />
           </XAxis>
+          {/* Y-axis */}
           <YAxis
             axisLine={{ strokeWidth: "0" }}
             style={{ fontSize: "10px" }}
@@ -192,10 +236,7 @@ const Predictions = () => {
     </DashboardBox>
 
     <Footer/>
-    
   </>
-        
-
   );
  };
 

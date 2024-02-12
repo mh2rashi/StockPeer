@@ -3,7 +3,7 @@
   The 'ticker' property is a string representing the stock ticker symbol and is used to fetch data from the API.
 */
 
-// React imports
+// React & styling imports
 import { useState, useEffect } from 'react';
 import { useMediaQuery, useTheme } from "@mui/material";
 

@@ -1,3 +1,7 @@
+/*
+ SampleOptionStrategiesText object containing various option strategies with their description.
+*/
+
 const SampleOptionStrategiesText = {
 
     "Long Call" : (

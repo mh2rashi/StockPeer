@@ -1,5 +1,9 @@
-import { v4 as uuidv4 } from 'uuid';
+/*
+ SampleOptionStrategies object containing various option strategies with sample data.
+*/
 
+// UUID import for unique ID
+import { v4 as uuidv4 } from 'uuid';
 
 const SampleOptionStrategies = {
 

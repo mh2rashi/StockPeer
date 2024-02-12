@@ -1,20 +1,31 @@
-// eslint
+/*
+  This component represents the navigation bar of the application.
+  It includes the branding, search functionality, and navigation links.
+*/
+
+// React imports
 import { useState } from "react";
+
+// Navigation imports
 import { Link } from "react-router-dom";
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import SearchIcon from '@mui/icons-material/Search';
+
+// Components and style imports
 import { Box, Typography, useTheme, InputBase, IconButton, useMediaQuery } from '@mui/material';
-import FlexBetween from "@/components/FlexBetween"; // Check this alias
+import FlexBetween from "@/components/FlexBetween";
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Navbar = ({ searchQuery, onSearchChange, onSearchTicker, selectedPage }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("lg"));
+
+  // State to manage selected page and mobile menu toggle
   const [selected, setSelected] = useState(selectedPage);
   const [isMenuToggled, setIsMenuToggled] = useState(false);
 
+  // Event handler for search input change, icon click, Enter key and menu item click
   const handleSearch = (event) => {
     onSearchChange(event.target.value);
   };
@@ -30,59 +41,77 @@ const Navbar = ({ searchQuery, onSearchChange, onSearchTicker, selectedPage }) =
   };
 
   const handleMenuItemClick = (menuItem) => {
-
     setSelected(menuItem);
-    console.log(selected);
   };
 
   return (
-    <Box gridArea="i" mb="0.25rem" p="0.5rem 0rem" gap="2rem" display="flex" flex="1" color={theme.palette.grey[300]} width="100%" alignItems="center" justifyContent="center">
+    <Box 
+      gridArea="i" 
+      mb="0.25rem" 
+      p="0.5rem 0rem" 
+      gap="2rem" 
+      display="flex" 
+      flex="1" 
+      color={theme.palette.grey[300]} 
+      width="100%" 
+      alignItems="center" 
+      justifyContent="center"
+    >
         
-        {/* LEFT SIDE */}
+        {/* Icon */}
         <Box gap="0.75rem"  display="flex">
           <QueryStatsIcon sx={{ fontSize: "44px" }} />
           <Typography variant="h4" fontSize="32px">StockPeer</Typography>
         </Box>
 
-        {/* SEARCH INPUT */}
-          <Box flex={1} sx={{ position: 'relative' }}>
-            <InputBase
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={handleSearch}
-              onKeyDown={handleKeyDown}
-              sx={{
-                color: theme.palette.grey[700],
-                border: `1px solid ${theme.palette.grey[500]}`,
-                borderRadius: '8px',
-                padding: '12px 36px 12px 12px',
-                width: '100%',
-              }}
-            />
-            <IconButton sx={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)' }}
-            onClick={handleSearchIconClick}>
-              <SearchIcon style={{color: "#FFF", alignItems: "center", }} />
-            </IconButton>
-          </Box>
+        {/* Search Bar */}
+        <Box flex={1} sx={{ position: 'relative' }}>
+          <InputBase
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={handleSearch}
+            onKeyDown={handleKeyDown}
+            sx={{
+              color: theme.palette.grey[700],
+              border: `1px solid ${theme.palette.grey[500]}`,
+              borderRadius: '8px',
+              padding: '12px 36px 12px 12px',
+              width: '100%',
+            }}
+          />
+          <IconButton sx={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)' }} onClick={handleSearchIconClick}>
+            <SearchIcon style={{ color: "#FFF", alignItems: "center" }} />
+          </IconButton>
+        </Box>
       
-      {/* RIGHT SIDE */}
+      {/* Navigation buttons */}
       {isSmallScreen ? (
         <>
           {!isMenuToggled && (
             <IconButton onClick={() => setIsMenuToggled(true)}>
-              <MenuIcon style={{color: "#FFF"}} />
+              <MenuIcon style={{ color: "#FFF" }} />
             </IconButton>
           )}
-          {isMenuToggled && 
-          (
-            <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: "#2d2d34", position: 'fixed', top: 0, right: 0, height: '100vh', width: '25%', zIndex: 1300, transform: 'translateX(0)',transition: 'transform 0.3s ease-in-out', }}>
+          {isMenuToggled && (
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              backgroundColor: "#2d2d34", 
+              position: 'fixed', 
+              top: 0, 
+              right: 0, 
+              height: '100vh', 
+              width: '25%', 
+              zIndex: 1300, 
+              transform: 'translateX(0)',
+              transition: 'transform 0.3s ease-in-out'
+            }}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '1.2em' }}>
                 <IconButton onClick={() => setIsMenuToggled(false)}>
-                  <CloseIcon style={{color: "#FFF"}}/>
+                  <CloseIcon style={{ color: "#FFF" }} />
                 </IconButton>
               </Box>
-              {/* MENU ITEMS */}
-              {/* Consider mapping through an array of menu items if they grow in number */}
+              {/* Menu Items */}
               <Box sx={{ display: 'flex', flexDirection: 'column', padding: '1.2em' }}>
                 <Link to="/dashboard" onClick={() => handleMenuItemClick("Dashboard")} style={{ textDecoration: "none" }}>
                   <Typography variant="h4" sx={{ marginBottom: '1rem', color: selected === "Dashboard" ? theme.palette.primary.main : theme.palette.grey[700], '&:hover': { color: theme.palette.primary.main } }}>Dashboard</Typography>
@@ -99,7 +128,7 @@ const Navbar = ({ searchQuery, onSearchChange, onSearchTicker, selectedPage }) =
         </>
       ) : (
         <FlexBetween gap="2rem" sx={{ justifyContent: 'flex-end' }} >
-          {/* Consider mapping through an array of menu items if they grow in number */}
+          {/* Menu Items */}
           <Link to="/dashboard" onClick={() => handleMenuItemClick("Dashboard")} style={{ textDecoration: "none" }}>
             <Typography variant="h4" component="span" sx={{ '&:hover': { color: theme.palette.primary.main }, color: selected === "Dashboard" ? theme.palette.primary.main : theme.palette.grey[700] }}>Dashboard</Typography>
           </Link>
