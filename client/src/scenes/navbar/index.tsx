@@ -1,7 +1,7 @@
 /*
-  This component represents the navigation bar of the application.
-  It includes the branding, search functionality, and navigation links.
-*/
+The code is a TypeScript React component that represents the navigation bar of an application.
+It includes the branding, search functionality, and navigation links.
+ */
 
 // React imports
 import { useState } from "react";

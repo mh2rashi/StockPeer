@@ -1,7 +1,13 @@
-/*
-  This component displays a table representing the top share holders of a stock within the Dashboard page.
-  The 'ticker' property is a string that represents the stock ticker symbol and is used to fetch data from the API.
-*/
+/**
+ * This is a TypeScript React component that displays a table representing the top shareholders of a
+ * stock within a Dashboard page.
+ * @returns The Holders component returns a table representing the top share holders of a stock within
+ * the Dashboard page. The component takes a 'ticker' property, which is a string representing the
+ * stock ticker symbol and is used to fetch data from the API. The component fetches data from the API
+ * using the useGetHoldersQuery hook and displays loading animations while the data is being fetched.
+ * Once the data is loaded
+ **/
+
 
 // React 
 import { useState, useEffect } from 'react';
@@ -18,7 +24,7 @@ import DashboardBox from "../../components/DashboardBox";
 
 // API
 import { useGetHoldersQuery } from "@/state/yahooAPI";
-import { GetStockHoldersResponse } from "@/state/types/holdersTypes";
+import { GetStockHoldersResponse } from "@/state/types";
 
 // Animations & Icons 
 import loadingAnimation from '../../assets/LoadingAnimation.json'; // Replace with the path to your animation JSON file

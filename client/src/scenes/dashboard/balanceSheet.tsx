@@ -1,7 +1,11 @@
-/*
- This component displays a radar chart representing the balance sheet data of a stock within the Dashboard page.
- The 'ticker' property is a string that represents the stock ticker symbol and is used to fetch data from the API.
-*/
+/**
+ * This is a TypeScript React component that displays a radar chart representing the balance sheet data
+ * of a stock within the Dashboard page.
+ * @property {string} ticker - The `ticker` property is a string that represents the stock ticker
+ * symbol. It is used to fetch data from the API and display the balance sheet data for that particular
+ * stock in the radar chart.
+ **/
+
 
 // React imports
 import { useState, useEffect } from 'react';

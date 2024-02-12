@@ -1,7 +1,9 @@
-/*
-  This code displays a rectangle representing the controversy level of a stock company within the Dashboard page's Ratings component.
-  The 'ticker' property is a string representing the stock ticker symbol and is used to fetch data from the API.
-*/
+/**
+ * This code is a React component that displays a rectangle representing the controversy level of a
+ * stock company within a Dashboard page's Ratings component.
+ * @property {string} ticker - The `ticker` property is a string representing the stock ticker symbol.
+ * It is used to fetch data from the API and determine the controversy level of a stock company.
+ **/
 
 // React & styling imports
 import { useState, useEffect } from 'react';

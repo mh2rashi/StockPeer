@@ -1,4 +1,4 @@
-/* The code you provided is creating an API using Redux Toolkit's `createApi` function. This API is
+/* The code provided is creating an API using Redux Toolkit's `createApi` function. This API is
 used to make various stock data queries. */
 
 // Import necessary functions and types from Redux Toolkit and other files

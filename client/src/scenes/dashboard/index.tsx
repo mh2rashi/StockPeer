@@ -1,5 +1,7 @@
 /*
-  This code defines the Dashboard component, which displays various financial information and components related to a stock company.
+This code defines a React component called "Dashboard". It imports various components related to
+financial information and components for a stock company, such as Profile, BalanceSheet, Ratings,
+Holders, PriceGraph, and IncomeStatement. It also imports the Navbar and Footer components. 
 */
 
 // React imports

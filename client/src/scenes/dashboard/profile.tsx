@@ -1,7 +1,11 @@
-/*
-  This component displays the profile of a stock company within the Dashboard page.
-  The 'ticker' property is a string representing the stock ticker symbol and is used to fetch data from the API.
-*/
+/**
+ * The Profile component displays the profile of a stock company within the Dashboard page, fetching
+ * data from an API and using a WebSocket connection for real-time data updates.
+ * @param {string} url - The `url` parameter is a string representing the website URL of the stock
+ * company. It is used to extract the domain from the URL.
+ * @returns The Profile component is being returned.
+ **/
+
 
 // React imports
 import { useState, useEffect } from 'react';
@@ -110,13 +114,16 @@ const Profile = ({ ticker }: Props) => {
   return (
     <>
       <DashboardBox gridArea="a" padding="1rem 1rem 1.25rem 1rem" key={key} style={{ color: theme.palette.grey[300] }}>
+      <Typography mb="-0.9rem" color={theme.palette.secondary[500]} variant="h5" fontWeight="700" style={{ textAlign: "right" }}>
+        {streamedData === "0" ? "Last Closing Price" : "Live Data"}
+      </Typography>
         <div style={{ height: "50%", display: "flex" }}>
           <div id='logo' style={{ width: "30%", backgroundColor: "transparent", padding: "0.5rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
             <img src={`https://api.companyurlfinder.com/logo/${domain}`} alt="Company Logo" style={{ width: "100%", height: "100%", borderRadius: "20%", objectFit: "cover" }} />
           </div>
           <div id='namePrice' style={{ width: "70%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
             <Typography variant="h1" style={{ fontSize: "2.5rem", display: "flex", alignItems: "center" }}>
-              $<span>{streamedData}</span>&nbsp;
+            <span>${streamedData !== "0" ? streamedData : parseFloat(data["Closing Price"].split(" ")[0])}</span>&nbsp;
             </Typography>
             <Typography variant="h1" style={{ marginTop: "1rem", marginBottom: "1rem" }}>{data['Name']}</Typography>
             <Typography variant="h1" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>

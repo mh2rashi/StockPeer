@@ -1,6 +1,8 @@
 /*
- This code applies custom styles to the `Box` component from the Material UI library.
-*/
+The code is creating a custom styled component called `DashboardBox` using the `styled` function
+from the Material UI library. It applies custom styles to the `Box` component from the Material UI
+library.
+ */
 
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";

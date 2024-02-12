@@ -1,8 +1,9 @@
-/*
- The code is a TypeScript React component that sets up the main structure of an application
- with client-side routing and a custom theme.
- The App component is being returned.
- */
+/**
+ * The code is a TypeScript React component that sets up the main structure of an application with
+ * client-side routing and a custom theme.
+ * @returns The App component is being returned.
+ **/
+
 
 import { useMemo } from "react";
 import { createTheme } from "@mui/material/styles";

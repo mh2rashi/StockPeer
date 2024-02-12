@@ -1,7 +1,11 @@
-/*
-  This component displays a LineChart representing the historical price data of a stock within the Dashboard page.
-  The 'ticker' property is a string that represents the stock ticker symbol and is used to fetch data from the API.
-*/
+/**
+ * This is a TypeScript React component that displays a LineChart representing the historical price
+ * data of a stock within the Dashboard page.
+ * @param  - - `ticker`: A string representing the stock ticker symbol. This is used to fetch data from
+ * the API and display the historical price data for the specified stock.
+ * @returns The PriceGraph component is being returned.
+ **/
+
 
 // React
 import React, { useState, useEffect } from 'react';
@@ -185,6 +189,7 @@ const PriceGraph = ({ ticker }: Props) => {
                 style={{ fontSize: "10px" }}
                 domain={[newMinVal, newMaxVal]}
                 interval={Math.ceil(parsedData.length / 10)}
+                stroke={theme.palette.grey[500]}
               />
               <YAxis
                 yAxisId="left"
@@ -192,6 +197,7 @@ const PriceGraph = ({ ticker }: Props) => {
                 axisLine={false}
                 style={{ fontSize: "10px" }}
                 domain={[newMinVal - 10, newMaxVal + 10]}
+                stroke={theme.palette.grey[500]}
               />
               <YAxis
                 yAxisId="right"
@@ -200,6 +206,7 @@ const PriceGraph = ({ ticker }: Props) => {
                 axisLine={false}
                 style={{ fontSize: "10px" }}
                 domain={[newMinVal - 10, newMaxVal + 10]}
+                stroke={theme.palette.grey[500]}
               />
               <Tooltip />
               <Legend height={20} wrapperStyle={{ margin: "0 0 10px 0" }} />

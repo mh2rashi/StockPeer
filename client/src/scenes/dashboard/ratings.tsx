@@ -1,7 +1,10 @@
-/*
-  This component displays environment, social, and governance (ESG) risk ratings of a stock company within the Dashboard page.
-  The 'ticker' property is a string representing the stock ticker symbol and is used to fetch data from the API.
-*/
+/**
+ * This is a TypeScript React component that displays environment, social, and governance (ESG) risk
+ * ratings of a stock company within the Dashboard page.
+ * @returns The component is returning JSX elements that display the environment, social, and
+ * governance (ESG) risk ratings of a stock company. It fetches data from an API using the
+ * `useGetSustainabilityQuery` hook.
+ **/
 
 // React imports
 import { useState, useEffect } from 'react';

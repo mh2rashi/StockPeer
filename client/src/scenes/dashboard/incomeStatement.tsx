@@ -1,7 +1,10 @@
-/*
-  This component displays a bar chart representing the income statement data of a stock within the Dashboard page.
-  The 'ticker' property is a string that represents the stock ticker symbol and is used to fetch data from the API.
-*/
+/**
+ * This is a TypeScript React component that displays a bar chart representing the income statement
+ * data of a stock within the Dashboard page.
+ * @property {string} ticker - The `ticker` property is a string that represents the stock ticker
+ * symbol. It is used to fetch data from the API and display the income statement data for that stock
+ * in the bar chart.
+ **/
 
 // React
 import { useState, useEffect } from 'react';
@@ -104,8 +107,8 @@ const IncomeStatement = ({ ticker }: Props) => {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" allowDataOverflow={true} style={{ fontSize: "10px" }} />
-              <YAxis tickFormatter={(value) => value.toLocaleString()} style={{ fontSize: "10px" }} />
+              <XAxis dataKey="name" allowDataOverflow={true} style={{ fontSize: "10px", stroke: theme.palette.grey[500], fontWeight:"normal" }} />
+              <YAxis tickFormatter={(value) => value.toLocaleString()} style={{ fontSize: "10px", stroke: theme.palette.grey[500], fontWeight:"normal"}} />
               <Tooltip
                 formatter={(value, name) => {
                   return [value.toLocaleString(), name];
