@@ -28,6 +28,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Text
 } from 'recharts';
 
 // Animations & Icons
