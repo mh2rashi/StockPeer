@@ -13,7 +13,7 @@
     A stock web application with display metrics for live data, machine-learning       based predictions and options strategy visualizer.
   </p>
 
-  <a href="https://stockpeer-3495602137c6.herokuapp.com/" target="_blank"><h2>Live Demo »</h2></a>
+  # <a href="https://stockpeer-3495602137c6.herokuapp.com/">Live Demo</a>
 
 </div>
 
@@ -57,7 +57,7 @@ The goal of this project was to create a full-stack web application where users 
 
 3. <strong>Options Strategy Visualizer (Options Builder page):</strong> This page allows you to build a custom options strategy using live stock data and calculates option price and Greeks.
 
-    - The first row allows you to add and remove as many options as you want with the ability to customize components (direction, amount, kind, strike, and expiry). Changing any one component automatically updates the price and Greeks.
+    - The first row allows you to add and remove as many options as you want with the ability to customize components (direction, amount, kind, strike, and expiry). Changing any one component automatically updates the price and Greeks according to the Black-Scholes formula.
 
     - The second row shows two boxes. The first is for Stock Data with adjustable price (live price using a toggle button) and interest rate. The second box shows a list of sample strategies with explanations to help the investor get started.
 
@@ -113,6 +113,11 @@ Please follow instructions below to install and run the project on your local de
    ```sh
    API_TOKEN = 'ENTER YOUR API'
    ```
+
+5. Run the the development server on your local machine.
+    ```sh
+    cd server && npm run dev
+    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

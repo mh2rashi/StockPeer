@@ -2,7 +2,7 @@
 The code is setting up a server using the Express framework in JavaScript. It imports various
 middleware packages such as `express`, `body-parser`, `cors`, `dotenv`, `helmet`, and `morgan`. It
 also imports individual data fetching functions from different files.
-*/
+**/
 
 // Imports for middleware
 import express from "express";
@@ -25,7 +25,7 @@ dotenv.config();
 const app = express();
 
 // Middleware setup
-// app.use(express.static("public"));
+app.use(express.static("public"));
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
